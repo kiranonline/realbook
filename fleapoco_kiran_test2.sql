@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 23, 2019 at 10:44 AM
+-- Generation Time: Jan 28, 2019 at 10:39 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.1
 
@@ -21,6 +21,27 @@ SET time_zone = "+00:00";
 --
 -- Database: `fleapoco_kiran_test2`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `company_master`
+--
+
+CREATE TABLE `company_master` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `createdAt` datetime DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `company_master`
+--
+
+INSERT INTO `company_master` (`id`, `name`, `createdAt`, `updatedAt`) VALUES
+(1, 'Fleapo', '2019-01-09 00:00:00', '2019-01-11 00:00:00'),
+(2, 'TCS', '2019-01-09 00:00:00', '2019-01-17 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -43,6 +64,28 @@ INSERT INTO `component` (`id`, `name`, `createdAt`, `updatedAt`) VALUES
 (1, 'Accommodation', '2019-01-18 16:24:10', '2019-01-18 16:24:10'),
 (2, 'Meals', '2019-01-18 16:24:28', '2019-01-18 16:24:28'),
 (3, 'Transportation', '2019-01-18 16:24:49', '2019-01-18 16:24:49');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `currency`
+--
+
+CREATE TABLE `currency` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `symbol` varchar(255) DEFAULT NULL,
+  `createdAt` datetime DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `currency`
+--
+
+INSERT INTO `currency` (`id`, `name`, `symbol`, `createdAt`, `updatedAt`) VALUES
+(1, 'INR', 'INR', '2019-01-09 00:00:00', '2019-01-09 00:00:00'),
+(2, 'DOLLER', '$', '2019-01-09 00:00:00', '2019-01-10 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -190,7 +233,8 @@ CREATE TABLE `sharingmaster` (
 --
 
 INSERT INTO `sharingmaster` (`id`, `selling_id`, `selling_name`, `supplying_id`, `supplying_name`, `component_id`, `component_name`, `fromdate`, `todate`, `minshare`, `rule`, `value`, `createdAt`, `updatedAt`) VALUES
-(1, 1, 'Default', 1, 'RBClient International FZE', 2, 'Meals', '01/31/2019', '01/31/2019', '56', 'sharingpercentage', '100', '2019-01-18 17:30:44', '2019-01-18 17:56:47');
+(1, 1, 'Default', 1, 'RBClient International FZE', 2, 'Meals', '01/31/2019', '01/31/2019', '56', 'sharingpercentage', '100', '2019-01-18 17:30:44', '2019-01-18 17:56:47'),
+(2, 1, 'Default', 1, 'RBClient International FZE', 2, 'Meals', '01/17/2019', '01/17/2019', '34', 'costpluspercentage', '455', '2019-01-28 09:22:23', '2019-01-28 09:22:23');
 
 -- --------------------------------------------------------
 
@@ -279,14 +323,154 @@ INSERT INTO `taxmaster` (`id`, `name`, `nature`, `category`, `country`, `state`,
 (11736, 'Intra-UnionTeritory-RCM Input', 'GST_I', 'tax_link', 'India', 'ALL', 1089, 1089, 1, NULL, NULL, 0, 0, 1, 0, '2', 0),
 (11737, 'Inter-State Advance', 'GST_ADV_I', 'tax_link', 'India', 'ALL', 1089, 1089, 1, NULL, NULL, 0, 0, 1, 0, '2', 0);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vbill`
+--
+
+CREATE TABLE `vbill` (
+  `id` int(11) NOT NULL,
+  `referenceNo` varchar(255) DEFAULT NULL,
+  `referenceDate` datetime DEFAULT NULL,
+  `billAmount` decimal(10,0) DEFAULT NULL,
+  `creditPeriod` int(11) DEFAULT NULL,
+  `isNewReference` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `vid` int(11) DEFAULT NULL,
+  `vdid` int(11) DEFAULT NULL,
+  `cid` int(11) DEFAULT NULL,
+  `segid` int(11) DEFAULT NULL,
+  `createdAt` datetime DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vcc`
+--
+
+CREATE TABLE `vcc` (
+  `id` int(11) NOT NULL,
+  `costcenterName` varchar(255) DEFAULT NULL,
+  `costAmount` decimal(10,0) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  `groupName` varchar(255) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `vid` int(11) DEFAULT NULL,
+  `vdid` int(11) DEFAULT NULL,
+  `cid` int(11) DEFAULT NULL,
+  `segid` int(11) DEFAULT NULL,
+  `createdAt` datetime DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vdetail`
+--
+
+CREATE TABLE `vdetail` (
+  `id` int(11) NOT NULL,
+  `dr` decimal(10,0) DEFAULT NULL,
+  `cr` decimal(10,0) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  `accessibleAmount` decimal(10,0) DEFAULT NULL,
+  `bankInstrumentNo` varchar(255) DEFAULT NULL,
+  `bankInstrumentDate` datetime DEFAULT NULL,
+  `bankInstrumentType` varchar(255) DEFAULT NULL,
+  `bankName` varchar(255) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `vid` int(11) DEFAULT NULL,
+  `ledger` int(11) DEFAULT NULL,
+  `cid` int(11) DEFAULT NULL,
+  `segid` int(11) DEFAULT NULL,
+  `createdAt` datetime DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `voucher`
+--
+
+CREATE TABLE `voucher` (
+  `id` int(11) NOT NULL,
+  `transactionDate` datetime DEFAULT NULL,
+  `transactionNumber` varchar(255) DEFAULT NULL,
+  `transactionType` varchar(255) DEFAULT NULL,
+  `transactionDescription` varchar(255) DEFAULT NULL,
+  `txnCode` varchar(255) DEFAULT NULL,
+  `voucherAlias` varchar(255) DEFAULT NULL,
+  `apiRef` varchar(255) DEFAULT NULL,
+  `docLink` varchar(255) DEFAULT NULL,
+  `fxRate` float DEFAULT NULL,
+  `isFx` int(11) DEFAULT NULL,
+  `isInv` varchar(255) DEFAULT NULL,
+  `refFileName` varchar(255) DEFAULT NULL,
+  `isSEZ` int(11) DEFAULT NULL,
+  `isAbatement` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `currencySymbol` int(11) DEFAULT NULL,
+  `gstin` int(11) DEFAULT NULL,
+  `gstParty` int(11) DEFAULT NULL,
+  `cid` int(11) DEFAULT NULL,
+  `segid` int(11) DEFAULT NULL,
+  `createdAt` datetime DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `voucher`
+--
+
+INSERT INTO `voucher` (`id`, `transactionDate`, `transactionNumber`, `transactionType`, `transactionDescription`, `txnCode`, `voucherAlias`, `apiRef`, `docLink`, `fxRate`, `isFx`, `isInv`, `refFileName`, `isSEZ`, `isAbatement`, `status`, `currencySymbol`, `gstin`, `gstParty`, `cid`, `segid`, `createdAt`, `updatedAt`) VALUES
+(1, '2019-01-09 00:00:00', '67767', 'credit', 'sold tires', 'uyurw45', '8798uiu', 'hjj', 'sgjhdf', 233, 1, 'jhhj', 'no', 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vtax`
+--
+
+CREATE TABLE `vtax` (
+  `id` int(11) NOT NULL,
+  `rate` decimal(10,0) DEFAULT NULL,
+  `taxAmount` decimal(10,0) DEFAULT NULL,
+  `extraDat` datetime DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `vid` int(11) DEFAULT NULL,
+  `vdid` int(11) DEFAULT NULL,
+  `taxLedgerid` int(11) DEFAULT NULL,
+  `cid` int(11) DEFAULT NULL,
+  `segid` int(11) DEFAULT NULL,
+  `createdAt` datetime DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `company_master`
+--
+ALTER TABLE `company_master`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `component`
 --
 ALTER TABLE `component`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `currency`
+--
+ALTER TABLE `currency`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -332,14 +516,56 @@ ALTER TABLE `taxmaster`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `vbill`
+--
+ALTER TABLE `vbill`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `vcc`
+--
+ALTER TABLE `vcc`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `vdetail`
+--
+ALTER TABLE `vdetail`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `voucher`
+--
+ALTER TABLE `voucher`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `vtax`
+--
+ALTER TABLE `vtax`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `company_master`
+--
+ALTER TABLE `company_master`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `component`
 --
 ALTER TABLE `component`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `currency`
+--
+ALTER TABLE `currency`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `itemmaster`
@@ -369,7 +595,7 @@ ALTER TABLE `sellingcompany`
 -- AUTO_INCREMENT for table `sharingmaster`
 --
 ALTER TABLE `sharingmaster`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `supplyingcompany`
@@ -382,6 +608,36 @@ ALTER TABLE `supplyingcompany`
 --
 ALTER TABLE `taxmaster`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11738;
+
+--
+-- AUTO_INCREMENT for table `vbill`
+--
+ALTER TABLE `vbill`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `vcc`
+--
+ALTER TABLE `vcc`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `vdetail`
+--
+ALTER TABLE `vdetail`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `voucher`
+--
+ALTER TABLE `voucher`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `vtax`
+--
+ALTER TABLE `vtax`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
