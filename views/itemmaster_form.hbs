@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <!--<link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />-->
+    <link rel="stylesheet" href="/datepicker/css/bootstrap-datepicker.standalone.min.css">
+    <link rel="stylesheet" href="/itemmaster/stylesheets/index.css">
+    <title>Form</title>
+  </head>
+  <body>
+
+      <div class="loader-container">
+          <div class="loader"></div>
+      </div>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#general">General</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#tax-link">Tax link</a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div id="general" class="container tab-pane active"><br>
+            {{#if msg}}
+                <div class="alert err alert-dismissible fade show text-center" role="alert">
+                    <strong>Data saved sucessfully !</strong>&nbsp;<a href="/itemmaster/data/" class="btn blue btn-sm">Table</a>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {{/if}}
+
+                <div class="container" id="wrapper-main">
+                    <p class="text-center" id="form-heading">Item Master</p>
+                    <form class="row" method="POST" action="/itemmaster/form">
+
+
+                    <div class="col-sm" id="part1">
+
+                        
+                            {{#if editable}}     
+                                <input id="id" name="editID" value="{{e_id}}" type="hidden">    
+                            {{/if}}    
+                        
+                            <div class="form-group">
+                                <label for="item_code">Item code</label>
+                                <input class="form-control form-control-sm" id="item_code" name="item_code" value="{{item_code}}" placeholder="Item Code" required>        
+                            </div>
+
+                            <div class="form-group">
+                                <label for="item_name">Item name</label>
+                                <input class="form-control form-control-sm" id="item_name" name="item_name" value="{{item_name}}" placeholder="Item name" required>        
+                            </div>
+
+                            <div class="form-group">
+                                <label for="hsn_code">HSN code</label>
+                                <input class="form-control form-control-sm" id="hsn_code" name="hsn_code" value="{{hsn_code}}" placeholder="HSN code" required>        
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="item_group">Item group</label>
+                                <select class="form-control form-control-sm" name="item_group" id="item_group">
+                                    <option value="api1">Api1</option>
+                                    <option value="api2">Api2</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="unit_master">Unit master</label>
+                                <select class="form-control form-control-sm" name="unit_master" id="unit_master">
+                                    <option value="api1">Api1</option>
+                                    <option value="api2">Api2</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group text-right">
+                                    <a href="/itemmaster/form" class="btn btn-theme">Clear fields</a>
+                                    <input type="submit" class="btn btn-theme"  value="Add Item">
+                            </div>
+
+                    </div>
+
+                </form> 
+            </div>
+        </div>
+        <div id="tax-link" class="container tab-pane fade"><br>
+            {{#if isTasxDone}}
+                
+            {{else}}
+                
+            {{/if}}
+        </div>
+    </div>
+
+    
+
+
+
+    <a class="plus-sign" href="/itemmaster/data/"><i class="fas fa-list-ul"></i></a>
+
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!--datepicker-->
+    <!--<script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>-->
+    <script src="/datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+    <script src="/itemmaster/javascripts/index.js" type="text/javascript"></script>
+
+    <script>
+        {{#if editable}}
+
+            $(document).ready(function () {
+                $('#item_group > option').each(function() {
+                    if($(this).val()=='{{e_item_group}}'){
+                        $(this).attr("selected","selected");
+                    };
+                });
+                $('#unit_master > option').each(function() {
+                    if($(this).val()=='{{e_unit_master}}'){
+                        $(this).attr("selected","selected");
+                    };
+                });
+            });
+        {{/if}}
+    </script>
+</body>
+</html>

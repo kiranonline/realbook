@@ -1,0 +1,41 @@
+{
+  "name": "project1",
+  "version": "0.0.0",
+  "private": true,
+  "engines": {
+    "node": "10.x"
+  },
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "config": "^3.0.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "dotenv": "^6.2.0",
+    "express": "~4.16.0",
+    "express-handlebars": "^3.0.0",
+    "hbs": "~4.0.1",
+    "http-errors": "~1.6.2",
+    "mongodb": "^3.1.10",
+    "mongoose": "^5.4.0",
+    "mongoose-dateonly": "^1.0.6",
+    "morgan": "~1.9.0",
+    "mysql": "^2.16.0",
+    "mysql2": "^1.6.4",
+    "sequelize": "^4.42.0",
+    "uniqid": "^5.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.heroku.com/fleapo-project1.git"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "MIT"
+}
