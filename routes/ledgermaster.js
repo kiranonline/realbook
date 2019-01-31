@@ -24,17 +24,9 @@ router.get('/form', function(req, res, next) {
             pid:0
         }
     });
-    var p2 = modals2.taxmaster.findAll({
-        attributes: ['name','id','pid'],
-        where:{
-            pid:{
-                [Op.ne]: 0
-            }
-        }
-    });
-    Promise.all([p1,p2]).then((values)=>{
+    Promise.all([p1]).then((values)=>{
         if(id==null){
-            res.render('ledgermaster_form',{layout:false,msg:msg,msgText:msgText,tax_group:values[0],tax_name:values[1],backto:backto});
+            res.render('ledgermaster_form',{layout:false,msg:msg,msgText:msgText,tax_group:values[0],backto:backto});
         }
         else{
             var p3 = modals1.ledgermaster.findAll({
@@ -51,7 +43,6 @@ router.get('/form', function(req, res, next) {
                     res.render('ledgermaster_form',{ 
                         layout:false,
                         tax_group:values[0],
-                        tax_name:values[1],
                         msg:msg,msgText:msgText,
                         e_id:id,
                         e_ledger_nature:result2[0][0].ledger_nature,
@@ -81,7 +72,19 @@ router.get('/form', function(req, res, next) {
 });
 
 
-
+router.post('/get/taxname',(req,res,next)=>{
+    console.log(req.body.groupid);
+     modals2.taxmaster.findAll({
+        attributes: ['name','id','pid'],
+        where:{
+            pid:req.body.groupid
+        }
+    }).then((d)=>{
+        res.send(d);
+    }).catch((er)=>{
+        res.send(er)
+    })
+});
 
 
 
@@ -261,8 +264,48 @@ router.get('/api/edit/:id',(req,res,next)=>{
         }
     });
     Promise.all([p3]).then((values)=>{
+
+        function check(tmpjson){
+            return new Promise((resolve,reject)=>{
+                var result=[];
+                for(i=0;i<tmpjson.length;i++){
+                    //if empty result the inser 1st element
+                    if(result.length==0){
+                        result.push({
+                            tax_group: tmpjson[i].tax_group,
+                            data:[tmpjson[i]]
+                        });
+                    }
+                    //if not empty
+                    else{
+                       var flg=0;
+                       //chek for existing group
+                       for(j=0;j<result.length;j++){
+                           if(result[j].tax_group==tmpjson[i].tax_group){
+                               flg=1;
+                               result[j].data.push(tmpjson[i]);
+                               break;
+                           }
+                       }
+                       if(flg==0){
+                            result.push({
+                                tax_group:tmpjson[i].tax_group,
+                                data:[tmpjson[i]]
+                           });
+                       } 
+
+                    }
+                    if(i==tmpjson.length-1){
+                        return resolve(result);
+                    }
+                }
+                 
+            });
+        }
+
         function doit(){
             tosend=[];
+            tax_group_array=[];
             return new Promise(function(resolve,reject){
                 values[0].forEach((element)=>{
                     modals1.ledgermaster.findAll({
@@ -287,8 +330,11 @@ router.get('/api/edit/:id',(req,res,next)=>{
             });
         }
         doit().then((tosend1)=>{
-            console.log(tosend1);
-            res.send(tosend1);
+            //console.log(tosend1);
+            check(tosend1).then((rr)=>{
+                res.send(rr);
+            });
+            //res.send(tosend1);
         });
     }).catch((qerror1)=>{
         next(createError(550,qerror1));
@@ -317,9 +363,7 @@ router.get('/api/ledgername',(req,res,next)=>{
     var p1 = modals1.ledgermaster.findAll({
         attributes: ['id','ledger_name'],
         where:{
-            tax_name:{
-                [Op.like]: '%'+req.query.key+'%'
-            }
+            tax_name:req.query.key
         }
     });
     Promise.all([p1]).then((values)=>{
@@ -353,7 +397,6 @@ router.post('/ledgertaxlink',(req,res,next)=>{
     var data=req.body;
     var ledger_id=req.body.ledger_id;
         console.log("got");
-
         function doit(){
 
             return new Promise(function(resolve,reject){

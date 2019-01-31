@@ -58,36 +58,7 @@
                                     <div class="col-sm-12">
                                         <input id="id" name="ledger_id" value="{{ledger_id}}" type="hidden">
                                          <div class="form-wrapper1">
-                                            <!--<div class="row">
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <label for="tax-group">Tax group</label>
-                                                        <select class="custom-select custom-select-sm mb-3" name="tax-group1" id="tax-group1" onchange="fetchtypes(this)">
-                                                            {{#each tax_group}}
-                                                                <option value="{{this.id}}">{{this.name}}</option>
-                                                            {{/each}}
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <label for="tax-type">Tax Type</label>
-                                                    <div class="tax-type1" id="tax-type1">
-
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <label for="tax-name">Tax Name</label>
-                                                    <div class="tax-name1" id="tax-name1">
-
-                                                    </div>    
-                                                </div>
-                                                <div class="col">
-                                                    <label for="tax-rate">Rate</label>
-                                                    <div class="tax-rate1" id="tax-rate1">
-
-                                                    </div>
-                                                </div>
-                                            </div>-->
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -116,15 +87,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script src="/search1.js" type="text/javascript"></script>
     <script>
-        /*function checkmaincategory(){
-            var arr = [];
-            $(".form-wrapper1").find(".custom-select").each(function(){
-                var curr = $(this);
-                arr.push(curr.children("option:selected").val());  
-            });
-            return arr;
-        }
-        */
+        
         
             //add new row
             function addrow(){
@@ -141,7 +104,7 @@
             //get other stafs
             function get_tax_name(self,id){ 
                 var k =self.attr('id').substring(11);
-                console.log(id);
+                //console.log(id);
                 $('.loader-container').css('display','block');
                 $.ajax({
                     url:"/ledgermaster/api/tax-name",
@@ -154,12 +117,12 @@
                         $('#tax-rate-h'+k).html("");
                         $.each(data, function(i, d) {
                             $('#tax-type-h'+k).append('<div class="form-group"><input class="form-control form-control-sm" name="tax-type'+k+i+'" id="tax-type'+k+i+'" value="'+d.name+'" readonly></div>');
-                            $('#tax-name-h'+k).append('<div class="form-group"><select class="js-data-example-ajax form-control form-control-sm" name="tax-name'+k+i+'" id="tax-name'+k+i+'" onchange="getrate(self)"></select></div>');
+                            $('#tax-name-h'+k).append('<div class="form-group"><select class="js-data-example-ajax form-control form-control-sm" name="tax-name'+k+i+'" id="tax-name'+k+i+'"></select></div>');
                             $('#tax-rate-h'+k).append('<div class="form-group"><input class="form-control form-control-sm" id="tax-rate'+k+i+'" type="text" name="tax-rate'+k+i+'" readonly></div>');
                             var tid = "#tax-name"+String(k)+String(i);  
                             $.ajax({
                                 type:"GET",
-                                url: "http://localhost:5000/ledgermaster/api/ledgername?key="+d.name,
+                                url: "/ledgermaster/api/ledgername?key="+d.id,
                                 cache: false,
                                 success: function(data){
                                     $(tid).select2({    
@@ -170,7 +133,20 @@
                                                 });
                                             })
                                     });
-                                    getrate($("#tax-name"+k+i));
+                                    $(tid).on('change',function(e){
+                                        var id = $(this).children("option:selected").val();
+                                        var descc = $(this).attr("id");
+                                        console.log(descc);
+                                        $.ajax({
+                                            type:"GET",
+                                            url: "/ledgermaster/api/rate?id="+id,
+                                            success: function(data){
+                                                $("#tax-rate"+descc.substr(8)).val(data[0].rate);
+                                            }  
+                                        })
+                                    })
+
+                                    getrate1($("#tax-name"+k+i));
                                 }
                             });
 
@@ -184,19 +160,86 @@
                 });
             }
 
+
+            
+
             //fetch rates
-            function getrate(self){
-                var id = self.val();
-                var des = self.attr("id");
-                console.log(id);
+            function getrate1(self1){
+                var id = $(self1).children("option:selected").val();
+                var descc = $(self1).attr("id");
+                console.log($(self1));
                 $.ajax({
                         type:"GET",
-                        url: "http://localhost:5000/ledgermaster/api/rate?id="+id,
+                        url: "/ledgermaster/api/rate?id="+id,
                         success: function(data){
-                             $("#tax-rate"+des.substr(8)).val(data[0].rate);
+                             $("#tax-rate"+descc.substr(8)).val(data[0].rate);
                         }  
                     })
             }
+
+
+
+
+            //edit
+            function get_tax_name_e(self,id,arr){ 
+                var k =self.attr('id').substring(11);
+                $('.loader-container').css('display','block');
+                $.ajax({
+                    url:"/ledgermaster/api/tax-name",
+                    type:"POST",
+                    data:{ id:id },
+                    success:function(data){
+                        //console.log(data);
+                        $('#tax-type-h'+k).html("");
+                        $('#tax-name-h'+k).html("");
+                        $('#tax-rate-h'+k).html("");
+                        $.each(data, function(i, d) {
+                            $('#tax-type-h'+k).append('<div class="form-group"><input class="form-control form-control-sm" name="tax-type'+k+i+'" id="tax-type'+k+i+'" value="'+d.name+'" readonly></div>');
+                            $('#tax-name-h'+k).append('<div class="form-group"><select class="js-data-example-ajax form-control form-control-sm" name="tax-name'+k+i+'" id="tax-name'+k+i+'" ></select></div>');
+                            $('#tax-rate-h'+k).append('<div class="form-group"><input class="form-control form-control-sm" id="tax-rate'+k+i+'" type="text" name="tax-rate'+k+i+'" readonly></div>');
+                            var tid = "#tax-name"+String(k)+String(i);  
+                            $.ajax({
+                                type:"GET",
+                                url: "/ledgermaster/api/ledgername?key="+d.id,
+                                cache: false,
+                                success: function(data2){
+                                    $(tid).select2({    
+                                        data:$.map(data2,function(n,i){
+                                                return({
+                                                    text: n.ledger_name,
+                                                    id: n.id
+                                                });
+                                            })
+                                        
+                                    }).val(arr[i].tax_name_id).trigger('change');
+
+                                    $(tid).on('change',function(e){
+                                        var id = $(this).children("option:selected").val();
+                                        var descc = $(this).attr("id");
+                                        console.log(descc);
+                                        $.ajax({
+                                            type:"GET",
+                                            url: "/ledgermaster/api/rate?id="+id,
+                                            success: function(data){
+                                                $("#tax-rate"+descc.substr(8)).val(data[0].rate);
+                                            }  
+                                        })
+                                    });
+                
+                                    getrate1($("#tax-name"+k+i));
+                                }
+                            });
+
+                            
+                        });
+                        $('.loader-container').css('display','none');
+                    },
+                    error:function(err){
+                        console.log(err)
+                    }
+                });
+            }
+
 
         $(document).ready(function () {
             var ar={
@@ -207,32 +250,21 @@
           
 
             {{#if haslinked}}
-            
                 $.ajax({
                     type:"GET",
-                    url: "http://localhost:5000/ledgermaster/api/edit/"+{{ledger_id}},
+                    url: "/ledgermaster/api/edit/"+{{ledger_id}},
                     cache: false,
                     success: function(data){
-                        var dd=[];
+                        //console.log(JSON.stringify(data,null,4));
                         $.each(data, function(i, d) {
-                            if($.inArray(d.tax_group,dd)==-1){
-                                dd.push(d.tax_group);
-                                $("#add").click();
-                                var j=i+1;
-                                //$("#tax-group-h"+j).val((_.invert(ar))[d.tax_group]);
-                                for(var key in ar) {
-                                    if(ar[key] === d.tax_group) {
-                                        $("#tax-group-h"+j).val(key); 
-                                        get_tax_name($("#tax-group-h"+j),key);
-                                    }
-                                }
-                            }else{
-
-                            }
+                            $("#add").click();
+                            var j = i+1;
+                            $("#tax-group-h"+j).val(data[i].tax_group);
+                            get_tax_name_e($("#tax-group-h"+j),data[i].tax_group,data[i].data); 
                         });               
                     }
                 }); 
-        
+
         
             {{else}}
                 $("#save").hide();

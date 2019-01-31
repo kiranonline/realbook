@@ -92,7 +92,7 @@
                                 <label for="tax_group">Tax group</label>
                                 <select class="form-control form-control-sm" name="tax_group" id="tax_group">
                                     {{#each tax_group}}
-                                        <option value="{{this.name}}">{{this.name}}</option>
+                                        <option value="{{this.pid}}">{{this.name}}</option>
                                     {{/each}}
                                 </select>
                             </div>
@@ -100,9 +100,7 @@
                             <div class="form-group" id="tax_name_h">
                                 <label for="tax_name">Tax name</label>
                                 <select class="form-control form-control-sm" name="tax_name" id="tax_name">
-                                    {{#each tax_name}}
-                                        <option value="{{this.name}}">{{this.name}}</option>
-                                    {{/each}}
+                                    
                                 </select>
                             </div>
 
@@ -140,8 +138,33 @@
     <script src="/ledgermaster/javascripts/index.js" type="text/javascript"></script>
 
     <script>
+        function gettaxname(item){
+            $('.loader-container').css('display','block');
+            var id=$("#tax_group").children("option:selected").val();
+            console.log(id);
+            $.ajax({
+                url:"get/taxname",
+                type:"POST",
+                data:{ groupid:id },
+                success:function(data){
+                    console.log(data);
+                    $("#tax_name").html("");
+                    $.each(data, function(i, d) {
+                        $("#tax_name").append('<option value='+d.id+'>'+d.name+'</option>');
+                    });
+                    $('.loader-container').css('display','none');
+                },
+                error:function(err){
+                    console.log(err)
+                }
+            });
+        }
+
+        //gettaxname($('#tax_group'));
 
         $(document).ready(function () {
+
+
 
             $("#ledger_nature").on("change",function(){
                 var ledger_nature = $(this).children("option:selected").val();
@@ -151,12 +174,20 @@
             //choose what happens when type is changed
             var choose = function(nature){
                 $("#sac_code_h").html('<label for="sac_code">SAC code</label><input class="form-control form-control-sm" id="sac_code" name="sac_code" value="{{sac_code}}" placeholder="sac code" >');
-                $("#tax_group_h").html('<label for="tax_group">Tax group</label><select class="form-control form-control-sm" name="tax_group" id="tax_group">{{#each tax_group}}<option value="{{this.name}}">{{this.name}}</option>{{/each}}</select>');
-                $("#tax_name_h").html('<label for="tax_name">Tax name</label><select class="form-control form-control-sm" name="tax_name" id="tax_name">{{#each tax_name}}<option value="{{this.name}}">{{this.name}}</option>{{/each}}</select>');
+                $("#tax_group_h").html('<label for="tax_group">Tax group</label><select class="form-control form-control-sm" name="tax_group" id="tax_group" onchange="gettaxname(self)">{{#each tax_group}}<option value="{{this.id}}">{{this.name}}</option>{{/each}}</select>');
+                $("#tax_name_h").html('<label for="tax_name">Tax name</label><select class="form-control form-control-sm" name="tax_name" id="tax_name"></select>');
                 $("#rate_h").html('<label for="rate">Rate</label><input class="form-control form-control-sm" id="rate" name="rate" value="{{rate}}" placeholder="rate" >');
                 $("#tax-link").show();
                 if(nature=="tax"){
-                    $("#sac_code_h").expty();
+                    gettaxname($('#tax_group option:selected').val());
+                    {{#if editable}}
+                     $('#tax_group > option').each(function() {
+                        if($(this).val()=='{{e_tax_group}}'){
+                            $(this).attr("selected","selected");
+                        };
+                    });
+                    {{/if}}
+                    $("#sac_code_h").empty();
                     $("#tax-link").hide();
                 }
                 else if(nature=="income" || nature=="expense"){

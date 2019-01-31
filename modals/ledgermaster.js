@@ -48,12 +48,12 @@ const ledgermaster = sequelize.define('ledgermaster', {
         defaultValue:null
     },
     tax_group:{
-        type:Sequelize.STRING,
+        type:Sequelize.INTEGER,
         allowNull: true,
         defaultValue:null
     },
     tax_name:{
-        type:Sequelize.STRING,
+        type:Sequelize.INTEGER,
         allowNull: true,
         defaultValue:null
     },

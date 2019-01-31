@@ -22,8 +22,8 @@
         <li class="nav-item">
         <a class="nav-link active" data-toggle="tab" href="#general">General</a>
         </li>
-        <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#tax-link">Tax link</a>
+       <li class="nav-item">
+            <a class="nav-link" id="tax-link" href="/itemmaster/{{e_id}}/taxlink">Tax link</a>
         </li>
     </ul>
 
@@ -50,7 +50,9 @@
                             {{#if editable}}     
                                 <input id="id" name="editID" value="{{e_id}}" type="hidden">    
                             {{/if}}    
-                        
+                            {{#if backto}}     
+                                <input id="backto" name="backto" value="{{backto}}" type="hidden">    
+                            {{/if}}
                             <div class="form-group">
                                 <label for="item_code">Item code</label>
                                 <input class="form-control form-control-sm" id="item_code" name="item_code" value="{{item_code}}" placeholder="Item Code" required>        
@@ -92,13 +94,7 @@
                 </form> 
             </div>
         </div>
-        <div id="tax-link" class="container tab-pane fade"><br>
-            {{#if isTasxDone}}
-                
-            {{else}}
-                
-            {{/if}}
-        </div>
+        
     </div>
 
     
