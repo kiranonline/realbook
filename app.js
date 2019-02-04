@@ -16,6 +16,8 @@ var sharingmaster = require('./routes/sharingmaster');
 var taxmaster = require('./routes/taxmaster');
 var itemmaster = require('./routes/itemmaster');
 var ledgermaster = require('./routes/ledgermaster');
+var getdata = require('./routes/getData');
+
 
 
 
@@ -51,6 +53,7 @@ app.use('/sharingmaster', sharingmaster);
 app.use('/taxmaster', taxmaster);
 app.use('/itemmaster',itemmaster);
 app.use('/ledgermaster',ledgermaster);
+app.use('/data',getdata);
 
 
 // catch 404 and forward to error handler
