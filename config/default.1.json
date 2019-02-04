@@ -1,0 +1,9 @@
+{
+    "dbConfig" :{
+        "host" : "localhost",
+        "user" : "root",
+        "password" : "passwordapc",
+        "database" : "fleapoco_kiran_test2",
+        "dialect" : "mysql"
+    }
+}
