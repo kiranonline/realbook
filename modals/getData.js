@@ -149,10 +149,22 @@ const fetcheddata = sequelize.define('fetcheddata',{
         allowNull: false,
         type:Sequelize.STRING
     },
-    createdAt: Sequelize.DATE,
-    updatedAt: Sequelize.DATE
+    FETCHED_ON:{
+        allowNull: false,
+        type: Sequelize.DATE
+    },
+    OPERATED_ON:{
+        allowNull: true,
+        type: Sequelize.DATE
+    },
+    SENT_TO_REALBOOK:{
+        allowNull: true,
+        type: Sequelize.DATE
+    }
 },{
     timestamps: true,
+    createdAt: 'FETCHED_ON',
+    updatedAt: false,
     freezeTableName: true,
     tableName: 'fetcheddata'
 });

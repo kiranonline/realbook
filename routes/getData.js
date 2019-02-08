@@ -18,6 +18,7 @@ router.get('/fetch',(req,res,next)=>{
                 next(createError(500,"Invalid Id"));
             }else{
                 var data_fetched=JSON.parse(response.body).json_master;
+                console.log(data_fetched);
                 var tempdata = model1.fetcheddata.build({
                     SBU:data_fetched.SBU,
                     CHECK_IN_DATE:  data_fetched.CHECK_IN_DATE,
@@ -66,6 +67,14 @@ router.get('/fetch',(req,res,next)=>{
     });
 });
 
+
+router.get("/",(req,res,next)=>{
+    model1.fetcheddata.findAll().then((result1)=>{
+        res.render('data_table',{layout:false,data:result1});
+    }).catch((qerror)=>{
+        next(createError(550,qerror));
+    })
+});
 
 
 module.exports=router;
