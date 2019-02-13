@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const Sequelize = require('sequelize');
 var sequelize = require('../services/conn');
-var model1 = require('../modals/getData');
+var model1 = require('../modals/bookingmaster');
 var createError = require('http-errors');
 var request = require('request');
 
@@ -19,7 +19,7 @@ router.get('/fetch',(req,res,next)=>{
             }else{
                 var data_fetched=JSON.parse(response.body).json_master;
                 console.log(data_fetched);
-                var tempdata = model1.fetcheddata.build({
+                var tempdata = model1.bookingmaster.build({
                     SBU:data_fetched.SBU,
                     CHECK_IN_DATE:  data_fetched.CHECK_IN_DATE,
                     CHECK_OUT_DATE: data_fetched.CHECK_OUT_DATE,
@@ -32,7 +32,6 @@ router.get('/fetch',(req,res,next)=>{
                     NO_OF_NIGHTS:   data_fetched.NO_OF_NIGHTS,
                     NO_OF_ROOMS:    data_fetched.NO_OF_ROOMS,
                     BOOKING_NOTES:  data_fetched.BOOKING_NOTES,
-                    PER_SERVICE_WISE_SUPPLIER:  data_fetched.PER_SERVICE_WISE_SUPPLIER,
                     PAYMENT_DEADLINE:   data_fetched.PAYMENT_DEADLINE,
                     PAYMENT_SLABS:  data_fetched.PAYMENT_SLABS,
                     PRODUCT_NAME:   data_fetched.PRODUCT_NAME,
@@ -54,7 +53,9 @@ router.get('/fetch',(req,res,next)=>{
                     OVER_ALL_DISCOUNT:  data_fetched.OVER_ALL_DISCOUNT,
                     OVER_ALL_PROFIT:    data_fetched.OVER_ALL_PROFIT,
                     OVER_ALL_LOSS:  data_fetched.OVER_ALL_LOSS,
-                    COMPONENTS_WISE_CURRENCY:   data_fetched.COMPONENTS_WISE_CURRENCY
+                    COMPONENTS_WISE_CURRENCY:   data_fetched.COMPONENTS_WISE_CURRENCY,
+                    RA_AGENT_CODE:data_fetched.RA_AGENT_CODE,
+                    PER_SERVICE_WISE_SUPPLIER_NAME:data_fetched.PER_SERVICE_WISE_SUPPLIER_NAME
                 });
                 tempdata.save().then(()=>{
                     res.send("Data fetched and saved successfully");    
@@ -69,8 +70,8 @@ router.get('/fetch',(req,res,next)=>{
 
 
 router.get("/",(req,res,next)=>{
-    model1.fetcheddata.findAll().then((result1)=>{
-        res.render('data_table',{layout:false,data:result1});
+    model1.bookingmaster.findAll().then((result1)=>{
+        res.render('bookingmaster',{layout:false,data:result1});
     }).catch((qerror)=>{
         next(createError(550,qerror));
     })

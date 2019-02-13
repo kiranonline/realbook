@@ -19,6 +19,7 @@
     "express-handlebars": "^3.0.0",
     "hbs": "~4.0.1",
     "http-errors": "~1.6.2",
+    "moment": "^2.24.0",
     "mongodb": "^3.1.10",
     "mongoose": "^5.4.0",
     "mongoose-dateonly": "^1.0.6",

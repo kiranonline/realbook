@@ -45,7 +45,7 @@ const voucher = sequelize.define('voucher', {
         type: Sequelize.INTEGER
     },
     isInv:{
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
     },
     refFileName:{
         type: Sequelize.STRING
@@ -60,7 +60,7 @@ const voucher = sequelize.define('voucher', {
         type: Sequelize.INTEGER
     },
     currencySymbol:{
-        type:Sequelize.INTEGER
+        type:Sequelize.STRING
     },
     gstin:{
         type:Sequelize.INTEGER
@@ -74,6 +74,10 @@ const voucher = sequelize.define('voucher', {
     segid:{
         type:Sequelize.INTEGER
     },
+    realbookID:{
+        allowNull: true,
+        type:Sequelize.INTEGER
+    },
     createdAt: Sequelize.DATE,
     updatedAt: Sequelize.DATE
 },{
@@ -82,15 +86,14 @@ const voucher = sequelize.define('voucher', {
     tableName: 'voucher'
 });
 
-/*
-voucher.associate = ()=>{
-    voucher.belongsTo(currency_master, {foreignKey: 'currencySymbol'});
-    voucher.belongsTo(company_master, {foreignKey: 'gstin'});
-    voucher.belongsTo(ledger_master, {foreignKey: 'gstParty'});
-    voucher.belongsTo(company_master, {foreignKey: 'cid'});
-    voucher.belongsTo(company_master, {foreignKey: 'segid'});
+voucher.associate = function(models){
+    voucher.hasMany(models.vdetail,{foreignKey: 'vid'});
+    voucher.hasMany(models.vbill,{foreignKey: 'vid'});
+    voucher.hasMany(models.vcc,{foreignKey: 'vid'});
+    voucher.hasMany(models.vtax,{foreignKey: 'vid'});
 }
-*/
+
+
 
 
 module.exports={ voucher }

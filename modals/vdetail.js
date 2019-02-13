@@ -60,14 +60,11 @@ const vdetail = sequelize.define('vdetail', {
 });
 
 
-/*
-vdetail.associate = ()=>{
-    vdetail.belongsTo(voucher, {foreignKey: 'vid'});
-    vdetail.belongsTo(ledger_master, {foreignKey: 'ledger'});
-    vdetail.belongsTo(company_master, {foreignKey: 'cid'});
-    vdetail.belongsTo(company_master, {foreignKey: 'segid'});
+vdetail.associate = function(models){
+    vdetail.hasMany(models.vcc,{foreignKey: 'vdid'});
+    vdetail.hasMany(models.vbill,{foreignKey: 'vdid'});
+    vdetail.hasMany(models.vtax,{foreignKey: 'vdid'});
 }
-*/
 
 
 module.exports={ vdetail }

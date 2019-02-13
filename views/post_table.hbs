@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+        <link rel="stylesheet" href="/itemmaster/stylesheets/table.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+        <title>Itemmaster Table</title>
+    </head>
+    <body>
+
+        <div class="table-wrapper">
+            <div class="table-responsive-sm">
+                    <table class="table table-hover table-sm table-striped table-bordered" id="myTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">No.</th>
+                                <th scope="col">ID</th>
+                                <th scope="col">TRANSACTION DATE</th>
+                                <th scope="col">TRANSACTION NUMBER</th>
+                                <th scope="col">TRANSACTION TYPE</th>
+                                <th scope="col">TRANSACTION DESC</th>
+                                <th scope="col">TSN CODE</th>
+                                <th scope="col">VOUCHER ALIES</th>
+                                <th scope="col">API REF</th>
+                                <th scope="col">DOC LINK</th>
+                                <th scope="col">FX RATE</th>
+                                <th scope="col">IS FX</th>
+                                <th scope="col">IS INV</th>
+                                <th scope="col">REF FILE NAME</th>
+                                <th scope="col">IS SEZ</th>
+                                <th scope="col">IS ABATMENT</th>
+                                <th scope="col">STATUS</th>
+                                <th scope="col">CURRENCY SYMBOL</th>
+                                <th scope="col">GST IN</th>
+                                <th scope="col">GST PARTY</th>
+                                <th scope="col">CID</th>
+                                <th scope="col">SEG ID</th>
+                                <th scope="col">OPERATION</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-fixed">
+                            {{#each data}}
+                                <tr>
+                                    <td>{{index_modivied @index}}</td>
+                                    <td>{{this.id}}</td>
+                                    <td>{{this.transactionDate}}</td>
+                                    <td>{{this.transactionNumber}}</td>
+                                    <td>{{this.transactionType}}</td>
+                                    <td>{{this.transactionDescription}}</td>
+                                    <td>{{this.txnCode}}</td>
+                                    <td>{{this.voucherAlias}}</td>
+                                    <td>{{this.apiRef}}</td>
+                                    <td>{{this.docLink}}</td>
+                                    <td>{{this.fxRate}}</td>
+                                    <td>{{this.isFx}}</td>
+                                    <td>{{this.isInv}}</td>
+                                    <td>{{this.refFileName}}</td>
+                                    <td>{{this.isSEZ}}</td>
+                                    <td>{{this.isAbatement}}</td>
+                                    <td>{{this.status}}</td>
+                                    <td>{{this.currencySymbol}}</td>
+                                    <td>{{this.gstin}}</td>
+                                    <td>{{this.gstParty}}</td>
+                                    <td>{{this.cid}}</td>
+                                    <td>{{this.segid}}</td>
+                                    <td class="text-center">
+                                        <button onclick="post('{{this.id}}')" class="btn btn-primary actn"><i class="fa fa-share-square"></i></button>
+                                    </td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+
+
+
+        
+
+
+
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script src="/itemmaster/javascripts/table.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#myTable').DataTable();
+
+
+                
+                
+            });
+                function post(id){
+                    $.ajax({
+                        type: "POST",
+                        url: "/post",
+                        data: {
+                            id:id
+                        },
+                        crossDomain:true,
+                        success: function (data) {
+                            alert("ID:"+String(data[0].id)+"\t MSG:"+String(data[0].msg));
+                        },
+                        error: function (xhr, status, error) {
+                            alert("Error");
+                        }
+                    });
+                }
+
+            
+
+        </script>
+    </body>
+</html>

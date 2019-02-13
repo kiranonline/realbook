@@ -133,9 +133,13 @@ const sharingmaster = sequelize.define('sharingmaster', {
         type:Sequelize.STRING,
         allowNull: false,
     },
-    value:{
+    value1:{
         type:Sequelize.STRING,
         allowNull: false,
+    },
+    value2:{
+        type:Sequelize.STRING,
+        allowNull: true
     },
     createdAt: Sequelize.DATE,
     updatedAt: Sequelize.DATE,

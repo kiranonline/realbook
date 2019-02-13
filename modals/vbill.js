@@ -52,12 +52,6 @@ const vbill = sequelize.define('vbill', {
 });
 
 
-vbill.associate = ()=>{
-    vbill.belongsTo(voucher, {foreignKey: 'vid'});
-    vbill.belongsTo(vdetail, {foreignKey: 'vdid'});
-    vbill.belongsTo(company_master, {foreignKey: 'cid'});
-    vbill.belongsTo(company_master, {foreignKey: 'segid'});
-}
 
 
 

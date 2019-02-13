@@ -20,7 +20,7 @@ const vtax = sequelize.define('vtax', {
     taxAmount:{
         type:Sequelize.DECIMAL
     },
-    extraDat:{
+    extraData:{
         type:Sequelize.DATE
     },
     status:{
@@ -50,16 +50,6 @@ const vtax = sequelize.define('vtax', {
 });
 
 
-
-/*
-vtax.associate = ()=>{
-    vtax.belongsTo(voucher, {foreignKey: 'vid'});
-    vtax.belongsTo(vdetail, {foreignKey: 'vdid'});
-    vtax.belongsTo(ledger_master, {foreignKey: 'taxLedgerid'});
-    vtax.belongsTo(company_master, {foreignKey: 'cid'});
-    vtax.belongsTo(company_master, {foreignKey: 'segid'});
-}
-*/
 
 
 

@@ -49,14 +49,4 @@ const vcc = sequelize.define('vcc', {
 });
 
 
-/*
-vcc.associate = ()=>{
-    vcc.belongsTo(voucher, {foreignKey: 'vid'});
-    vcc.belongsTo(vdetail, {foreignKey: 'vdid'});
-    vcc.belongsTo(company_master, {foreignKey: 'cid'});
-    vcc.belongsTo(company_master, {foreignKey: 'segid'});
-}
-*/
-
-
 module.exports={ vcc }

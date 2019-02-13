@@ -89,6 +89,14 @@ const ledgermaster = sequelize.define('ledgermaster', {
 
 
 
+ledgermaster.associate = function(models){
+    ledgermaster.hasMany(models.voucher,{foreignKey: 'gstParty'});
+    ledgermaster.hasMany(models.vdetail,{foreignKey: 'ledger'});
+    ledgermaster.hasMany(models.vtax,{foreignKey: 'taxLedgerid'});
+}
+
+
+
 
 
 module.exports={ ledgermaster }

@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 var sequelize = require('../services/conn');
 
 
-const fetcheddata = sequelize.define('fetcheddata',{
+const bookingmaster = sequelize.define('bookingmaster',{
     id:{
         type:Sequelize.INTEGER,
         primaryKey: true,
@@ -27,6 +27,14 @@ const fetcheddata = sequelize.define('fetcheddata',{
     },
     RA_FILE_HANDLER:{
         allowNull: false,
+        type:Sequelize.STRING
+    },
+    PER_SERVICE_WISE_SUPPLIER_NAME:{
+        allowNull:true,
+        type:Sequelize.STRING
+    },
+    RA_AGENT_CODE:{
+        allowNull:true,
         type:Sequelize.STRING
     },
     INVOICE_NUMBER:{
@@ -56,10 +64,6 @@ const fetcheddata = sequelize.define('fetcheddata',{
     BOOKING_NOTES:{
         allowNull: false,
         type:Sequelize.STRING,
-    },
-    PER_SERVICE_WISE_SUPPLIER:{
-        allowNull: false,
-        type:Sequelize.STRING
     },
     PAYMENT_DEADLINE:{
         allowNull: false,
@@ -166,9 +170,9 @@ const fetcheddata = sequelize.define('fetcheddata',{
     createdAt: 'FETCHED_ON',
     updatedAt: false,
     freezeTableName: true,
-    tableName: 'fetcheddata'
+    tableName: 'bookingmaster'
 });
 
 
 
-module.exports={ fetcheddata }
+module.exports={ bookingmaster }
