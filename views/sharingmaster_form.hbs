@@ -118,14 +118,13 @@
                         <label for="rule">Select any sharing cndition</label>
                         <select class="form-control form-control-sm" name="rule" id="rule">
                             <option value="sharingpercentage">sharing percentage</option>
-                            <option value="costpluspercentage">cost + percentage</option>
-                            <option value="costplusamount">cost + fixed amount</option>
-                            <option value="costminusamount">cost - fixed amount</option>
+                            <option value="share on cost">share on cost</option>
+                            <option value="profit as fixed amount to sepplier company">profit as fixed amount to sepplier company</option>
+                            <option value="profit as fixed amount to seller company">profit as fixed amount to seller company</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="value"></label>
-                        <input class="form-control form-control-sm" id="value" name="value" value="{{value}}" placeholder="value" required>        
+                    <div class="values" id="values">
+                        
                     </div>
 
                     <div class="form-group text-right">
@@ -196,8 +195,12 @@
             $('#rule > option').each(function() {
                 if($(this).val()=='{{rule}}'){
                     $(this).attr("selected","selected");
+                    changeValue($('#rule option:selected').val());
+                    $(".calc1").val('{{value1}}');
+                    $(".calc2").val('{{value2}}');
                 };
             });
+
         });
     {{/if}}
     

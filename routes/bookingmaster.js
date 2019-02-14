@@ -69,13 +69,105 @@ router.get('/fetch',(req,res,next)=>{
 });
 
 
+
+function sortBookings(d){
+    return new Promise((resolve,reject)=>{
+        var result=[];
+        d.forEach(function(ele,i) {
+            var dd = ele.dataValues;
+            if(result.length==0){
+                result.push(dd);
+            }
+            else{
+                var flg=0;
+                for(j=0;j<result.length;j++){
+                    if(result[j].RA_FILE_HANDLER==dd.RA_FILE_HANDLER){
+                        flg=1;
+                        break;
+                    }
+                }
+                if(flg==0){
+                    result.push(dd);
+                }
+            }
+            if(i==d.length-1){
+                return resolve(result);
+            }
+        });
+    });
+}
+
+
+
+
 router.get("/",(req,res,next)=>{
-    model1.bookingmaster.findAll().then((result1)=>{
-        res.render('bookingmaster',{layout:false,data:result1});
+    model1.bookingmaster.findAll({
+        attributes: ['id','RA_FILE_HANDLER', 'INVOICE_NUMBER','INVOICE_CURRENCY',
+            'INVOICE_DATE','TOTAL_IN_AMOUNTS','LEAD_PASSENGER',
+            'PAYMENT_DEADLINE','RA_AGENT_CODE','FETCHED_ON','OPERATED_ON','SENT_TO_REALBOOK'
+        ]
+    }).then((result1)=>{
+        console.log(result1.length);
+        sortBookings(result1).then((data)=>{
+            console.log(data.length);
+            res.render('bookingmaster',{layout:false,data:data});
+        })
     }).catch((qerror)=>{
         next(createError(550,qerror));
     })
 });
+
+
+
+
+
+
+function categorise(d){
+    return new Promise(function(resolve,reject){
+        var res={};
+        var hotel=[];
+        var transport=[];
+        var other=[];
+        d.forEach(function(ele,i){
+            var element= ele.dataValues;
+            if(element.SERVICE_CATEGORY=='hotel'){
+                hotel.push(element);
+            }
+            else if(element.SERVICE_CATEGORY=='transport'){
+                transport.push(element);
+            }
+            else{
+                other.push(element)
+            }
+            if(i==hotel.length+transport.length+other.length-1){
+                res.hotel=hotel;
+                res.transport=transport;
+                res.other=other;
+                return resolve(res);
+            }
+        })
+    });
+}
+
+router.post("/:id",(req,res,next)=>{
+    var id = req.params.id;
+    model1.bookingmaster.findAll({
+        where:{
+            RA_FILE_HANDLER:id
+        }
+    }).then((result1)=>{
+        categorise(result1).then((data)=>{
+            res.json(data);
+        })
+    }).catch((qerror)=>{
+        next(createError(550,qerror));
+    })
+    
+    
+})
+
+
+
 
 
 module.exports=router;

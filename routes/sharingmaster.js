@@ -169,7 +169,8 @@ router.get('/form', function(req, res, next) {
             todate:result1[0].todate,
             min_share:result1[0].minshare,
             rule : result1[0].rule,
-            value: result1[0].value,
+            value1: result1[0].value1,
+            value2:result1[0].value2,
             editable:true
           });
         }
@@ -220,7 +221,14 @@ router.post('/form',(req,res,next)=>{
     var todate = req.body.todate;
     var minshare = req.body.minshare;
     var rule = req.body.rule;
-    var value = req.body.value ;
+    var value1 = req.body.value1 ;
+    if(rule=="sharingpercentage"){
+      var value2 = 100 - req.body.value1; 
+    }
+    else{
+      var value2 =null; 
+    }
+    
     var p1 = modals.sellingcompany.findAll({
       where:{
           id:sellingID
@@ -252,7 +260,8 @@ router.post('/form',(req,res,next)=>{
           todate : todate,
           minshare : minshare,
           rule : rule,
-          value : value
+          value1 : value1,
+          value2: value2
         });
         tempdata.save().then(()=>{
           res.redirect('/sharingmaster/form?msg=true&msgText=Data saved');
@@ -278,7 +287,8 @@ router.post('/form',(req,res,next)=>{
             todate : todate,
             minshare : minshare,
             rule : rule,
-            value : value
+            value1 : value1,
+            value2:value2
           }).then(()=>{
             res.redirect('/sharingmaster/form?msg=true&msgText=Data updated');
           }).catch((qerror3)=>{

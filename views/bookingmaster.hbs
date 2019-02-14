@@ -14,6 +14,10 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
         <title>Booking master Table</title>
     </head>
+    <style>
+        .table-wrapper{padding:10px;}
+        tr{cursor:pointer}
+    </style>
     <body>
 
         <div class="table-wrapper">
@@ -22,23 +26,23 @@
                         <thead>
                             <tr>
                                 <th scope="col">No.</th>
-                                <th scope="col">ID</th>
+                                <!--<th scope="col">ID</th>
                                 <th scope="col">SUB</th>
                                 <th scope="col">CHECK_IN_DATE</th>
                                 <th scope="col">CHECK_OUT_DATE</th>
-                                <th scope="col">EXCHANGE_RATE</th>
+                                <th scope="col">EXCHANGE_RATE</th>-->
                                 <th scope="col">RA_FILE_HANDLER</th>
                                 <th scope="col">INVOICE_NUMBER</th>
                                 <th scope="col">INVOICE_CURRENCY</th>
                                 <th scope="col">INVOICE_DATE</th>
                                 <th scope="col">LEAD_PASSENGER</th>
-                                <th scope="col">NO_OF_NIGHTS</th>
+                                <!--<th scope="col">NO_OF_NIGHTS</th>
                                 <th scope="col">NO_OF_ROOMS</th>
                                 <th scope="col">BOOKING_NOTES</th>
-                                <th scope="col">PER_SERVICE_WISE_SUPPLIER NAME</th>
+                                <th scope="col">PER_SERVICE_WISE_SUPPLIER NAME</th>-->
                                 <th scope="col">RA AGENT CODE</th>
                                 <th scope="col">PAYMENT_DEADLINE</th>
-                                <th scope="col">PAYMENT_SLABS</th>
+                                <!--<th scope="col">PAYMENT_SLABS</th>
                                 <th scope="col">PRODUCT_NAME</th>
                                 <th scope="col">RA_REFERENCE</th>
                                 <th scope="col">ROOM_CATEGORY</th>
@@ -47,9 +51,9 @@
                                 <th scope="col">SERVICE_COUNTRY</th>
                                 <th scope="col">STAND_ALONE</th>
                                 <th scope="col">TAX_CALCULATION</th>
-                                <th scope="col">TOTAL_TAX_CALCULATION</th>
+                                <th scope="col">TOTAL_TAX_CALCULATION</th>-->
                                 <th scope="col">TOTAL_IN_AMOUNTS</th>
-                                <th scope="col">FOREIGN_CURRENCY</th>
+                                <!--<th scope="col">FOREIGN_CURRENCY</th>
                                 <th scope="col">SUPPLIER_PAYMENT_DEADLINE</th>
                                 <th scope="col">COMPONENTS_WISE_NET_COST</th>
                                 <th scope="col">COMPONENTS_WISE_MARKUP</th>
@@ -58,7 +62,7 @@
                                 <th scope="col">OVER_ALL_DISCOUNT</th>
                                 <th scope="col">OVER_ALL_PROFIT</th>
                                 <th scope="col">OVER_ALL_LOSS</th>
-                                <th scope="col">COMPONENTS_WISE_CURRENCY</th>
+                                <th scope="col">COMPONENTS_WISE_CURRENCY</th>-->
                                 <th scope="col">FETCHED_ON</th>
                                 <th scope="col">OPERATED_ON</th>
                                 <th scope="col">SENT_TO_REALBOOK</th>
@@ -67,24 +71,24 @@
                         <tbody class="table-fixed">
                             {{#each data}}
                                 <tr>
-                                    <td>{{index_modivied @index}}</td>
-                                    <td>{{this.id}}</td>
+                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{index_modivied @index}}</td>
+                                    <!--<td>{{this.id}}</td>
                                     <td>{{this.SBU}}</td>
                                     <td>{{this.CHECK_IN_DATE}}</td>
                                     <td>{{this.CHECK_OUT_DATE}}</td>
-                                    <td>{{this.EXCHANGE_RATE}}</td>
-                                    <td>{{this.RA_FILE_HANDLER}}</td>
-                                    <td>{{this.INVOICE_NUMBER}}</td>
-                                    <td>{{this.INVOICE_CURRENCY}}</td>
-                                    <td>{{this.INVOICE_DATE}}</td>
-                                    <td>{{this.LEAD_PASSENGER}}</td>
-                                    <td>{{this.NO_OF_NIGHTS}}</td>
+                                    <td>{{this.EXCHANGE_RATE}}</td>-->
+                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.RA_FILE_HANDLER}}</td>
+                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.INVOICE_NUMBER}}</td>
+                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.INVOICE_CURRENCY}}</td>
+                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.INVOICE_DATE}}</td>
+                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.LEAD_PASSENGER}}</td>
+                                    <!--<td>{{this.NO_OF_NIGHTS}}</td>
                                     <td>{{this.NO_OF_ROOMS}}</td>
                                     <td>{{this.BOOKING_NOTES}}</td>
-                                    <td>{{this.PER_SERVICE_WISE_SUPPLIER_NAME}}</td>
-                                    <td>{{this.RA_AGENT_CODE}}</td>
-                                    <td>{{this.PAYMENT_DEADLINE}}</td>
-                                    <td>{{this.PAYMENT_SLABS}}</td>
+                                    <td>{{this.PER_SERVICE_WISE_SUPPLIER_NAME}}</td>-->
+                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.RA_AGENT_CODE}}</td>
+                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.PAYMENT_DEADLINE}}</td>
+                                    <!--<td>{{this.PAYMENT_SLABS}}</td>
                                     <td>{{this.PRODUCT_NAME}}</td>
                                     <td>{{this.RA_REFERENCE}}</td>
                                     <td>{{this.ROOM_CATEGORY}}</td>
@@ -93,9 +97,9 @@
                                     <td>{{this.SERVICE_COUNTRY}}</td>
                                     <td>{{this.STAND_ALONE}}</td>
                                     <td>{{this.TAX_CALCULATION}}</td>
-                                    <td>{{this.TOTAL_TAX_CALCULATION}}</td>
-                                    <td>{{this.TOTAL_IN_AMOUNTS}}</td>
-                                    <td>{{this.FOREIGN_CURRENCY}}</td>
+                                    <td>{{this.TOTAL_TAX_CALCULATION}}</td>-->
+                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.TOTAL_IN_AMOUNTS}}</td>
+                                    <!--<td>{{this.FOREIGN_CURRENCY}}</td>
                                     <td>{{this.SUPPLIER_PAYMENT_DEADLINE}}</td>
                                     <td>{{this.COMPONENTS_WISE_NET_COST}}</td>
                                     <td>{{this.COMPONENTS_WISE_MARKUP}}</td>
@@ -104,10 +108,10 @@
                                     <td>{{this.OVER_ALL_DISCOUNT}}</td>
                                     <td>{{this.OVER_ALL_PROFIT}}</td>
                                     <td>{{this.OVER_ALL_LOSS}}</td>
-                                    <td>{{this.COMPONENTS_WISE_CURRENCY}}</td>
-                                    <td>{{this.FETCHED_ON}}</td>
-                                    <td>{{this.OPERATED_ON}}</td>
-                                    <td>{{this.SENT_TO_REALBOOK}}</td>
+                                    <td>{{this.COMPONENTS_WISE_CURRENCY}}</td>-->
+                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.FETCHED_ON}}</td>
+                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.OPERATED_ON}}</td>
+                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.SENT_TO_REALBOOK}}</td>
                                     <!--<td class="text-center">
                                         <a href="/itemmaster/form?id={{this.id}}" class="btn btn-primary actn"><i class="fas fa-pencil-alt"></i></a>
                                         <button type="button" onclick="deleteITEM('{{this.id}}')" class="btn btn-danger actn" data-toggle="modal" data-target="#del"><i class="far fa-trash-alt"></i></button>
@@ -123,42 +127,76 @@
 
         
 
-
-        <!-- The confirm Modal -->
-            <div class="modal" id="del">
-                <div class="modal-dialog modal-sm modal-dialog-centered">
-                    <div class="modal-content">
-                    <!-- Modal Header -->
-                        <div class="modal-header">
-                            <h4 class="modal-title">Delete !</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-
-                        <!-- Modal body -->
-                        <div class="modal-body">
-                            Want to delete this Item ?
-                        </div>
-
-                        <!-- Modal footer -->
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger cnf" >Confirm</button>
-                            <button type="button" class="btn btn-blue" data-dismiss="modal">Close</button>
-                        </div>
-
-                    </div>
+            
+            
+            
+            
+    <!-- The Modal -->
+    <div class="modal fade" id="vdetailsFetched">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+            
+                <!-- Modal Header -->
+                <div class="modal-header">
+                <h4 class="modal-title">Booking Details</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
+                
+                <!-- Modal body -->
+                <div class="modal-body">
+                    Hotel
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Room category</th>
+                                <th scope="col">Per service wise supplier name</th>
+                                <th scope="col">No of rooms</th>
+                                <th scope="col">No of nights</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vdbody1">
+                                                        
+                        </tbody>
+                    </table>
+                    Transport
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Ledger</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vdbody2">
+                                                        
+                        </tbody>
+                    </table>
+
+                </div>
+                
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+                
             </div>
+        </div>
+    </div>
 
 
 
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src="/itemmaster/javascripts/table.js"></script>
         <script>
             $(document).ready(function () {
@@ -174,6 +212,41 @@
             function dell(idI){
                 window.location = "/itemmaster/form/delete/"+idI;
             }
+
+
+
+
+            //fetch vdetail
+                function fetchdetail(id){
+                     $.ajax({
+                        type: "POST",
+                        url: "/bookingmaster/"+id,
+                        data: {
+                            id:id
+                        },
+                        crossDomain:true,
+                        success: function (data) {
+                            console.log(data);
+                            $("#vdbody1").html("")
+                            $("#vdbody2").html("");
+                            if(data.hotel.length>0){
+                                data.hotel.forEach((ii,index)=>{
+                                    index1=index+1;
+                                    $("#vdbody1").append('<tr><td>'+index1+'</td><td>'+ii.ROOM_CATEGORY+'</td><td>'+ii.PER_SERVICE_WISE_SUPPLIER_NAME+'</td><td>'+ii.NO_OF_ROOMS+'</td><td>'+ii.NO_OF_NIGHTS+'</td></td>')
+                                });
+                               
+                            }
+                            
+                             $("#vdetailsFetched").modal("show");
+                            
+                        },
+                        error: function (xhr, status, error) {
+                            swal("Error", "Error detching details", "error");
+                        }
+                    });
+                }
+
+
 
         </script>
     </body>

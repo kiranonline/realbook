@@ -12,21 +12,41 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
         <link rel="stylesheet" href="/itemmaster/stylesheets/table.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-        <title>Itemmaster Table</title>
+        <link rel="stylesheet" href="/datepicker/css/bootstrap-datepicker.standalone.min.css">
+        <title>VOUCHER Table</title>
     </head>
+    <style>
+        .table-wrapper{padding:10px;}
+        .table-controls-sql{margin-bottom: 10px;}
+        tr{cursor:pointer}
+    </style>
     <body>
 
         <div class="table-wrapper">
+            <div class="card  table-controls-sql">
+                <form method="GET" class="card-body form-inline" id="filterForm"  action="/post/data">
+                    <input type="text" class="form-control form-control-sm mb-2 mr-sm-2 datepicker" name="fromdate" type="text" id="fromdate" autocomplete="off" placeholder="From date" >
+                    <input type="text" class="form-control form-control-sm mb-2 mr-sm-2 datepicker" name="todate" type="text" id="todate" autocomplete="off" placeholder="To date" >
+                    &&
+                    <select class="form-control form-control-sm mb-2 mr-sm-2" name="company" id="comp">
+                        <option value="">All company</option>
+                        <option value="1349">1349</option>
+                        <option value="1">1</option>
+                    </select>
+                  
+                    <button type="submit" id="filter-btn" class="btn btn-primary mb-2 form-control-sm">Filter</button>
+                </form>
+            </div>
             <div class="table-responsive-sm">
                     <table class="table table-hover table-sm table-striped table-bordered" id="myTable">
                         <thead>
                             <tr>
                                 <th scope="col">No.</th>
-                                <th scope="col">ID</th>
                                 <th scope="col">TRANSACTION DATE</th>
                                 <th scope="col">TRANSACTION NUMBER</th>
                                 <th scope="col">TRANSACTION TYPE</th>
                                 <th scope="col">TRANSACTION DESC</th>
+                                <!--<th scope="col">ID</th>
                                 <th scope="col">TSN CODE</th>
                                 <th scope="col">VOUCHER ALIES</th>
                                 <th scope="col">API REF</th>
@@ -40,21 +60,22 @@
                                 <th scope="col">STATUS</th>
                                 <th scope="col">CURRENCY SYMBOL</th>
                                 <th scope="col">GST IN</th>
-                                <th scope="col">GST PARTY</th>
+                                <th scope="col">GST PARTY</th>-->
                                 <th scope="col">CID</th>
-                                <th scope="col">SEG ID</th>
-                                <th scope="col">OPERATION</th>
+                                <!--<th scope="col">SEG ID</th>-->
+                                <th scope="col">SYNCHRONIZATION</th>
                             </tr>
                         </thead>
                         <tbody class="table-fixed">
                             {{#each data}}
                                 <tr>
-                                    <td>{{index_modivied @index}}</td>
+                                    <td onclick="fetchVdetail('{{this.id}}')">{{index_modivied @index}}</td>
+                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.transactionDate}}</td>
+                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.transactionNumber}}</td>
+                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.transactionType}}</td>
+                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.transactionDescription}}</td>
+                                    <!--
                                     <td>{{this.id}}</td>
-                                    <td>{{this.transactionDate}}</td>
-                                    <td>{{this.transactionNumber}}</td>
-                                    <td>{{this.transactionType}}</td>
-                                    <td>{{this.transactionDescription}}</td>
                                     <td>{{this.txnCode}}</td>
                                     <td>{{this.voucherAlias}}</td>
                                     <td>{{this.apiRef}}</td>
@@ -68,9 +89,9 @@
                                     <td>{{this.status}}</td>
                                     <td>{{this.currencySymbol}}</td>
                                     <td>{{this.gstin}}</td>
-                                    <td>{{this.gstParty}}</td>
-                                    <td>{{this.cid}}</td>
-                                    <td>{{this.segid}}</td>
+                                    <td>{{this.gstParty}}</td>-->
+                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.cid}}</td>
+                                    <!--<td>{{this.segid}}</td>-->
                                     <td class="text-center">
                                         <button onclick="post('{{this.id}}')" class="btn btn-primary actn"><i class="fa fa-share-square"></i></button>
                                     </td>
@@ -82,6 +103,47 @@
         </div>
 
 
+
+
+
+
+    <!-- The Modal -->
+    <div class="modal fade" id="vdetailsFetched">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+            
+                <!-- Modal Header -->
+                <div class="modal-header">
+                <h4 class="modal-title">Voucher Details</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Ledger</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vdbody">
+                                                        
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
 
         
 
@@ -96,11 +158,59 @@
         <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script src="/datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src="/itemmaster/javascripts/table.js"></script>
         <script>
             $(document).ready(function () {
                 $('#myTable').DataTable();
 
+
+                $('.datepicker').datepicker({
+                    todayHighlight:true,
+                    format:"yyyy/mm/dd",
+                    autoclose:true
+                });
+
+
+                {{#if fromdate}}
+                    $("#fromdate").val('{{fromdate}}')
+                    $("#todate").val('{{todate}}')
+                {{/if}}
+
+                {{#if comp}}
+                    $('#comp > option').each(function() {
+                        if($(this).val()=='{{comp}}'){
+                            $(this).attr("selected","selected");
+                        };
+                    });
+                {{/if}}
+
+
+
+
+
+
+                //form validation
+                $("#filter-btn").click(function(e){
+                    e.preventDefault();
+                    var frmdt=$("#fromdate").val();
+                    var todt=$("#todate").val();
+                    if((frmdt=="" && todt=="") || (frmdt!="" && todt!="")){
+                        $("#filterForm").submit();
+                    }
+                    else{
+                        swal("Warning", "Todate and Fromdate both field can either be empty or filled", "error");
+                    }
+                    
+                });
+
+
+                
+                 
+    
+
+    
 
                 
                 
@@ -114,10 +224,35 @@
                         },
                         crossDomain:true,
                         success: function (data) {
-                            alert("ID:"+String(data[0].id)+"\t MSG:"+String(data[0].msg));
+                            swal("Success", "ID:"+String(data[0].id)+"\t MSG:"+String(data[0].msg), "success");
                         },
                         error: function (xhr, status, error) {
-                            alert("Error");
+                            swal("Error", "Error posting data", "error");
+                        }
+                    });
+                }
+
+                //fetch vdetail
+                function fetchVdetail(id){
+                     $.ajax({
+                        type: "POST",
+                        url: "/post/getvdetails",
+                        data: {
+                            id:id
+                        },
+                        crossDomain:true,
+                        success: function (data) {
+                            console.log(data);
+                            $("#vdbody").html("");
+                            data.forEach((ii,index)=>{
+                                index1=index+1;
+                                $("#vdbody").append('<tr><td>'+index1+'</td><td>'+ii.date+'</td><td>'+ii.amountType+'</td><td>'+ii.amount+'</td><td>'+ii.amount+'</td></td>')
+                            });
+                            
+                            $("#vdetailsFetched").modal("show");
+                        },
+                        error: function (xhr, status, error) {
+                            swal("Error", "Error detching details", "error");
                         }
                     });
                 }
