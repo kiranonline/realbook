@@ -122,7 +122,7 @@ router.post('/',(req,res,next)=>{
                     delete element['ledger'];
                     delete element['vid'];
                     //console.log(element);
-                    if(element.cr != null){
+                    if(element.cr != 0){
                         element.amountType='cr';
                         element.amount=element.cr;
                         delete element['cr'];
@@ -161,20 +161,18 @@ router.post('/',(req,res,next)=>{
                             console.log(JSON.stringify(f));
                             var pp=ser1.push1(f,action);
                             pp.then((backed)=>{
-                                voucher.findOne({
+                                voucher.update({
+                                    realbookID:backed.id
+                                },{
                                     where:{
                                         id:id
                                     }
-                                }).then((v)=>{
-                                    v.realbookID=backed.id;
-                                    v.save().then(()=>{
-                                        res.send([backed,f]);
-                                    });
-                                }).catch((e)=>{
-                                    res.send(e);
+                                }).then((self)=>{
+                                    console.log(self);
+                                    res.send([backed,f]);
+                                }).catch((errordb)=>{
+                                    res.status(500).send(errordb);
                                 })
-                                console.log(backed);
-                                //res.send([backed,f]);
                             }).catch((errr)=>{
                                 res.status(500).send("Error");
                             });

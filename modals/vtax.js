@@ -15,10 +15,10 @@ const vtax = sequelize.define('vtax', {
         autoIncrement:true
     },
     rate:{
-        type:Sequelize.DECIMAL 
+        type:Sequelize.DECIMAL(10, 2) 
     },
     taxAmount:{
-        type:Sequelize.DECIMAL
+        type:Sequelize.DECIMAL(10, 2)
     },
     extraData:{
         type:Sequelize.DATE

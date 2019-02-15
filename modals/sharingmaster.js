@@ -126,7 +126,7 @@ const sharingmaster = sequelize.define('sharingmaster', {
         allowNull: false,
     },
     minshare:{
-        type:Sequelize.DECIMAL,
+        type:Sequelize.DECIMAL(10, 2),
         allowNull: false,
     },
     rule:{
@@ -134,11 +134,11 @@ const sharingmaster = sequelize.define('sharingmaster', {
         allowNull: false,
     },
     value1:{
-        type:Sequelize.DECIMAL,
+        type:Sequelize.DECIMAL(10, 2),
         allowNull: false,
     },
     value2:{
-        type:Sequelize.DECIMAL,
+        type:Sequelize.DECIMAL(10, 2),
         allowNull: true
     },
     createdAt: Sequelize.DATE,

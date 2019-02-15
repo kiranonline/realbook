@@ -25,9 +25,6 @@ const currency = sequelize.define('currency', {
 
 
 
-currency.associate = function(models){
-    currency.hasMany(models.voucher,{foreignKey: 'currencySymbol'});
-}
 
 
 module.exports={ currency }

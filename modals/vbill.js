@@ -20,7 +20,7 @@ const vbill = sequelize.define('vbill', {
         type:Sequelize.DATE
     },
     billAmount:{
-        type:Sequelize.DECIMAL
+        type:Sequelize.DECIMAL(10, 2)
     },
     creditPeriod:{
         type:Sequelize.INTEGER,

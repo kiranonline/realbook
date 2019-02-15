@@ -48,7 +48,7 @@ const vitem = sequelize.define('vitem', {
         allowNull: false,
     },
     amount:{
-        type:Sequelize.DECIMAL,
+        type:Sequelize.DECIMAL(10, 2),
         allowNull: false,
     },
     rlb_item_id:{

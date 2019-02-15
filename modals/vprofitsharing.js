@@ -32,11 +32,11 @@ const vprofitsharing = sequelize.define('vprofitsharing', {
         allowNull: false,
     },
     supplier_co_profit:{
-        type:Sequelize.DECIMAL,
+        type:Sequelize.DECIMAL(10, 2),
         allowNull: false,
     },
     seller_co_profit:{
-        type:Sequelize.DECIMAL,
+        type:Sequelize.DECIMAL(10, 2),
         allowNull: false,
     },
     isManual:{
@@ -44,19 +44,19 @@ const vprofitsharing = sequelize.define('vprofitsharing', {
         defaultValue:0
     },
     manual_supplier_profit:{
-        type:Sequelize.DECIMAL,
+        type:Sequelize.DECIMAL(10, 2),
         allowNull: false,
     },
     manual_seller_profit:{
-        type:Sequelize.DECIMAL,
+        type:Sequelize.DECIMAL(10, 2),
         allowNull: false,
     },
     posted_supplier_profit:{
-        type:Sequelize.DECIMAL,
+        type:Sequelize.DECIMAL(10, 2),
         allowNull: false,
     },
     posted_seller_profit:{
-        type:Sequelize.DECIMAL,
+        type:Sequelize.DECIMAL(10, 2),
         allowNull: false,
     },
     createdAt: Sequelize.DATE,

@@ -177,7 +177,13 @@ function push1(data,action){
                 return reject(err);
             }
             else{
-                return resolve(body);
+                if(body.type=='error'){
+                    return reject(body);
+                }
+                else{
+                    return resolve(body);
+                }
+                
             }
         });
     });

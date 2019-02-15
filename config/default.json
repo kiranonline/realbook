@@ -3,7 +3,7 @@
         "host" : "localhost",
         "user" : "root",
         "password" : "",
-        "database" : "realbooks",
+        "database" : "realbook_new_2",
         "dialect" : "mysql"
     }
 }

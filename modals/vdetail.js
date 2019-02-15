@@ -14,16 +14,16 @@ const vdetail = sequelize.define('vdetail', {
         autoIncrement:true
     },
     dr:{
-        type:Sequelize.DECIMAL                     
+        type:Sequelize.DECIMAL(10, 2)                 
     },
     cr:{
-        type:Sequelize.DECIMAL
+        type:Sequelize.DECIMAL(10, 2)
     },
     date:{
         type: Sequelize.DATE
     },
     accessibleAmount:{
-        type:Sequelize.DECIMAL
+        type:Sequelize.DECIMAL(10, 2)
     },
     bankInstrumentNo:{
         type: Sequelize.STRING

@@ -79,6 +79,16 @@ const ledgermaster = sequelize.define('ledgermaster', {
         allowNull:false,
         defaultValue:0
     },
+    is_vbill:{
+        type:Sequelize.INTEGER,
+        allowNull:false,
+        defaultValue:0
+    },
+    is_vcc:{
+        type:Sequelize.INTEGER,
+        allowNull:false,
+        defaultValue:0
+    },
     createdAt: Sequelize.DATE,
     updatedAt: Sequelize.DATE,
 },{
