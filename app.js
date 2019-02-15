@@ -18,7 +18,7 @@ var itemmaster = require('./routes/itemmaster');
 var ledgermaster = require('./routes/ledgermaster');
 var bookingmaster = require('./routes/bookingmaster');
 var post = require('./routes/post');
-
+var doc = require('./routes/doc');
 
 
 
@@ -50,6 +50,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 
+
+app.use('/',doc);
 app.use('/sharingmaster', sharingmaster);
 app.use('/taxmaster', taxmaster);
 app.use('/itemmaster',itemmaster);
