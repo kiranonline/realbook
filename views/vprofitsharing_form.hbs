@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <title>Edit Profit Sharing</title>
+  </head>
+  <style>
+      .container{
+          width:40%;
+          margin-left: 30%;
+          margin-right: 30%;
+      }
+      #form-heading{
+          font-size: 20px;
+          margin-top: 30px
+      }
+      .form{
+          background-color: #4179ef;
+          padding:40px
+      }
+      .form label{
+          color: white;
+      }
+  </style>
+  <body>
+
+    <div class="container" id="wrapper-main">
+        <p class="text-center" id="form-heading">Edit Profit Sharing</p>
+        <form class="form" method="POST" id="frmm" action="/vprofitsharing/edit">
+            <input type="hidden" name="id" class="form-control" value="{{data.id}}" id="id">  
+            <div class="form-group">
+                <label for="net_profit">Net Profit</label>
+                <input type="text" name="netProfit" class="form-control" value={{add data.posted_seller_profit data.posted_supplier_profit}} id="net_profit" disabled>
+            </div>
+            <div class="form-group">
+                <label for="share_to_seller">Share to Seller</label>
+                <input type="text" name="sharetoSeller" class="form-control" id="share_to_seller" value="0">
+            </div>
+            <div class="form-group">
+                <label for="share_to_supplier">Share to supplier</label>
+                <input type="text" name="sharetoSupplier" class="form-control" id="share_to_supplier" disabled>
+            </div>
+            <div class="form-group">
+                <button class="form-control" id="check_value">Update</button>
+            </div>
+       </form> 
+    </div>
+
+
+
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#check_value").click(function(e){
+            e.preventDefault();
+            calc().then(function(){
+                $("#frmm").submit();
+            }).catch(function(){
+                swal("Warning", "Share to seller should be less than share to supplier", "error");
+                $("#share_to_seller").val("");
+                $("#share_to_supplier").val("");
+            })
+        });
+
+        $("#share_to_seller").change(function(){
+             calc().then(function(){
+                return;
+            }).catch(function(){
+                swal("Warning", "Share to seller should be less than share to supplier", "error");
+                $("#share_to_seller").val("");
+                $("#share_to_supplier").val("");
+            })
+        })
+
+        {{#if msg}}
+            swal("Success", "Data saved!", "success");
+        {{/if}}
+    })
+
+
+        function calc(){
+            return new Promise(function(resolve,reject){
+                var net_profit = parseFloat($("#net_profit").val());
+                var share_to_seller = parseFloat($("#share_to_seller").val());
+                net_profit=net_profit.toFixed(2);
+                share_to_seller=share_to_seller.toFixed(2);
+                console.log(net_profit,share_to_seller);
+                if(share_to_seller<net_profit){
+                    var share_to_supplier = net_profit-share_to_seller;
+                    share_to_supplier=share_to_supplier.toFixed(2);
+                    console.log(share_to_supplier);
+                    $("#share_to_supplier").val(share_to_supplier);
+                    return resolve();
+                }
+                else{
+                    return reject();
+                }
+            }) 
+        }
+        
+    
+</script>
+</body>
+</html>

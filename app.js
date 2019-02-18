@@ -19,7 +19,7 @@ var ledgermaster = require('./routes/ledgermaster');
 var bookingmaster = require('./routes/bookingmaster');
 var post = require('./routes/post');
 var doc = require('./routes/doc');
-
+var vprofitsharing = require('./routes/vprofitsharing');
 
 
 //app
@@ -32,6 +32,9 @@ const hbs = exphbs.create({
   helpers:{
     index_modivied : function(value){
       return value+1;
+    },
+    add: function(value1,value2){
+      return parseFloat(value2)+parseFloat(value1);
     }
   }
 
@@ -58,7 +61,7 @@ app.use('/itemmaster',itemmaster);
 app.use('/ledgermaster',ledgermaster);
 app.use('/bookingmaster',bookingmaster);
 app.use('/post',post);
-
+app.use('/vprofitsharing',vprofitsharing);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
