@@ -47,7 +47,7 @@ const bookingmaster = sequelize.define('bookingmaster',{
     },
     INVOICE_DATE:{
         allowNull:false,
-        type:Sequelize.DATE
+        type:Sequelize.DATEONLY
     },
     LEAD_PASSENGER:{
         allowNull: false,
@@ -67,7 +67,7 @@ const bookingmaster = sequelize.define('bookingmaster',{
     },
     PAYMENT_DEADLINE:{
         allowNull: false,
-        type:Sequelize.DATE
+        type:Sequelize.DATEONLY
     },
     PAYMENT_SLABS:{
         allowNull: false,
@@ -155,15 +155,15 @@ const bookingmaster = sequelize.define('bookingmaster',{
     },
     FETCHED_ON:{
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
     },
     OPERATED_ON:{
         allowNull: true,
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
     },
     SENT_TO_REALBOOK:{
         allowNull: true,
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
     }
 },{
     timestamps: true,

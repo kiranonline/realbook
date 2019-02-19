@@ -157,6 +157,7 @@ router.post("/:id",(req,res,next)=>{
         }
     }).then((result1)=>{
         categorise(result1).then((data)=>{
+            data.info = result1[0].dataValues;
             res.json(data);
         })
     }).catch((qerror)=>{
