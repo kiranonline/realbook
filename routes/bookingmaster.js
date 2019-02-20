@@ -96,7 +96,7 @@ function categorise(d){
             if(element.SERVICE_CATEGORY=='hotel'){
                 hotel.push(element);
             }
-            else if(element.SERVICE_CATEGORY=='transport'){
+            else if(element.SERVICE_CATEGORY=='transfer'){
                 transport.push(element);
             }
             else{

@@ -257,7 +257,17 @@
                             else{
                                 $("#vdbody1").append("No record found");
                             }
-                            $("#vdbody2").append("No record found");
+                            if(data.transport.length>0){
+                                data.transport.forEach((ii,index)=>{
+                                    index1=index+1;
+                                    $("#vdbody2").append('<tr><td>'+index1+'</td><td>'+ii.ROOM_CATEGORY+'</td><td>'+ii.PER_SERVICE_WISE_SUPPLIER_NAME+'</td><td>'+ii.NO_OF_ROOMS+'</td><td>'+ii.NO_OF_NIGHTS+'</td></td>')
+                                });
+                               
+                            }
+                            else{
+                                $("#vdbody2").append("No record found");
+                            }
+                           
                             
                              $("#vdetailsFetched").modal("show");
                             
