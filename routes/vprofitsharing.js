@@ -7,13 +7,18 @@ var vprofitsharing =require("../modals/vprofitsharing").vprofitsharing;
 
 
 router.get('/',(req,res,next)=>{
-    vprofitsharing.findAll({
+    /*vprofitsharing.findAll({
 
     }).then((data)=>{
         //res.send(data)
         res.render('vprofitsharingmaster',{layout:false,data:data})
     }).catch((error)=>{
         next(createError(500));
+    })*/
+    var p2 = sequelize.query("SELECT vprofitsharing.*,sellingcompany.name AS sellingName,supplyingcompany.name AS supplyingName FROM vprofitsharing INNER JOIN `sellingcompany` ON vprofitsharing.seller_co_id=sellingcompany.id INNER JOIN `supplyingcompany` ON vprofitsharing.supplier_co_id=supplyingcompany.id");
+    Promise.all([p2]).then((result1)=>{
+        console.log(result1[0][0])
+        res.render('vprofitsharingmaster',{layout:false,data:result1[0][0]})
     })
 });
 

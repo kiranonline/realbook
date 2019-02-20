@@ -62,16 +62,16 @@ $(document).ready(function () {
 
 function changeValue(o){
     if(o=="sharingpercentage"){
-        $("#values").html('<div class="form-group"><label for="value"></label><input class="form-control form-control-sm calc1" id="value1" name="value1" placeholder="value1" required></div><div class="form-group"><label for="value"></label><input class="form-control form-control-sm calc2" id="value2" name="value2" placeholder="value2" disabled required></div>');
+        $("#values").html('<div class="form-group"><label for="value"></label><input class="form-control form-control-sm calc1" id="value1" name="value1" placeholder="Selling compaany profit sharing" required></div><div class="form-group"><label for="value"></label><input class="form-control form-control-sm calc2" id="value2" name="value2" placeholder="Supplying company profit sharing" disabled required></div>');
     }
     else if(o=="share on cost"){
-        $("#values").html('<div class="form-group"><label for="value"></label><input class="form-control form-control-sm calc1" id="value1" name="value1"  placeholder="value" required></div>');
+        $("#values").html('<div class="form-group"><label for="value"></label><input class="form-control form-control-sm calc1" id="value1" name="value1"  placeholder="Seller profit share on cost" required></div>');
     }
-    else if(o=="profit as fixed amount to sepplier company"){
-        $("#values").html('<div class="form-group"><label for="value"></label><input class="form-control form-control-sm calc1" id="value1" name="value1"  placeholder="value" required></div>');
+    else if(o=="profit as fixed amount to supplier company"){
+        $("#values").html('<div class="form-group"><label for="value"></label><input class="form-control form-control-sm calc1" id="value1" name="value1"  placeholder="Fixed profit to supplier company" required></div>');
     }
     else{
-        $("#values").html('<div class="form-group"><label for="value"></label><input class="form-control form-control-sm calc1" id="value1" name="value1"  placeholder="value" required></div>');
+        $("#values").html('<div class="form-group"><label for="value"></label><input class="form-control form-control-sm calc1" id="value1" name="value1"  placeholder="Fixed profit to seller company" required></div>');
     }
     
 }

@@ -15,18 +15,18 @@ const bookingmaster = sequelize.define('bookingmaster',{
     },
     CHECK_IN_DATE:{
         type:Sequelize.DATEONLY,
-        allowNull:false
+        allowNull:true
     },  
     CHECK_OUT_DATE:{
         type:Sequelize.DATEONLY,
-        allowNull:false
+        allowNull:true
     },
     EXCHANGE_RATE:{
         type:Sequelize.STRING,
-        allowNull:false
+        allowNull:true
     },
     RA_FILE_HANDLER:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     PER_SERVICE_WISE_SUPPLIER_NAME:{
@@ -46,111 +46,115 @@ const bookingmaster = sequelize.define('bookingmaster',{
         type:Sequelize.STRING
     },
     INVOICE_DATE:{
-        allowNull:false,
+        allowNull:true,
         type:Sequelize.DATEONLY
     },
     LEAD_PASSENGER:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     NO_OF_NIGHTS:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     NO_OF_ROOMS:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     BOOKING_NOTES:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING,
     },
     PAYMENT_DEADLINE:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.DATEONLY
     },
     PAYMENT_SLABS:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     PRODUCT_NAME:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     RA_REFERENCE:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     ROOM_CATEGORY:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     SERVICE_CATEGORY:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     SERVICE_CITY:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     SERVICE_COUNTRY:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     STAND_ALONE:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     TAX_CALCULATION:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     TOTAL_TAX_CALCULATION:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     TOTAL_IN_AMOUNTS:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     FOREIGN_CURRENCY:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     SUPPLIER_PAYMENT_DEADLINE:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     COMPONENTS_WISE_NET_COST:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     COMPONENTS_WISE_MARKUP:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     COMPONENTS_WISE_SELLING_COST:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     COMPONENTS_WISE_DISCOUNT_COMISSION:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     OVER_ALL_DISCOUNT:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     OVER_ALL_PROFIT:{
-        allowNull: false,
-        type:Sequelize.DOUBLE
+        allowNull: true,
+        type:Sequelize.DOUBLE(10,2)
     },
     OVER_ALL_LOSS:{
-        allowNull: false,
+        allowNull: true,
         type:Sequelize.STRING
     },
     COMPONENTS_WISE_CURRENCY:{
-        allowNull: false,
+        allowNull: true,
+        type:Sequelize.STRING
+    },
+    PER_SERVICE_SUPPLIER_CODE:{
+        allowNull: true,
         type:Sequelize.STRING
     },
     FETCHED_ON:{

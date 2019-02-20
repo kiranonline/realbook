@@ -27,23 +27,14 @@ router.get("/data",(req,res,next)=>{
     var comp = req.query.company || null;
     console.log(fromdate,todate,comp)
     if(fromdate != null && todate!=null && comp!=null){
-        //and operation
-        voucher.findAll({
-            where:{
-                cid:comp,
-                transactionDate:{
-                    [Op.between]: [fromdate,todate]
-                }
-            }
-        }).then((result1)=>{
-            res.render('post_table',{layout:false,data:result1,fromdate:fromdate,todate:todate,comp:comp});
-        }).catch((qerror)=>{
-            next(createError(550,qerror));
+        sequelize.query("SELECT voucher.*,supplyingcompany.name FROM `voucher` INNER JOIN `supplyingcompany` ON voucher.cid=supplyingcompany.id WHERE voucher.cid="+comp+" AND (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+")").then((result1)=>{
+            console.log(result1);
+            res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp});
         })
     }
     else if(fromdate != null && todate!=null && comp==null){
         //only date filter
-        voucher.findAll({
+        /*voucher.findAll({
             where:{
                 transactionDate:{
                     [Op.between]: [fromdate,todate]
@@ -53,11 +44,15 @@ router.get("/data",(req,res,next)=>{
             res.render('post_table',{layout:false,data:result1,fromdate:fromdate,todate:todate,comp:comp});
         }).catch((qerror)=>{
             next(createError(550,qerror));
+        })*/
+        sequelize.query("SELECT voucher.*,supplyingcompany.name FROM `voucher` INNER JOIN `supplyingcompany` ON voucher.cid=supplyingcompany.id WHERE (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+")").then((result1)=>{
+            console.log(result1);
+            res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp});
         })
     }
     else if(fromdate == null && todate==null && comp!=null){
         //company filter
-        voucher.findAll({
+        /*voucher.findAll({
             where:{
                 cid:comp
             }
@@ -65,14 +60,22 @@ router.get("/data",(req,res,next)=>{
             res.render('post_table',{layout:false,data:result1,fromdate:fromdate,todate:todate,comp:comp});
         }).catch((qerror)=>{
             next(createError(550,qerror));
+        })*/
+        sequelize.query("SELECT voucher.*,supplyingcompany.name FROM `voucher` INNER JOIN `supplyingcompany` ON voucher.cid=supplyingcompany.id WHERE voucher.cid="+comp).then((result1)=>{
+            console.log(result1);
+            res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp});
         })
     }
     else{
         //no filter
-        voucher.findAll().then((result1)=>{
+        /*voucher.findAll().then((result1)=>{
             res.render('post_table',{layout:false,data:result1,fromdate:fromdate,todate:todate,comp:comp});
         }).catch((qerror)=>{
             next(createError(550,qerror));
+        })*/
+        sequelize.query("SELECT voucher.*,supplyingcompany.name FROM voucher INNER JOIN `supplyingcompany` ON voucher.cid=supplyingcompany.id").then((result1)=>{
+            console.log(result1);
+            res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp});
         })
     }   
     
@@ -201,7 +204,7 @@ router.post('/',(req,res,next)=>{
 //get vdetails
 router.post('/getvdetails',(req,res,next)=>{
     var vid= req.body.id;
-    vdetail.findAll({
+    /*vdetail.findAll({
         attributes: ['vid','cr','dr','accessibleAmount','bankInstrumentNo','bankInstrumentDate','bankInstrumentType',
             'bankName','date','ledger','cid'
         ],
@@ -209,6 +212,7 @@ router.post('/getvdetails',(req,res,next)=>{
             vid:vid
         }
     }).then((data)=>{
+        console.log(data);
         dataSend=[];
         data.forEach((ii,index)=>{
             var element =ii.dataValues;
@@ -232,6 +236,17 @@ router.post('/getvdetails',(req,res,next)=>{
         
     }).catch((err)=>{
         res.status(500).send(err);
+    })*/
+    var p1 = voucher.findAll({
+        attributes: ['transactionDescription'],
+        where:{
+            id:vid
+        }
+    });
+    var p2 = sequelize.query("SELECT vdetail.*,ledgermaster.id AS ledgerid,ledgermaster.ledger_name FROM vdetail INNER JOIN `ledgermaster` ON vdetail.ledger=ledgermaster.id WHERE vdetail.vid="+vid);
+    Promise.all([p1,p2]).then((result1)=>{
+        console.log(result1)
+        res.json(result1);
     })
     
 });

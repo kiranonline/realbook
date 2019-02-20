@@ -26,27 +26,23 @@
                         <thead>
                             <tr>
                                 <th scope="col">No.</th>
-                                <th scope="col">Id</th>
-                                <th scope="col">Transaction Id</th>
-                                <th scope="col">Vid</th>
+                                <th scope="col">Txn Number</th>
+                                <th scope="col">Seller co. Name</th>
+                                <th scope="col">supplier co. Name</th>
                                 <th scope="col">Sharing master id</th>
-                                <th scope="col">supplier co. id</th>
-                                <th scope="col">Seller co. id</th>
                                 <th scope="col">Posted supplier profit</th>
                                 <th scope="col">Posted seller profit</th>
-                                <th scope="col">Edit</th>
+                                <th scope="col">Manual</th>
                             </tr>
                         </thead>
                         <tbody class="table-fixed">
                             {{#each data}}
                                 <tr>
                                     <td >{{index_modivied @index}}</td>
-                                    <td >{{this.id}}</td>
                                     <td >{{this.transaction_id}}</td>
-                                    <td >{{this.vid}}</td>
+                                    <td >{{this.sellingName}}</td>
+                                    <td >{{this.supplyingName}}</td>
                                     <td >{{this.sharing_master_id}}</td>
-                                    <td >{{this.supplier_co_id}}</td>
-                                    <td >{{this.seller_co_id}}</td>
                                     <td >{{this.posted_supplier_profit}}</td>
                                     <td >{{this.posted_seller_profit}}</td>
                                     <td class="text-center">

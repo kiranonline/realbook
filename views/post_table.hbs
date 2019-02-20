@@ -45,7 +45,7 @@
                                 <th scope="col">TRANSACTION DATE</th>
                                 <th scope="col">TRANSACTION NUMBER</th>
                                 <th scope="col">TRANSACTION TYPE</th>
-                                <th scope="col">TRANSACTION DESC</th>
+                                <!--<th scope="col">TRANSACTION DESC</th>-->
                                 <!--<th scope="col">ID</th>
                                 <th scope="col">TSN CODE</th>
                                 <th scope="col">VOUCHER ALIES</th>
@@ -59,8 +59,8 @@
                                 <th scope="col">IS ABATMENT</th>
                                 <th scope="col">STATUS</th>
                                 <th scope="col">CURRENCY SYMBOL</th>
-                                <th scope="col">GST IN</th>
-                                <th scope="col">GST PARTY</th>-->
+                                <th scope="col">GST IN</th>-->
+                                <th scope="col">GST PARTY</th>
                                 <th scope="col">CID</th>
                                 <!--<th scope="col">SEG ID</th>-->
                                 <th scope="col">SYNCHRONIZATION</th>
@@ -73,8 +73,8 @@
                                     <td onclick="fetchVdetail('{{this.id}}')">{{this.transactionDate}}</td>
                                     <td onclick="fetchVdetail('{{this.id}}')">{{this.transactionNumber}}</td>
                                     <td onclick="fetchVdetail('{{this.id}}')">{{this.transactionType}}</td>
-                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.transactionDescription}}</td>
                                     <!--
+                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.transactionDescription}}</td>
                                     <td>{{this.id}}</td>
                                     <td>{{this.txnCode}}</td>
                                     <td>{{this.voucherAlias}}</td>
@@ -88,9 +88,9 @@
                                     <td>{{this.isAbatement}}</td>
                                     <td>{{this.status}}</td>
                                     <td>{{this.currencySymbol}}</td>
-                                    <td>{{this.gstin}}</td>
-                                    <td>{{this.gstParty}}</td>-->
-                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.cid}}</td>
+                                    <td>{{this.gstin}}</td>-->
+                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.gstParty}}</td>
+                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.name}}</td>
                                     <!--<td>{{this.segid}}</td>-->
                                     <td class="text-center">
                                         <button onclick="post('{{this.id}}')" class="btn btn-primary actn"><i class="fa fa-share-square"></i></button>
@@ -123,21 +123,23 @@
                     <table class="table table-sm">
                         <thead>
                             <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Type</th>
-                                <th scope="col">Amount</th>
                                 <th scope="col">Ledger</th>
+                                <th scope="col">Debit</th>
+                                <th scope="col">Credit</th>
                             </tr>
                         </thead>
                         <tbody id="vdbody">
                                                         
                         </tbody>
                     </table>
+                    <div class="" style="float:left">
+                        <h6 class="desc-hld">Transaction Description : <span class="desc"></span></h6>
+                    </div>
                 </div>
                 
                 <!-- Modal footer -->
                 <div class="modal-footer">
+                
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                 </div>
                 
@@ -168,7 +170,7 @@
 
                 $('.datepicker').datepicker({
                     todayHighlight:true,
-                    format:"yyyy/mm/dd",
+                    format:"yyyy-mm-dd",
                     autoclose:true
                 });
 
@@ -244,11 +246,11 @@
                         success: function (data) {
                             console.log(data);
                             $("#vdbody").html("");
-                            data.forEach((ii,index)=>{
+                            data[1][0].forEach((ii,index)=>{
                                 index1=index+1;
-                                $("#vdbody").append('<tr><td>'+index1+'</td><td>'+ii.date+'</td><td>'+ii.amountType+'</td><td>'+ii.amount+'</td><td>'+ii.amount+'</td></td>')
+                                $("#vdbody").append('<tr><td>'+ii.ledger_name+'</td><td>'+ii.dr+'</td><td>'+ii.cr+'</td>')
                             });
-                            
+                            $(".desc").html(data[0][0].transactionDescription)
                             $("#vdetailsFetched").modal("show");
                         },
                         error: function (xhr, status, error) {
