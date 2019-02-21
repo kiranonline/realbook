@@ -20,13 +20,36 @@ router.get('/data',(req,res,next)=>{
 
 
 router.post('/push',(req,res,next)=>{
-    var data_fetched = req.body.json_master;
-    var tempdata = customermaster.build(data_fetched);
-    tempdata.save().then(()=>{
-        res.send("Data saved");    
-    }).catch((error1)=>{
-        res.status(500).send(error1);
+    var data_fetchedArray = req.body.json_master;
+    var c=0;
+    data_fetchedArray.forEach((element)=>{
+        var data_fetched = element;
+        var tempdata = customermaster.build({
+            client_ref_no:data_fetched.Client_Ref_No,
+            customer_mobile_no:data_fetched.Customer_Mobile_No,
+            customer_address:data_fetched.Customer_Address,
+            customer_country:data_fetched.Customer_Country,
+            customer_email_id:data_fetched.Customer_Email_Id,
+            customer_file_handler:data_fetched.Customer_File_Handler,
+            customer_name:data_fetched.Customer_Name,
+            customer_state:data_fetched.Customer_State,
+            customer_city:data_fetched.Customer_City,
+            customer_work_no:data_fetched.Customer_Work_No,
+            gst_no_of_customer:data_fetched.GST_No_of_Customer,
+            currency:data_fetched.Currency,
+            pan_no:data_fetched.PAN_No
+    
+        });
+        tempdata.save().then(()=>{
+            c=c+1;
+            if(data_fetchedArray.length==c){
+                res.send("Done");
+            }  
+        }).catch((error1)=>{
+            res.status(500).send(error1);
+        });
     });
+    
 })
 
 

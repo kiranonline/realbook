@@ -177,6 +177,7 @@ function push1(data,action){
                 return reject(err);
             }
             else{
+                console.log(body);
                 if(body.type=='error'){
                     return reject(body);
                 }

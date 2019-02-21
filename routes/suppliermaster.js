@@ -22,12 +22,31 @@ router.get('/data',(req,res,next)=>{
 
 
 router.post('/push',(req,res,next)=>{
-    var data_fetched = req.body.json_master;
-    var tempdata = suppliermaster.build(data_fetched);
-    tempdata.save().then(()=>{
-        res.send("Data saved");    
-    }).catch((error1)=>{
-        res.status(500).send(error1);
+    var data_fetchedArray = req.body.json_master;
+    var c=0;
+    data_fetchedArray.forEach((element)=>{
+        var data_fetched = element;
+        var tempdata = suppliermaster.build({
+            country:data_fetched.Country,
+            city:data_fetched.City,
+            supplier_type:data_fetched.Supplier_Type,
+            base_currency:data_fetched.Base_Currency,
+            address:data_fetched.Address,
+            phone_number:data_fetched.Phone_Number,
+            mobile_number:data_fetched.Mobile_Number,
+            fax:data_fetched.Fax,
+            email:data_fetched.Email,
+            supplier_id:data_fetched.Supplier_Id
+    
+        });
+        tempdata.save().then(()=>{
+            c=c+1;
+            if(data_fetchedArray.length==c){
+                res.send("Done");
+            }  
+        }).catch((error1)=>{
+            res.status(500).send(error1);
+        });
     });
 })
 

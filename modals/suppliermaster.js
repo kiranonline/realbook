@@ -33,6 +33,10 @@ const suppliermaster = sequelize.define('suppliermaster',{
         type:Sequelize.STRING,
         allowNull:true
     },
+    supplier_id:{
+        type:Sequelize.STRING,
+        allowNull:true
+    },
     supplier_display_name:{
         type:Sequelize.STRING,
         allowNull:true
@@ -42,6 +46,10 @@ const suppliermaster = sequelize.define('suppliermaster',{
         allowNull:true
     },
     phone_number:{
+        type:Sequelize.STRING,
+        allowNull:true
+    },
+    mobile_number:{
         type:Sequelize.STRING,
         allowNull:true
     },
