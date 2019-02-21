@@ -55,7 +55,7 @@
                                 <th scope="col">TAX_CALCULATION</th>
                                 <th scope="col">TOTAL_TAX_CALCULATION</th>-->
                                 <th scope="col">CURRENCY</th>
-                                <th scope="col">AMOUNT</th>
+                                <th scope="col" class="text-right">AMOUNT</th>
                                 <!--<th scope="col">FOREIGN_CURRENCY</th>
                                 <th scope="col">SUPPLIER_PAYMENT_DEADLINE</th>
                                 <th scope="col">COMPONENTS_WISE_NET_COST</th>
@@ -65,9 +65,9 @@
                                 <th scope="col">OVER_ALL_DISCOUNT</th>
                                 <th scope="col">OVER_ALL_PROFIT</th>
                                 <th scope="col">OVER_ALL_LOSS</th>
-                                <th scope="col">COMPONENTS_WISE_CURRENCY</th>-->
+                                <th scope="col">COMPONENTS_WISE_CURRENCY</th>
                                 <th scope="col">FETCHED ON</th>
-                                <th scope="col">OPERATED ON</th>
+                                <th scope="col">OPERATED ON</th>-->
                                 <th scope="col text-center"><i class="fas fa-sync-alt sz"></i></th>
                             </tr>
                         </thead>
@@ -101,7 +101,7 @@
                                     <td>{{this.TAX_CALCULATION}}</td>
                                     <td>{{this.TOTAL_TAX_CALCULATION}}</td>-->
                                     <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.INVOICE_CURRENCY}}</td>
-                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.TOTAL_IN_AMOUNTS}}</td>
+                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')" class="text-right">{{this.TOTAL_IN_AMOUNTS}}</td>
                                     <!--<td>{{this.FOREIGN_CURRENCY}}</td>
                                     <td>{{this.SUPPLIER_PAYMENT_DEADLINE}}</td>
                                     <td>{{this.COMPONENTS_WISE_NET_COST}}</td>
@@ -111,9 +111,9 @@
                                     <td>{{this.OVER_ALL_DISCOUNT}}</td>
                                     <td>{{this.OVER_ALL_PROFIT}}</td>
                                     <td>{{this.OVER_ALL_LOSS}}</td>
-                                    <td>{{this.COMPONENTS_WISE_CURRENCY}}</td>-->
+                                    <td>{{this.COMPONENTS_WISE_CURRENCY}}</td>
                                     <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.FETCHED_ON}}</td>
-                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.OPERATED_ON}}</td>
+                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.OPERATED_ON}}</td>-->
                                     <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.SENT_TO_REALBOOK}}</td>
                                     <!--<td class="text-center">
                                         <a href="/itemmaster/form?id={{this.id}}" class="btn btn-primary actn"><i class="fas fa-pencil-alt"></i></a>

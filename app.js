@@ -20,7 +20,8 @@ var bookingmaster = require('./routes/bookingmaster');
 var post = require('./routes/post');
 var doc = require('./routes/doc');
 var vprofitsharing = require('./routes/vprofitsharing');
-
+var customermaster = require('./routes/customermaster');
+var suppliermaster = require('./routes/suppliermaster');
 
 //app
 var app = express();
@@ -62,6 +63,8 @@ app.use('/ledgermaster',ledgermaster);
 app.use('/bookingmaster',bookingmaster);
 app.use('/post',post);
 app.use('/vprofitsharing',vprofitsharing);
+app.use('/customermaster',customermaster);
+app.use('/suppliermaster',suppliermaster)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
