@@ -33,6 +33,21 @@ router.get('/fetch',(req,res,next)=>{
 
 
 
+router.post('/push',(req,res,next)=>{
+    var data_fetched = req.body.json_master;
+    var tempdata = model1.bookingmaster.build(data_fetched);
+    tempdata.save().then(()=>{
+        res.send("Data saved");    
+    }).catch((error1)=>{
+        res.status(500).send(error1);
+    });
+})
+
+
+
+
+
+
 function sortBookings(d){
     return new Promise((resolve,reject)=>{
         var result=[];
