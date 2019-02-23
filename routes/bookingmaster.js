@@ -34,13 +34,21 @@ router.get('/fetch',(req,res,next)=>{
 
 
 router.post('/push',(req,res,next)=>{
-    var data_fetched = req.body.json_master;
-    var tempdata = model1.bookingmaster.build(data_fetched);
-    tempdata.save().then(()=>{
-        res.send("Data saved");    
-    }).catch((error1)=>{
-        res.status(500).send(error1);
-    });
+    var data_fetchedArray = req.body.json_master;
+    var c=0;
+    var up=[];
+    data_fetchedArray.forEach((item,i)=>{
+        var data_fetched = item;
+        console.log(data_fetched)
+        up.push(data_fetched);
+        if(data_fetchedArray.length==up.length){
+            model1.bookingmaster.bulkCreate(up).then(()=>{
+                res.send("Done")
+            }).catch((err)=>{
+                res.status(500).json({err:true,msg:err})
+            });
+        }
+    })
 })
 
 

@@ -22,9 +22,11 @@ router.get('/data',(req,res,next)=>{
 router.post('/push',(req,res,next)=>{
     var data_fetchedArray = req.body.json_master;
     var c=0;
-    data_fetchedArray.forEach((element)=>{
-        var data_fetched = element;
-        var tempdata = customermaster.build({
+    var up=[];
+    data_fetchedArray.forEach((item,i)=>{
+        var data_fetched = item;
+        console.log(data_fetched)
+        var tmpdata={
             client_ref_no:data_fetched.Client_Ref_No,
             customer_mobile_no:data_fetched.Customer_Mobile_No,
             customer_address:data_fetched.Customer_Address,
@@ -38,17 +40,17 @@ router.post('/push',(req,res,next)=>{
             gst_no_of_customer:data_fetched.GST_No_of_Customer,
             currency:data_fetched.Currency,
             pan_no:data_fetched.PAN_No
+        }
+        up.push(tmpdata);
+        if(data_fetchedArray.length==up.length){
+            customermaster.bulkCreate(up).then(()=>{
+                res.send("Done")
+            }).catch((err)=>{
+                res.status(500).json({err:true,msg:err})
+            });
+        }
+    })
     
-        });
-        tempdata.save().then(()=>{
-            c=c+1;
-            if(data_fetchedArray.length==c){
-                res.send("Done");
-            }  
-        }).catch((error1)=>{
-            res.status(500).send(error1);
-        });
-    });
     
 })
 
