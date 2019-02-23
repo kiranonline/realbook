@@ -78,6 +78,12 @@ const voucher = sequelize.define('voucher', {
         allowNull: true,
         type:Sequelize.INTEGER
     },
+    v_nature:{
+        type:Sequelize.STRING
+    },
+    module:{
+        type:Sequelize.STRING
+    },
     createdAt: Sequelize.DATE,
     updatedAt: Sequelize.DATE
 },{

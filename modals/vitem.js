@@ -55,6 +55,18 @@ const vitem = sequelize.define('vitem', {
         type:Sequelize.INTEGER,
         allowNull: false,
     },
+    disc_amt:{
+        type:Sequelize.DECIMAL(10,2)
+    },
+    disc_rate:{
+        type:Sequelize.STRING
+    },
+    lid:{
+        type:Sequelize.INTEGER
+    },
+    godownname:{
+        type:Sequelize.STRING
+    },
     createdAt: Sequelize.DATE,
     updatedAt: Sequelize.DATE,
 },{

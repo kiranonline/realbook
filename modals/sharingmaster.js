@@ -51,6 +51,9 @@ const supplyingcompany = sequelize.define('supplyingcompany', {
         type:Sequelize.STRING,
         allowNull: false
     },
+    rlb_cid:{
+        type:Sequelize.INTEGER
+    },
     createdAt: Sequelize.DATE,
     updatedAt: Sequelize.DATE,
 },{

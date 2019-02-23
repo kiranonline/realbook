@@ -9,6 +9,7 @@ var vcc =require('../modals/vcc').vcc;
 var vtax =require('../modals/vtax').vtax;
 var request = require('request');
 var moment = require('moment');
+var vitem = require('../modals/vitem').vitem;
 
 
 function dd(d){
@@ -191,4 +192,95 @@ function push1(data,action){
 }
 
 
-module.exports={ led1,vbill1,vtax1,vcc1,push1,dd }
+
+
+
+function prepareItem(vid){
+    return new Promise((resolve,reject)=>{
+        var ans=[];
+        var p1= sequelize.query("SELECT vitem.amount AS itemAmount ,itemmaster.item_name AS itemName ,unit_master.unit_name AS unitName ,itemmaster.item_code AS itemCode ,vitem.qty AS quantity, vitem.disc_amt AS discountAmount ,ledgermaster.ledger_name AS ledgerName , vitem.disc_rate AS discountRate ,vitem.godownname AS godownName FROM vitem INNER JOIN `itemmaster` ON vitem.item_id=itemmaster.id INNER JOIN `unit_master` ON vitem.unit_id=unit_master.unit_id INNER JOIN `ledgermaster` on vitem.lid=ledgermaster.id WHERE vitem.vid="+vid);
+        Promise.all([p1]).then((results)=>{
+            var tmpr= results[0][1];
+            tmpr.forEach((curvalue,i)=>{
+                var v= {};
+                v.itemAmount=curvalue.itemAmount;
+                v.itemName=curvalue.itemName;
+                v.unitName=curvalue.unitName;
+                v.itemCode=curvalue.itemCode;
+                v.quantity=curvalue.quantity;
+                v.discountAmount=curvalue.discountAmount;
+                v.ledgerName=curvalue.ledgerName;
+                v.discountRate=curvalue.discountRate;
+                v.godownName=curvalue.godownName;
+                v.rowId=i+1;
+                v.rowType="";
+                v.itemTax=[{
+                    taxAmount:24.3,
+                    rate:9,
+                    taxLedgerName:"CGST-Output @ 9.0%"
+                },{
+                    taxAmount:24.3,
+                    rate:9,
+                    taxLedgerName:"SGST-Output @ 9.0%"
+                }];
+                ans.push(v);
+                if(ans.length==tmpr.length){
+                    return resolve(ans);
+                }
+            })
+        }).catch((errors)=>{
+            return reject(errors);
+        })
+    })
+    
+}
+
+
+
+
+
+function push2(data,action){
+    return new Promise((resolve,reject)=>{
+        //console.log("2");
+        var url;
+        if(action=='update'){
+            url='http://api.realbooks.in/AMSSERVICE/api/accv/v2/psvupdate/1349/1349';
+            
+            
+        }
+        else{
+            url = 'http://api.realbooks.in/AMSSERVICE/api/accv/v2/psvcreate/1349/1349';
+        }
+        console.log(url);
+        request.post({
+            url: url,
+            headers: {
+                'accountName': 'apichk'
+            },            
+            json:{
+                accessKey : "U76GHF498HNMR345",
+                secretKey : "U76GHF498HNMR345",
+                emailid :  "noreply@realbooks.in",
+                json_obj : data
+            }
+        },
+        (err, res, body)=> {
+            if(err){
+                return reject(err);
+            }
+            else{
+                console.log(body);
+                if(body.type=='error'){
+                    return reject(body);
+                }
+                else{
+                    return resolve(body);
+                }
+                
+            }
+        });
+    });
+}
+
+
+module.exports={ led1,vbill1,vtax1,vcc1,push1,dd,prepareItem,push2 }
