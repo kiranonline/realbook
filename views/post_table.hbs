@@ -45,6 +45,7 @@
                                 <th scope="col">TRANSACTION DATE</th>
                                 <th scope="col">TRANSACTION NUMBER</th>
                                 <th scope="col">TRANSACTION TYPE</th>
+                                <th scope="col">RA REFERENCE</th>
                                 <!--<th scope="col">TRANSACTION DESC</th>-->
                                 <!--<th scope="col">ID</th>
                                 <th scope="col">TSN CODE</th>
@@ -60,7 +61,8 @@
                                 <th scope="col">STATUS</th>
                                 <th scope="col">CURRENCY SYMBOL</th>
                                 <th scope="col">GST IN</th>-->
-                                <th scope="col">GST PARTY</th>
+                                <th scope="col">PARTY NAME</th>
+                                <th scope="col">CURRENCY</th>
                                 <th scope="col">PARTY AMOUNT</th>
                                 <th scope="col">COMPANY NAME</th>
                                 <!--<th scope="col">SEG ID</th>-->
@@ -74,6 +76,7 @@
                                     <td onclick="fetchVdetail('{{this.id}}')">{{this.transactionDate}}</td>
                                     <td onclick="fetchVdetail('{{this.id}}')">{{this.transactionNumber}}</td>
                                     <td onclick="fetchVdetail('{{this.id}}')">{{this.transactionType}}</td>
+                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.refFileName}}</td>
                                     <!--
                                     <td onclick="fetchVdetail('{{this.id}}')">{{this.transactionDescription}}</td>
                                     <td>{{this.id}}</td>
@@ -90,7 +93,8 @@
                                     <td>{{this.status}}</td>
                                     <td>{{this.currencySymbol}}</td>
                                     <td>{{this.gstin}}</td>-->
-                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.gstParty}}</td>
+                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.partyName}}</td>
+                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.currencySymbol}}</td>
                                     <td onclick="fetchVdetail('{{this.id}}')">{{greater this.partyCr this.partyDr}}</td>
                                     <td onclick="fetchVdetail('{{this.id}}')">{{this.name}}</td>
                                     <!--<td>{{this.segid}}</td>-->
