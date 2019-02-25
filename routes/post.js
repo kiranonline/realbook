@@ -73,7 +73,7 @@ router.get("/data",(req,res,next)=>{
         }).catch((qerror)=>{
             next(createError(550,qerror));
         })*/
-        sequelize.query("SELECT voucher.*,supplyingcompany.name FROM voucher INNER JOIN `supplyingcompany` ON voucher.cid=supplyingcompany.rlb_cid").then((result1)=>{
+        sequelize.query("SELECT voucher.*,supplyingcompany.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr FROM voucher INNER JOIN `supplyingcompany` ON voucher.cid=supplyingcompany.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0')" ).then((result1)=>{
             console.log(result1);
             res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp});
         })
@@ -102,17 +102,20 @@ router.post('/',(req,res,next)=>{
         delete f['module'];
         if(type_module=='inv'){
             //inv
+            /*
             f.gstParty={
                 ledgerName:"GstParty",
                 ledgerGroupName:"creditors",
                 partyDetails:null
             };
+            */
+           f.gstParty=null;
             ser1.dd(f.transactionDate).then((ff)=>{
                 f.transactionDate=ff;
             });
             vdetail.findAll({
                 attributes: ['vid','cr','dr','accessibleAmount','bankInstrumentNo','bankInstrumentDate','bankInstrumentType',
-                    'bankName','date','ledger'
+                    'bankName','date','ledger',['narration','ledgerType']
                 ],
                 where:{
                     vid:id
@@ -177,6 +180,7 @@ router.post('/',(req,res,next)=>{
                                 invv.transactionType=f.transactionType;
                                 invv.transactionDescription=f.transactionDescription;
                                 invv.accountsTransaction=f;
+                                /*
                                 invv.gatePass= { 
                                     unloadingTime: null, 
                                     locationName: null, 
@@ -193,7 +197,8 @@ router.post('/',(req,res,next)=>{
                                     gatePassDescription: null, 
                                     freightType: null, 
                                     lrNo: ""
-                                    };
+                                };*/
+                                invv.gatePass=null;
                                 invv.purchaseOrderDate=null;
                                 invv.purchaseOrderNumber=null;
                                 invv.docLink=null;
@@ -202,12 +207,13 @@ router.post('/',(req,res,next)=>{
                                 invv.refFileName=null;
                                 invv.txnCode=null;
                                 ser1.prepareItem(id).then((dataret)=>{
+                                    console.log(dataret)
                                     invv.itemDetails=dataret;
                                     console.log(JSON.stringify(invv));
                                     var pp=ser1.push2(invv,action);
                                     pp.then((backed)=>{
                                         voucher.update({
-                                            realbookID:backed.id
+                                            realbookID:backed.voucherId
                                         },{
                                             where:{
                                                 id:id
@@ -345,39 +351,6 @@ router.post('/',(req,res,next)=>{
 //get vdetails
 router.post('/getvdetails',(req,res,next)=>{
     var vid= req.body.id;
-    /*vdetail.findAll({
-        attributes: ['vid','cr','dr','accessibleAmount','bankInstrumentNo','bankInstrumentDate','bankInstrumentType',
-            'bankName','date','ledger','cid'
-        ],
-        where:{
-            vid:vid
-        }
-    }).then((data)=>{
-        console.log(data);
-        dataSend=[];
-        data.forEach((ii,index)=>{
-            var element =ii.dataValues;
-            if(element.cr != null){
-                element.amountType='cr';
-                element.amount=element.cr;
-                delete element['cr'];
-                delete element['dr'];
-            }
-            else{
-                element.amountType='dr';
-                element.amount=element.dr;
-                delete element['dr'];
-                delete element['cr'];
-            }
-            dataSend.push(element);
-            if(dataSend.length==data.length){
-                res.json(data);
-            }
-        });
-        
-    }).catch((err)=>{
-        res.status(500).send(err);
-    })*/
     var p1 = voucher.findAll({
         attributes: ['transactionDescription'],
         where:{

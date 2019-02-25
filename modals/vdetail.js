@@ -51,6 +51,9 @@ const vdetail = sequelize.define('vdetail', {
     segid:{
         type:Sequelize.INTEGER
     },
+    narration:{
+        type:Sequelize.STRING
+    },
     createdAt: Sequelize.DATE,
     updatedAt: Sequelize.DATE,
 },{

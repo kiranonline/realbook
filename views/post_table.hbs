@@ -61,7 +61,8 @@
                                 <th scope="col">CURRENCY SYMBOL</th>
                                 <th scope="col">GST IN</th>-->
                                 <th scope="col">GST PARTY</th>
-                                <th scope="col">CID</th>
+                                <th scope="col">PARTY AMOUNT</th>
+                                <th scope="col">COMPANY NAME</th>
                                 <!--<th scope="col">SEG ID</th>-->
                                 <th scope="col">SYNCHRONIZATION</th>
                             </tr>
@@ -90,6 +91,7 @@
                                     <td>{{this.currencySymbol}}</td>
                                     <td>{{this.gstin}}</td>-->
                                     <td onclick="fetchVdetail('{{this.id}}')">{{this.gstParty}}</td>
+                                    <td onclick="fetchVdetail('{{this.id}}')">{{greater this.partyCr this.partyDr}}</td>
                                     <td onclick="fetchVdetail('{{this.id}}')">{{this.name}}</td>
                                     <!--<td>{{this.segid}}</td>-->
                                     <td class="text-center">
@@ -124,8 +126,8 @@
                         <thead>
                             <tr>
                                 <th scope="col">Ledger</th>
-                                <th scope="col">Debit</th>
-                                <th scope="col">Credit</th>
+                                <th scope="col" class="text-right">Debit</th>
+                                <th scope="col" class="text-right">Credit</th>
                             </tr>
                         </thead>
                         <tbody id="vdbody">
@@ -248,7 +250,7 @@
                             $("#vdbody").html("");
                             data[1][0].forEach((ii,index)=>{
                                 index1=index+1;
-                                $("#vdbody").append('<tr><td>'+ii.ledger_name+'</td><td>'+ii.dr+'</td><td>'+ii.cr+'</td>')
+                                $("#vdbody").append('<tr><td>'+ii.ledger_name+'</td><td class="text-right">'+ii.dr+'</td><td class="text-right">'+ii.cr+'</td>')
                             });
                             $(".desc").html(data[0][0].transactionDescription)
                             $("#vdetailsFetched").modal("show");

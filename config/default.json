@@ -3,7 +3,7 @@
         "host" : "localhost",
         "user" : "root",
         "password" : "",
-        "database" : "redapple-new",
+        "database" : "redApple",
         "dialect" : "mysql"
     }
 }

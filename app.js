@@ -36,6 +36,16 @@ const hbs = exphbs.create({
     },
     add: function(value1,value2){
       return parseFloat(value2)+parseFloat(value1);
+    },
+    greater: function(value1,value2){
+      var v1 = parseFloat(value1);
+      var v2 = parseFloat(value2);
+      if(v1>v2){
+        return v1;
+      }
+      else{
+        return v2;
+      }
     }
   }
 

@@ -144,7 +144,9 @@ router.get('/form', function(req, res, next) {
     var msgText = req.query.msgText;
     var p1 = modals.sellingcompany.findAll();
     var p2 =  modals.component.findAll();
-    Promise.all([p1,p2]).then((values)=>{  
+    var p3 = sequelize.query("SELECT * FROM currency");
+    Promise.all([p1,p2,p3]).then((values)=>{  
+      console.log(values[2][0]);
       if(id!=null){
         //edit form
         modals.sharingmaster.findAll({
@@ -160,11 +162,13 @@ router.get('/form', function(req, res, next) {
             layout:false,
             sellingcompany:values[0],
             component:values[1],
+            currency:values[2][0],
             msg:msg,msgText:msgText,
             e_id:id,
             e_selling:result1[0].selling_id,
             e_supply:result1[0].supplying_id,
             e_component:result1[0].component_id,
+            e_currency:result1[0].currency_id,
             formdate:result1[0].fromdate,
             todate:result1[0].todate,
             min_share:result1[0].minshare,
@@ -179,7 +183,7 @@ router.get('/form', function(req, res, next) {
       });
     }
     else{
-      res.render('sharingmaster_form',{ layout:false,sellingcompany:values[0],component:values[1], msg:msg,msgText:msgText,editable:false,err:err,errText:errText });  
+      res.render('sharingmaster_form',{ layout:false,sellingcompany:values[0],component:values[1],currency:values[2][0], msg:msg,msgText:msgText,editable:false,err:err,errText:errText });  
     }
       
     }).catch((err)=>{
@@ -222,6 +226,7 @@ router.post('/form',(req,res,next)=>{
     var minshare = req.body.minshare;
     var rule = req.body.rule;
     var value1 = req.body.value1 ;
+    var currency = req.body.currency;
     if(rule=="sharingpercentage"){
       var value2 = 100 - req.body.value1; 
     }
@@ -261,7 +266,8 @@ router.post('/form',(req,res,next)=>{
           minshare : minshare,
           rule : rule,
           value1 : value1,
-          value2: value2
+          value2: value2,
+          currency_id:currency
         });
         tempdata.save().then(()=>{
           res.redirect('/sharingmaster/form?msg=true&msgText=Data saved');
@@ -288,7 +294,8 @@ router.post('/form',(req,res,next)=>{
             minshare : minshare,
             rule : rule,
             value1 : value1,
-            value2:value2
+            value2:value2,
+            currency_id:currency
           }).then(()=>{
             res.redirect('/sharingmaster/form?msg=true&msgText=Data updated');
           }).catch((qerror3)=>{
