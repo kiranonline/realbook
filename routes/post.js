@@ -27,7 +27,7 @@ router.get("/data",(req,res,next)=>{
     var comp = req.query.company || null;
     console.log(fromdate,todate,comp)
     if(fromdate != null && todate!=null && comp!=null){
-        sequelize.query("SELECT voucher.*,supplyingcompany.name FROM `voucher` INNER JOIN `supplyingcompany` ON voucher.cid=supplyingcompany.rlb_cid WHERE voucher.cid="+comp+" AND (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+")").then((result1)=>{
+        sequelize.query("SELECT voucher.*,supplyingcompany.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr FROM voucher INNER JOIN `supplyingcompany` ON voucher.cid=supplyingcompany.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0') WHERE voucher.cid="+comp+" AND (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+")").then((result1)=>{
             console.log(result1);
             res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp});
         })
@@ -45,7 +45,7 @@ router.get("/data",(req,res,next)=>{
         }).catch((qerror)=>{
             next(createError(550,qerror));
         })*/
-        sequelize.query("SELECT voucher.*,supplyingcompany.name FROM `voucher` INNER JOIN `supplyingcompany` ON voucher.cid=supplyingcompany.rlb_cid WHERE (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+")").then((result1)=>{
+        sequelize.query("SELECT voucher.*,supplyingcompany.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr FROM voucher INNER JOIN `supplyingcompany` ON voucher.cid=supplyingcompany.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0') WHERE (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+")").then((result1)=>{
             console.log(result1);
             res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp});
         })
@@ -61,7 +61,7 @@ router.get("/data",(req,res,next)=>{
         }).catch((qerror)=>{
             next(createError(550,qerror));
         })*/
-        sequelize.query("SELECT voucher.*,supplyingcompany.name FROM `voucher` INNER JOIN `supplyingcompany` ON voucher.cid=supplyingcompany.rlb_cid WHERE voucher.cid="+comp).then((result1)=>{
+        sequelize.query("SELECT voucher.*,supplyingcompany.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr FROM voucher INNER JOIN `supplyingcompany` ON voucher.cid=supplyingcompany.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0') WHERE voucher.cid="+comp).then((result1)=>{
             console.log(result1);
             res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp});
         })
