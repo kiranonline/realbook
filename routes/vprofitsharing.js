@@ -15,7 +15,7 @@ router.get('/',(req,res,next)=>{
     }).catch((error)=>{
         next(createError(500));
     })*/
-    var p2 = sequelize.query("SELECT vprofitsharing.*,sellingcompany.name AS sellingName,supplyingcompany.name AS supplyingName FROM vprofitsharing INNER JOIN `sellingcompany` ON vprofitsharing.seller_co_id=sellingcompany.id INNER JOIN `supplyingcompany` ON vprofitsharing.supplier_co_id=supplyingcompany.id");
+    var p2 = sequelize.query("SELECT vprofitsharing.*,bookingmaster.RA_REFERENCE,sharingmaster.rule,sellingcompany.name AS sellingName,supplyingcompany.name AS supplyingName FROM vprofitsharing INNER JOIN `sellingcompany` ON vprofitsharing.seller_co_id=sellingcompany.id INNER JOIN `supplyingcompany` ON vprofitsharing.supplier_co_id=supplyingcompany.id INNER JOIN `bookingmaster` ON vprofitsharing.transaction_id=bookingmaster.id INNER JOIN `sharingmaster` ON vprofitsharing.sharing_master_id=sharingmaster.id");
     Promise.all([p2]).then((result1)=>{
         console.log(result1[0][0])
         res.render('vprofitsharingmaster',{layout:false,data:result1[0][0]})

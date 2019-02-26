@@ -29,7 +29,7 @@
                                 <th scope="col">Txn Number</th>
                                 <th scope="col">Seller co. Name</th>
                                 <th scope="col">supplier co. Name</th>
-                                <th scope="col">Sharing master id</th>
+                                <th scope="col">Sharing master</th>
                                 <th scope="col" class="text-right">Posted supplier profit</th>
                                 <th scope="col" class="text-right">Posted seller profit</th>
                                 <th scope="col">Manual</th>
@@ -39,10 +39,10 @@
                             {{#each data}}
                                 <tr>
                                     <td onclick="fetchdetail('{{this.id}}')">{{index_modivied @index}}</td>
-                                    <td onclick="fetchdetail('{{this.id}}')">{{this.transaction_id}}</td>
+                                    <td onclick="fetchdetail('{{this.id}}')">{{this.RA_REFERENCE}}</td>
                                     <td onclick="fetchdetail('{{this.id}}')">{{this.sellingName}}</td>
                                     <td onclick="fetchdetail('{{this.id}}')">{{this.supplyingName}}</td>
-                                    <td onclick="fetchdetail('{{this.id}}')">{{this.sharing_master_id}}</td>
+                                    <td onclick="fetchdetail('{{this.id}}')">{{this.rule}}</td>
                                     <td onclick="fetchdetail('{{this.id}}')" class="text-right">{{this.posted_supplier_profit}}</td>
                                     <td onclick="fetchdetail('{{this.id}}')" class="text-right">{{this.posted_seller_profit}}</td>
                                     <td class="text-center">
