@@ -30,21 +30,21 @@
                                 <th scope="col">Seller co. Name</th>
                                 <th scope="col">supplier co. Name</th>
                                 <th scope="col">Sharing master id</th>
-                                <th scope="col">Posted supplier profit</th>
-                                <th scope="col">Posted seller profit</th>
+                                <th scope="col" class="text-right">Posted supplier profit</th>
+                                <th scope="col" class="text-right">Posted seller profit</th>
                                 <th scope="col">Manual</th>
                             </tr>
                         </thead>
                         <tbody class="table-fixed">
                             {{#each data}}
                                 <tr>
-                                    <td >{{index_modivied @index}}</td>
-                                    <td >{{this.transaction_id}}</td>
-                                    <td >{{this.sellingName}}</td>
-                                    <td >{{this.supplyingName}}</td>
-                                    <td >{{this.sharing_master_id}}</td>
-                                    <td >{{this.posted_supplier_profit}}</td>
-                                    <td >{{this.posted_seller_profit}}</td>
+                                    <td onclick="fetchdetail('{{this.id}}')">{{index_modivied @index}}</td>
+                                    <td onclick="fetchdetail('{{this.id}}')">{{this.transaction_id}}</td>
+                                    <td onclick="fetchdetail('{{this.id}}')">{{this.sellingName}}</td>
+                                    <td onclick="fetchdetail('{{this.id}}')">{{this.supplyingName}}</td>
+                                    <td onclick="fetchdetail('{{this.id}}')">{{this.sharing_master_id}}</td>
+                                    <td onclick="fetchdetail('{{this.id}}')" class="text-right">{{this.posted_supplier_profit}}</td>
+                                    <td onclick="fetchdetail('{{this.id}}')" class="text-right">{{this.posted_seller_profit}}</td>
                                     <td class="text-center">
                                         <button type="button" onclick="editITEM('{{this.id}}')" class="btn btn-danger actn" data-toggle="modal" data-target="#del"><i class="fa fa-pencil-alt"></i></button>
                                     </td>
@@ -60,7 +60,50 @@
         
 
             
+            <!-- The Modal -->
+    <div class="modal fade" id="vdetailsFetched">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
             
+                <!-- Modal Header -->
+                <div class="modal-header">
+                <h4 class="modal-title">Booking Details</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="details">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="">Txn Number : <span  id="txn-number"></span></h6>
+                                <h6 class="">Txn Date : <span  id="txn-date"></span></h6>
+                                <h6 class="">Lead Passenger Name : <span  id="lead-passenger-name"></span></h6>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="">Invoice Currency : <span  id="invoice-currency"></span></h6>
+                                <h6 class="">Invoice Amount : <span  id="invoice-amount"></span></h6>
+                                <h6 class="">Travel Agent Name : <span  id="travel-agent-name"></span></h6>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="" id="table-data-depend">
+
+                    </div>
+                    
+                    
+           
+                </div>
+                
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
             
 
 
@@ -87,6 +130,44 @@
                window.location = "/vprofitsharing/edit/"+idI;
             }
 
+
+                function fetchdetail(id){
+                    $.ajax({
+                        type: "POST",
+                        url: "/vprofitsharing/"+id,
+                        data: {
+                            id:id
+                        },
+                        crossDomain:true,
+                        success: function (data) {
+                            console.log(data);
+                            $("#txn-number").html(data[0].RA_REFERENCE);
+                            $("#txn-date").html(formateDate(data[0].INVOICE_DATE));
+                            $("#invoice-currency").html(data[0].INVOICE_CURRENCY);
+                            $("#invoice-amount").html(data[0].COMPONENTS_WISE_SELLING_COST);
+                            $("#lead-passenger-name").html(data[0].LEAD_PASSENGER);
+                            $("#travel-agent-name").html(data[0].PER_SERVICE_WISE_SUPPLIER_NAME);
+                            if(data[0].SERVICE_CATEGORY=='hotel'){
+                                $("#table-data-depend").html('<table class="table table-sm"><thead><tr><th scope="col">No</th><th scope="col">Room category</th><th scope="col">Per service wise supplier name</th><th scope="col">No of rooms</th><th scope="col">No of nights</th></tr></thead><tbody id="vdbody1"></tbody></table>');
+                                $("#vdbody1").html('<tr><td>1</td><td>'+data[0].ROOM_CATEGORY+'</td><td>'+data[0].PER_SERVICE_WISE_SUPPLIER_NAME+'</td><td>'+data[0].NO_OF_ROOMS+'</td><td>'+data[0].NO_OF_NIGHTS+'</td></td>')
+                            }
+                            $("#vdetailsFetched").modal("show");                           
+                        },
+                        error: function (xhr, status, error) {
+                            swal("Error", "Error detching details", "error");
+                        }
+                    });
+                }
+
+
+                function formateDate(d){
+                    var date = new Date(d);
+                    console.log(date);
+                    var y = date.getFullYear();
+                    var m = date.getMonth()+1;
+                    var d = date.getDate();
+                    return String(d)+"-"+String(m)+"-"+String(y);
+                }
 
         </script>
     </body>

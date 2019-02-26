@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
 var sequelize = require('../services/conn');
 var createError = require('http-errors');
 var vprofitsharing =require("../modals/vprofitsharing").vprofitsharing;
-
+var bookingmaster = require('../modals/bookingmaster').bookingmaster;
 
 router.get('/',(req,res,next)=>{
     /*vprofitsharing.findAll({
@@ -89,5 +89,45 @@ router.post("/edit",(req,res,next)=>{
 
 
 
+
+
+
+
+
+function categorise(d){
+    return new Promise(function(resolve,reject){
+        var res={};
+        var hotel=[];
+        var transport=[];
+        var other=[];
+        d.forEach(function(ele,i){
+            var element= ele.dataValues;
+            if(element.SERVICE_CATEGORY=='hotel'){
+                hotel.push(element);
+            }
+            else if(element.SERVICE_CATEGORY=='transfer'){
+                transport.push(element);
+            }
+            else{
+                other.push(element)
+            }
+            if(i==hotel.length+transport.length+other.length-1){
+                res.hotel=hotel;
+                res.transport=transport;
+                res.other=other;
+                return resolve(res);
+            }
+        })
+    });
+}
+
+router.post("/:id",(req,res,next)=>{
+    var id = req.params.id;
+    sequelize.query("SELECT vprofitsharing.*,bookingmaster.* FROM vprofitsharing INNER JOIN `bookingmaster` ON vprofitsharing.transaction_id=bookingmaster.id WHERE vprofitsharing.id="+id ).then((result1)=>{
+        console.log(result1[0]);
+        res.send(result1[0]);
+    })
+
+});
 
 module.exports=router;

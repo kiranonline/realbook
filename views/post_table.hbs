@@ -63,7 +63,7 @@
                                 <th scope="col">GST IN</th>-->
                                 <th scope="col">PARTY NAME</th>
                                 <th scope="col">CURRENCY</th>
-                                <th scope="col">PARTY AMOUNT</th>
+                                <th scope="col" class="text-right">PARTY AMOUNT</th>
                                 <th scope="col">COMPANY NAME</th>
                                 <!--<th scope="col">SEG ID</th>-->
                                 <th scope="col">SYNCHRONIZATION</th>
@@ -95,7 +95,7 @@
                                     <td>{{this.gstin}}</td>-->
                                     <td onclick="fetchVdetail('{{this.id}}')">{{this.partyName}}</td>
                                     <td onclick="fetchVdetail('{{this.id}}')">{{this.currencySymbol}}</td>
-                                    <td onclick="fetchVdetail('{{this.id}}')">{{greater this.partyCr this.partyDr}}</td>
+                                    <td onclick="fetchVdetail('{{this.id}}')" class="text-right">{{greater this.partyCr this.partyDr}}</td>
                                     <td onclick="fetchVdetail('{{this.id}}')">{{this.name}}</td>
                                     <!--<td>{{this.segid}}</td>-->
                                     <td class="text-center">
