@@ -144,9 +144,9 @@ const sharingmaster = sequelize.define('sharingmaster', {
         type:Sequelize.DECIMAL(10, 2),
         allowNull: true
     },
-    currency_id:{
-        type:Sequelize.INTEGER,
-        allowNull:false,
+    post_final_purchase_entry:{
+        type:Sequelize.STRING,
+        allowNull: true
     },
     createdAt: Sequelize.DATE,
     updatedAt: Sequelize.DATE,
