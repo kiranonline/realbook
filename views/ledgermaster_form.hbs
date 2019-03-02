@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <!--<link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />-->
     <link rel="stylesheet" href="/datepicker/css/bootstrap-datepicker.standalone.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/ledgermaster/stylesheets/index.css">
     <title>Form</title>
   </head>
@@ -56,12 +57,20 @@
                         <div class="form-group">
                                 <label for="ledger_nature">Ledger nature</label>
                                 <select class="form-control form-control-sm" name="ledger_nature" id="ledger_nature">
-                                    <option value="party">party</option>
+                                    <option value="party-customer">party : customer</option>
+                                     <option value="party-vendor">party : vendor</option>
                                     <option value="tax">tax</option>
                                     <option value="income">income</option>
                                     <option value="expense">expense</option>
                                     <option value="liability">liability</option>
                                     <option value="asset">asset</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" id="country_h">
+                                <label id="nn" for="country">Country</label>
+                                <select class="form-control form-control-sm" name="c_v_name" id="country">
+                                    
                                 </select>
                             </div>
 
@@ -135,6 +144,7 @@
     <!--datepicker-->
     <!--<script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>-->
     <script src="/datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script src="/ledgermaster/javascripts/index.js" type="text/javascript"></script>
 
     <script>
@@ -160,6 +170,74 @@
             });
         }
 
+        function getVendor(ii){
+            return new Promise(function(resolve,reject){
+                console.log("I am called");
+                $("#nn").text("Vendor");
+                $('.loader-container').css('display','block');
+                $.ajax({
+                    url:"get/vendor",
+                    type:"GET",
+                    success:function(data){
+                        console.log(data);
+                        $("#country").html("");
+                        $("#country").select2({    
+                            data:$.map(data,function(n,i){
+                                return({
+                                    text: n.supplier_display_name,
+                                    id: n.id
+                                });
+                            })
+                                            
+                        }).val(ii);
+                        $("#country").trigger('change');
+                        $('.loader-container').css('display','none');
+                        return resolve();
+                    },
+                    error:function(err){
+                        console.log(err);
+                        return reject();
+                    }
+                });
+            });
+
+        }
+
+
+         function getCustomer(ii){
+             return new Promise(function(resolve,reject){
+                console.log("I am called");
+                $("#nn").text("Vendor");
+                $('.loader-container').css('display','block');
+                $.ajax({
+                    url:"get/customer",
+                    type:"GET",
+                    success:function(data){
+                        console.log(data);
+                        $("#country").html("");
+                        $("#country").select2({    
+                            data:$.map(data,function(n,i){
+                                return({
+                                    text: n.customer_name,
+                                    id: n.id
+                                });
+                            })
+                                            
+                        }).val(ii);
+                        $("#country").trigger('change');
+                        $('.loader-container').css('display','none');
+                        return resolve();
+                    },
+                    error:function(err){
+                        console.log(err)
+                        return reject();
+                    }
+                });
+             })
+            
+
+        }
+
         //gettaxname($('#tax_group'));
 
         $(document).ready(function () {
@@ -177,6 +255,7 @@
                 $("#tax_group_h").html('<label for="tax_group">Tax group</label><select class="form-control form-control-sm" name="tax_group" id="tax_group" onchange="gettaxname(self)">{{#each tax_group}}<option value="{{this.id}}">{{this.name}}</option>{{/each}}</select>');
                 $("#tax_name_h").html('<label for="tax_name">Tax name</label><select class="form-control form-control-sm" name="tax_name" id="tax_name"></select>');
                 $("#rate_h").html('<label for="rate">Rate</label><input class="form-control form-control-sm" id="rate" name="rate" value="{{rate}}" placeholder="rate" >');
+                $("#country_h").html('<label for="country">Country</label><select class="form-control form-control-sm" name="c_v_name" id="country"></select>');
                 $("#tax-link").show();
                 if(nature=="tax"){
                     gettaxname($('#tax_group option:selected').val());
@@ -189,13 +268,48 @@
                     {{/if}}
                     $("#sac_code_h").empty();
                     $("#tax-link").hide();
+                    $("#country_h").empty();
                 }
                 else if(nature=="income" || nature=="expense"){
                     $("#tax_group_h").empty();
                     $("#tax_name_h").empty();
                     $("#rate_h").empty();
+                    $("#country_h").empty();
                 }
-                else if(nature=="party"){
+                else if(nature=="party-customer"){
+                    
+                    {{#if editable}}
+                    getCustomer("{{e_customerid}}").then(function(){
+                        $('#country > option').each(function() {
+                            if($(this).val()=='{{e_customerid}}'){
+                                $(this).attr("selected","selected");
+                            };
+                        });
+                    })
+                     
+                    {{else}}
+                        getCustomer('1');
+                    {{/if}}
+                    $("#sac_code_h").empty();
+                    $("#tax_group_h").empty();
+                    $("#tax_name_h").empty();
+                    $("#rate_h").empty();
+                    $("#tax-link").hide();
+                }
+                else if(nature=="party-vendor"){
+                    
+                    {{#if editable}}
+                    getVendor("{{e_supplierid}}").then(function(){
+                        $('#country > option').each(function() {
+                            if($(this).val()=='{{e_supplierid}}'){
+                                $(this).attr("selected","selected");
+                            };
+                        });
+                    })
+                     
+                    {{else}}
+                        getVendor('1');
+                    {{/if}}
                     $("#sac_code_h").empty();
                     $("#tax_group_h").empty();
                     $("#tax_name_h").empty();
@@ -209,6 +323,10 @@
                     $("#tax_name_h").empty();
                     $("#rate_h").empty();
                     $("#tax-link").hide();
+                    $("#country_h").empty();
+                }
+                else{
+                    
                 }
             }
             {{#if editable}}
@@ -237,11 +355,18 @@
                 choose("{{e_ledger_nature}}");
         
             {{else}}
-                choose("party");
+                choose("party-customer");
             {{/if}}
             
 
         });
+
+
+
+
+
+        
+    
         
     </script>
 </body>

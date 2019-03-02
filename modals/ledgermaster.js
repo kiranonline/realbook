@@ -13,7 +13,7 @@ const ledgermaster = sequelize.define('ledgermaster', {
         type:Sequelize.STRING,
         allowNull: false,
         validate:{
-            isIn: [['party','tax','income','expense','liability','asset']]
+            isIn: [['party-customer','party-vendor','tax','income','expense','liability','asset']]
         }
     },
     rlb_ledger_id:{
@@ -88,6 +88,18 @@ const ledgermaster = sequelize.define('ledgermaster', {
         type:Sequelize.INTEGER,
         allowNull:false,
         defaultValue:0
+    },
+    customerid:{
+        type:Sequelize.INTEGER,
+        allowNull:true
+    },
+    supplierid:{
+        type:Sequelize.INTEGER,
+        allowNull:true
+    },
+    flag:{
+        type:Sequelize.STRING,
+        allowNull:true
     },
     createdAt: Sequelize.DATE,
     updatedAt: Sequelize.DATE,

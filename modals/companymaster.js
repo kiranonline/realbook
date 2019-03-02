@@ -15,6 +15,14 @@ const company_master = sequelize.define('company_master', {
     rlb_cid:{
         type:Sequelize.INTEGER,
     },
+    currency:{
+        type: Sequelize.STRING(45),
+        allowNull:true
+    },
+    is_supplier:{
+        type:Sequelize.INTEGER,
+        defaultValue:1
+    },
     createdAt: Sequelize.DATE,
     updatedAt: Sequelize.DATE,
 },{

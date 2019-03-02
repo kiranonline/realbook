@@ -141,16 +141,27 @@
             
                 <!-- Modal Header -->
                 <div class="modal-header">
-                <h4 class="modal-title">Booking Details</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    
+                    <div class="row">
+                        <div class="col-md-5">
+                            <h4 class="modal-title">Booking Details</h4>
+                        </div>
+                        <div class="col-md-3">
+                            <h5 style="float:right">Fetched On : <span class="fetched"></span></h5>
+                        </div>
+                        <div class="col-md-3">
+                            <h5 style="float:right">Operated On : <span class="operated"></span></h5>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        
+                    </div>
+                
                 </div>
                 
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <div class="details" style="float:right">
-                        <h5>Fetched On : <span class="fetched"></span></h5>
-                        <h5>Operated On : <span class="operated"></span></h5>
-                    </div>
                     <ul class="nav nav-tabs">
                         <li class="active"><a data-toggle="tab" href="#hotel">Hotel</a></li>
                         <li><a data-toggle="tab" href="#transportation">Transportation</a></li>

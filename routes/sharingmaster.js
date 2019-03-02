@@ -3,7 +3,7 @@ var router = express.Router();
 var sequelize = require('../services/conn');
 var createError = require('http-errors');
 var modals = require('../modals/sharingmaster');
-
+var company_master = require("../modals/companymaster").company_master;
 
 
 
@@ -12,12 +12,14 @@ var modals = require('../modals/sharingmaster');
 
 
 /* GET selling company. */
+/*
 router.get('/new/sellingcompany', (req, res, next) =>{
   res.render('newSellingCompany');
 });
 
 
 //POST selling company
+
 router.post('/new/sellingcompany',(req,res,next)=>{
 
     var data = modals.sellingcompany.build({
@@ -31,6 +33,7 @@ router.post('/new/sellingcompany',(req,res,next)=>{
     });       
 });
 
+*/
 
 
 
@@ -41,8 +44,7 @@ router.post('/new/sellingcompany',(req,res,next)=>{
 
 
 
-
-/* GET supplying company. */
+/* GET supplying company. 
 router.get('/new/supplyingcompany', (req, res, next) =>{
     modals.sellingcompany.findAll({
         attributes: ['id', 'name']
@@ -88,7 +90,7 @@ router.post('/new/supplyingcompany',(req,res,next)=>{
 
 
 
-
+*/
 
   
 
@@ -142,7 +144,11 @@ router.get('/form', function(req, res, next) {
     var errText = req.query.errText;  
     var msg = req.query.msg || false;
     var msgText = req.query.msgText;
-    var p1 = modals.sellingcompany.findAll();
+    var p1 = company_master.findAll({
+      where:{
+        is_supplier:0
+      }
+    });
     var p2 =  modals.component.findAll();
     Promise.all([p1,p2]).then((values)=>{  
       if(id!=null){
@@ -194,9 +200,9 @@ router.get('/form', function(req, res, next) {
   
   //get supplying company list 
 router.post('/api/supplyingcompany',(req,res,next)=>{
-    modals.supplyingcompany.findAll({
+  company_master.findAll({
       where:{
-          selling_id:req.body.sellingcompanyid
+        is_supplier:1
       }
   }).then((result)=>{
     res.send(result);
@@ -231,12 +237,12 @@ router.post('/form',(req,res,next)=>{
       var value2 =null; 
     }
     
-    var p1 = modals.sellingcompany.findAll({
+    var p1 = company_master.findAll({
       where:{
           id:sellingID
       }
     });
-    var p2 = modals.supplyingcompany.findAll({
+    var p2 = company_master.findAll({
       where:{
           id:supplyID
       }
@@ -344,8 +350,11 @@ router.get('/data/:supplyingID/:componentID',(req,res,next)=>{
           component_id:componentID
       }
     });
-    var p2 = modals.supplyingcompany.findAll({
-      attributes: ['id', 'name']
+    var p2 =company_master.findAll({
+      attributes: ['id', 'name'],
+      where:{
+        is_supplier:1
+      }
     });
     var p3 = modals.component.findAll({
       attributes: ['id', 'name']

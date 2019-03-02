@@ -29,6 +29,7 @@
     "nodemon": "^1.18.9",
     "request": "^2.88.0",
     "sequelize": "^4.42.0",
+    "serve-favicon": "^2.5.0",
     "uniqid": "^5.0.3"
   },
   "repository": {

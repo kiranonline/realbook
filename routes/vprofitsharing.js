@@ -5,6 +5,8 @@ var sequelize = require('../services/conn');
 var createError = require('http-errors');
 var vprofitsharing =require("../modals/vprofitsharing").vprofitsharing;
 var bookingmaster = require('../modals/bookingmaster').bookingmaster;
+var company_master = require("../modals/companymaster").company_master;
+
 
 router.get('/',(req,res,next)=>{
     /*vprofitsharing.findAll({
@@ -15,7 +17,8 @@ router.get('/',(req,res,next)=>{
     }).catch((error)=>{
         next(createError(500));
     })*/
-    var p2 = sequelize.query("SELECT vprofitsharing.*,bookingmaster.RA_REFERENCE,sharingmaster.rule,sellingcompany.name AS sellingName,supplyingcompany.name AS supplyingName FROM vprofitsharing INNER JOIN `sellingcompany` ON vprofitsharing.seller_co_id=sellingcompany.id INNER JOIN `supplyingcompany` ON vprofitsharing.supplier_co_id=supplyingcompany.id INNER JOIN `bookingmaster` ON vprofitsharing.transaction_id=bookingmaster.id INNER JOIN `sharingmaster` ON vprofitsharing.sharing_master_id=sharingmaster.id");
+    //var p2 = sequelize.query("SELECT vprofitsharing.*,bookingmaster.RA_REFERENCE,sharingmaster.rule,sellingcompany.name AS sellingName,supplyingcompany.name AS supplyingName FROM vprofitsharing INNER JOIN `sellingcompany` ON vprofitsharing.seller_co_id=sellingcompany.id INNER JOIN `supplyingcompany` ON vprofitsharing.supplier_co_id=supplyingcompany.id INNER JOIN `bookingmaster` ON vprofitsharing.transaction_id=bookingmaster.id INNER JOIN `sharingmaster` ON vprofitsharing.sharing_master_id=sharingmaster.id");
+    var p2 = sequelize.query("SELECT vprofitsharing.*,bookingmaster.RA_REFERENCE,sharingmaster.rule,company_master.name AS sellingName,company_master.name AS supplyingName FROM vprofitsharing INNER JOIN `company_master` ON (vprofitsharing.seller_co_id=company_master.id AND is_supplier='0') INNER JOIN `company_master` ON (vprofitsharing.supplier_co_id=company_master.id AND is_supplier='1') INNER JOIN `bookingmaster` ON vprofitsharing.transaction_id=bookingmaster.id INNER JOIN `sharingmaster` ON vprofitsharing.sharing_master_id=sharingmaster.id");
     Promise.all([p2]).then((result1)=>{
         console.log(result1[0][0])
         res.render('vprofitsharingmaster',{layout:false,data:result1[0][0]})

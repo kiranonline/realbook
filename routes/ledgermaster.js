@@ -8,8 +8,8 @@ var modals1 = require('../modals/ledgermaster');
 var modals2 = require('../modals/taxmaster');
 var modals3 = require('../modals/ledgertaxlink');
 const Op = Sequelize.Op;
-
-
+var suppliermaster = require("../modals/suppliermaster").suppliermaster;
+var customermaster = require("../modals/customermaster").customermaster;
 
 
 //get form
@@ -52,6 +52,8 @@ router.get('/form', function(req, res, next) {
                         sac_code:result2[0][0].sac_code,
                         e_tax_name:result2[0][0].tax_name,
                         e_tax_group:result2[0][0].tax_group,
+                        e_customerid:result2[0][0].customerid,
+                        e_supplierid:result2[0][0].supplierid,
                         rate:result2[0][0].rate,
                         editable:true,
                         isTasxDone:result2[0][0].isTasxDone,
@@ -87,6 +89,35 @@ router.post('/get/taxname',(req,res,next)=>{
 });
 
 
+router.get('/get/customer',(req,res,next)=>{
+    var p1= sequelize.query("SELECT * FROM customermaster");
+    Promise.all([p1]).then((results)=>{
+        res.send(results[0][1]);
+    }).catch((err)=>{
+        res.status(500).send(err);
+    })
+})
+
+router.get('/get/vendor',(req,res,next)=>{
+    var p1= sequelize.query("SELECT * FROM suppliermaster");
+    Promise.all([p1]).then((results)=>{
+        res.send(results[0][1]);
+    }).catch((err)=>{
+        res.status(500).send(err);
+    })
+})
+
+
+
+
+
+
+
+
+
+
+
+
 
 //post
 router.post('/form',(req,res,next)=>{
@@ -99,18 +130,51 @@ router.post('/form',(req,res,next)=>{
     var tax_group = req.body.tax_group || null;
     var tax_name = req.body.tax_name || null;
     var rate = req.body.rate || null;
+    var c_v_name = req.body.c_v_name || null;
+    console.log(c_v_name);
     var backto =  req.body.backto || null;
     if(ID==null){
-        var tempdata = modals1.ledgermaster.build({
-            ledger_nature : ledger_nature,
-            ledger_name : ledger_name,
-            ledger_code : ledger_code,
-            ledger_group : ledger_group,
-            sac_code : sac_code,
-            tax_group : tax_group,
-            tax_name : tax_name,
-            rate : rate
-        });
+        var tempdata=null;
+        if(ledger_nature=='party-customer'){
+            tempdata = modals1.ledgermaster.build({
+                ledger_nature : ledger_nature,
+                ledger_name : ledger_name,
+                ledger_code : ledger_code,
+                ledger_group : ledger_group,
+                sac_code : sac_code,
+                tax_group : tax_group,
+                tax_name : tax_name,
+                rate : rate,
+                customerid:c_v_name,
+                flag:'customer'
+            });
+        }
+        else if(ledger_nature=='party-vendor'){
+            tempdata = modals1.ledgermaster.build({
+                ledger_nature : ledger_nature,
+                ledger_name : ledger_name,
+                ledger_code : ledger_code,
+                ledger_group : ledger_group,
+                sac_code : sac_code,
+                tax_group : tax_group,
+                tax_name : tax_name,
+                rate : rate,
+                supplierid:c_v_name,
+                flag:'supplier'
+            });
+        }
+        else{
+            tempdata = modals1.ledgermaster.build({
+                ledger_nature : ledger_nature,
+                ledger_name : ledger_name,
+                ledger_code : ledger_code,
+                ledger_group : ledger_group,
+                sac_code : sac_code,
+                tax_group : tax_group,
+                tax_name : tax_name,
+                rate : rate
+            });
+        }
         tempdata.save().then(()=>{
             if(backto != null){
                 res.redirect(backto);
@@ -128,20 +192,58 @@ router.post('/form',(req,res,next)=>{
               id:ID
             }
         }).then((result2)=>{
-            result2[0].update({
-                ledger_nature : ledger_nature,
-                ledger_name : ledger_name,
-                ledger_code : ledger_code,
-                ledger_group : ledger_group,
-                sac_code : sac_code,
-                tax_group : tax_group,
-                tax_name : tax_name,
-                rate : rate
-            }).then(()=>{
-                res.redirect('/ledgermaster/form?msg=true&msgText=Data updated&id='+ID);
-            }).catch((qerror3)=>{
-                next(createError(550,qerror3));
-              });
+            if(ledger_nature=='party-customer'){
+                result2[0].update({
+                    ledger_nature : ledger_nature,
+                    ledger_name : ledger_name,
+                    ledger_code : ledger_code,
+                    ledger_group : ledger_group,
+                    sac_code : sac_code,
+                    tax_group : tax_group,
+                    tax_name : tax_name,
+                    rate : rate,
+                    customerid:c_v_name,
+                    flag:'customer'
+                }).then(()=>{
+                    res.redirect('/ledgermaster/form?msg=true&msgText=Data updated&id='+ID);
+                }).catch((qerror3)=>{
+                    next(createError(550,qerror3));
+                });
+            }
+            else if(ledger_nature=='party-vendor'){
+                result2[0].update({
+                    ledger_nature : ledger_nature,
+                    ledger_name : ledger_name,
+                    ledger_code : ledger_code,
+                    ledger_group : ledger_group,
+                    sac_code : sac_code,
+                    tax_group : tax_group,
+                    tax_name : tax_name,
+                    supplierid:c_v_name,
+                    flag:'supplier'
+                }).then(()=>{
+                    res.redirect('/ledgermaster/form?msg=true&msgText=Data updated&id='+ID);
+                }).catch((qerror3)=>{
+                    next(createError(550,qerror3));
+                });
+            }
+            else{
+                result2[0].update({
+                    ledger_nature : ledger_nature,
+                    ledger_name : ledger_name,
+                    ledger_code : ledger_code,
+                    ledger_group : ledger_group,
+                    sac_code : sac_code,
+                    tax_group : tax_group,
+                    tax_name : tax_name,
+                    rate : rate
+                }).then(()=>{
+                    res.redirect('/ledgermaster/form?msg=true&msgText=Data updated&id='+ID);
+                }).catch((qerror3)=>{
+                    next(createError(550,qerror3));
+                });
+            }
+            
         }).catch((qerror2=>{
             next(createError(550,qerror2));
         }));

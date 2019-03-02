@@ -5,6 +5,10 @@ var sequelize = require('../services/conn');
 var model1 = require('../modals/bookingmaster');
 var createError = require('http-errors');
 var request = require('request');
+var fileupload = require('../modals/fileUpload').fileupload;
+
+
+
 
 router.get('/fetch',(req,res,next)=>{
     var id = req.query.id || 152395;

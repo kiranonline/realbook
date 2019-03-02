@@ -283,4 +283,50 @@ function push2(data,action){
 }
 
 
-module.exports={ led1,vbill1,vtax1,vcc1,push1,dd,prepareItem,push2 }
+
+function push3(data,action){
+    return new Promise((resolve,reject)=>{
+        //console.log("2");
+        var url;
+        if(action=='update'){
+            url='http://api.realbooks.in/AMSSERVICE/api/accv/v2/psvupdate/1349/1349';
+            
+            
+        }
+        else{
+            url = 'http://api.realbooks.in/AMSSERVICE/api/accv/v2/psvcreate/1349/1349';
+        }
+        console.log(url);
+        request.post({
+            url: url,
+            headers: {
+                'accountName': 'apichk'
+            },            
+            json:{
+                accessKey : "U76GHF498HNMR345",
+                secretKey : "U76GHF498HNMR345",
+                emailid :  "noreply@realbooks.in",
+                json_obj : data
+            }
+        },
+        (err, res, body)=> {
+            if(err){
+                console.log(err);
+                return reject(err);
+            }
+            else{
+                console.log(body);
+                if(body.type=='error'){
+                    return reject(body);
+                }
+                else{
+                    return resolve(body);
+                }
+                
+            }
+        });
+    });
+}
+
+
+module.exports={ led1,vbill1,vtax1,vcc1,push1,dd,prepareItem,push2,push3 }
