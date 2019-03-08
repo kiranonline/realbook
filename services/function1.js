@@ -202,6 +202,7 @@ function prepareItem(vid){
         Promise.all([p1]).then((results)=>{
             var tmpr= results[0][1];
             tmpr.forEach((curvalue,i)=>{
+                console.log("sorry");
                 var v= {};
                 v.itemAmount=curvalue.itemAmount;
                 v.itemName=curvalue.itemName;

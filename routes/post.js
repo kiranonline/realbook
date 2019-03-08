@@ -100,7 +100,7 @@ router.post('/',(req,res,next)=>{
         let f= result1[0].dataValues;
         var type_module=f.module;
         delete f['module'];
-        if(type_module=='inv'){
+        if(type_module=='so' || type_module=='po'){
             //inv
             /*
             f.gstParty={
@@ -145,12 +145,12 @@ router.post('/',(req,res,next)=>{
                             delete element['cr'];
                         }
                         var p1 = ser1.led1(Lid);
-                        var p2 = ser1.vbill1(id,vid);
+                        //var p2 = ser1.vbill1(id,vid);
                         var p3 = ser1.vtax1(id,vid);
                         var p4 = ser1.vcc1(id,vid);
-                        Promise.all([p1,p2,p3,p4]).then((values)=>{
+                        Promise.all([p1,p3,p4]).then((values)=>{
                             element.ledger=values[0];
-                            element.bill=values[1];
+                            //element.bill=values[1];
                             element.taxLedger=values[2];
                             element.costCenter=values[3];
                             ledgerDetails.push(element);

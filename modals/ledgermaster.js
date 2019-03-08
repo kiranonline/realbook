@@ -89,15 +89,15 @@ const ledgermaster = sequelize.define('ledgermaster', {
         allowNull:false,
         defaultValue:0
     },
-    customerid:{
+    customer_id:{
         type:Sequelize.INTEGER,
         allowNull:true
     },
-    supplierid:{
+    supplier_id:{
         type:Sequelize.INTEGER,
         allowNull:true
     },
-    flag:{
+    party_flag:{
         type:Sequelize.STRING,
         allowNull:true
     },

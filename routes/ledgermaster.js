@@ -52,8 +52,8 @@ router.get('/form', function(req, res, next) {
                         sac_code:result2[0][0].sac_code,
                         e_tax_name:result2[0][0].tax_name,
                         e_tax_group:result2[0][0].tax_group,
-                        e_customerid:result2[0][0].customerid,
-                        e_supplierid:result2[0][0].supplierid,
+                        e_customerid:result2[0][0].customer_id,
+                        e_supplierid:result2[0][0].supplier_id,
                         rate:result2[0][0].rate,
                         editable:true,
                         isTasxDone:result2[0][0].isTasxDone,
@@ -145,8 +145,8 @@ router.post('/form',(req,res,next)=>{
                 tax_group : tax_group,
                 tax_name : tax_name,
                 rate : rate,
-                customerid:c_v_name,
-                flag:'customer'
+                customer_id:c_v_name,
+                party_flag:'customer'
             });
         }
         else if(ledger_nature=='party-vendor'){
@@ -159,8 +159,8 @@ router.post('/form',(req,res,next)=>{
                 tax_group : tax_group,
                 tax_name : tax_name,
                 rate : rate,
-                supplierid:c_v_name,
-                flag:'supplier'
+                supplier_id:c_v_name,
+                party_flag:'supplier'
             });
         }
         else{
@@ -202,8 +202,8 @@ router.post('/form',(req,res,next)=>{
                     tax_group : tax_group,
                     tax_name : tax_name,
                     rate : rate,
-                    customerid:c_v_name,
-                    flag:'customer'
+                    customer_id:c_v_name,
+                    party_flag:'customer'
                 }).then(()=>{
                     res.redirect('/ledgermaster/form?msg=true&msgText=Data updated&id='+ID);
                 }).catch((qerror3)=>{
@@ -219,8 +219,8 @@ router.post('/form',(req,res,next)=>{
                     sac_code : sac_code,
                     tax_group : tax_group,
                     tax_name : tax_name,
-                    supplierid:c_v_name,
-                    flag:'supplier'
+                    supplier_id:c_v_name,
+                    party_flag:'supplier'
                 }).then(()=>{
                     res.redirect('/ledgermaster/form?msg=true&msgText=Data updated&id='+ID);
                 }).catch((qerror3)=>{

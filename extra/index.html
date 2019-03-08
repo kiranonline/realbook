@@ -1,0 +1,428 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,700" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css"
+        rel="stylesheet">
+    <link href="https://unpkg.com/ionicons@4.2.2/dist/css/ionicons.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+            line-height: 1.15;
+            font-size: 15px;
+            overflow-x: hidden;
+        }
+
+        header {
+            height: 85px;
+            background-color: #f7f8f6;
+            text-align: center;
+        }
+
+        header h3 {
+            color: #1a1a1a;
+            line-height: 80px;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p {
+            margin: 0;
+        }
+
+        main {
+            background-color: #fff;
+            padding: 35px 85px 85px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+        .modal-header{
+            border: 0px;
+            background-color: #f7f8f6;
+            padding: 2rem 1rem 0;
+        }
+        .modal-footer{
+            border: 0px;
+            background-color: #f7f8f6;
+        }
+        .nav-tabs{
+            border: 0px;
+        }
+        .nav-tabs .nav-link{
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            padding: 1rem;
+            border: 0;
+        }
+        .nav-tabs .nav-link:hover{
+            background: transparent;
+            border: 0px;
+        }
+        .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
+            border: 0px;
+            color: #1a1a1a;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container-fluid">
+            <div class="col-auto m-auto">
+                <h3>Booking Entry</h3>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="">SBU</label>
+                        <input type="text" class="form-control" id="" placeholder="">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="">Agent Name ( RA Agents )</label>
+                        <input type="text" class="form-control" id="" placeholder="">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="">Booking Reference ( RA File Handler )</label>
+                        <input type="text" class="form-control" id="" placeholder="">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="">Lead Passenger</label>
+                        <input type="text" class="form-control" id="" placeholder="">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="">Check In</label>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="" placeholder="" data-provide="datepicker">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="">Check Out</label>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="" placeholder="" data-provide="datepicker">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="">Invoice Date</label>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="" placeholder="" data-provide="datepicker">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="">Invoice Number</label>
+                        <input type="text" class="form-control" id="" placeholder="">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="">Invoice Currency</label>
+                        <input type="text" class="form-control" id="" placeholder="">
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-end">
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="">Service Category</label>
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="">Product Name</label>
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="">Service Country</label>
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="">File Service Supplier Code</label>
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="">Amounts<br><small>Component Wise Selling Cost</small></label>
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                        <input type="text" class="form-control mb-4" id="" placeholder="">
+                    </div>
+                </div>
+                <div class="col-auto align-self-center mt-5">
+                    <div class="form-action-group d-flex align-items-center justify-content-between mb-4">
+                        <button type="button" class="btn btn-light mr-2" data-toggle="modal" data-target="#exampleModalCenter"><i
+                                class="ion ion-ios-more text-dark"></i></button>
+                        <button type="button" class="btn btn-light mr-2"><i
+                                class="ion ion-md-add text-primary"></i></button>
+                        <button type="button" class="btn btn-light"><i
+                                class="ion ion-ios-trash text-danger"></i></button>
+                    </div>
+                    <div class="form-action-group d-flex align-items-center justify-content-between mb-4">
+                        <button type="button" class="btn btn-light mr-2" data-toggle="modal" data-target="#exampleModalCenter"><i
+                                class="ion ion-ios-more text-dark"></i></button>
+                        <button type="button" class="btn btn-light mr-2"><i
+                                class="ion ion-md-add text-primary"></i></button>
+                        <button type="button" class="btn btn-light"><i
+                                class="ion ion-ios-trash text-danger"></i></button>
+                    </div>
+                    <div class="form-action-group d-flex align-items-center justify-content-between mb-4">
+                        <button type="button" class="btn btn-light mr-2" data-toggle="modal" data-target="#exampleModalCenter"><i
+                                class="ion ion-ios-more text-dark"></i></button>
+                        <button type="button" class="btn btn-light mr-2"><i
+                                class="ion ion-md-add text-primary"></i></button>
+                        <button type="button" class="btn btn-light"><i
+                                class="ion ion-ios-trash text-danger"></i></button>
+                    </div>
+                    <div class="form-action-group d-flex align-items-center justify-content-between mb-4">
+                        <button type="button" class="btn btn-light mr-2" data-toggle="modal" data-target="#exampleModalCenter"><i
+                                class="ion ion-ios-more text-dark"></i></button>
+                        <button type="button" class="btn btn-light mr-2"><i
+                                class="ion ion-md-add text-primary"></i></button>
+                        <button type="button" class="btn btn-light"><i
+                                class="ion ion-ios-trash text-danger"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-10">
+                    <div class="form-group row">
+                        <label for="" class="ml-auto col-auto col-form-label">Total In Amounts</label>
+                        <div class="col-2">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="ml-auto col-auto col-form-label">Total Tax Calculation</label>
+                        <div class="col-2">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 100%; height: 150px;"></div>
+            <div class="row align-items-end">
+                <div class="col-6">
+                    <div class="form-group mb-0">
+                        <label for="exampleFormControlTextarea1">Booking Note</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"
+                            style="resize: none;"></textarea>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group mb-0">
+                        <label for="exampleFormControlFile1">File Upload</label>
+                        <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                    </div>
+                </div>
+                <div class="col-1 text-right">
+                    <button type="submit" class="btn btn-primary w-100">Save</button>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="supplier-tab" data-toggle="tab" href="#supplier" role="tab" aria-controls="supplier" aria-selected="true">Supplier Details</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="accomodation-tab" data-toggle="tab" href="#accomodation" role="tab" aria-controls="accomodation" aria-selected="false">Accomodation Details</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="modal-body">
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="supplier" role="tabpanel" aria-labelledby="supplier-tab">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="">Service City</label>
+                                                <input type="text" class="form-control" id="" placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="">Foreign Currency</label>
+                                                <input type="text" class="form-control" id="" placeholder="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="">Component Wise Currency</label>
+                                                <input type="text" class="form-control" id="" placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="">Component Wise Markup</label>
+                                                <input type="text" class="form-control" id="" placeholder="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="">Component Wise Net Cost</label>
+                                                <input type="text" class="form-control" id="" placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="">Component Wise Discount Commission</label>
+                                                <input type="text" class="form-control" id="" placeholder="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="">Overall Loss</label>
+                                                <input type="text" class="form-control" id="" placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="">Overall Profit</label>
+                                                <input type="text" class="form-control" id="" placeholder="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group mb-0">
+                                                <label for="">Overall Discounts</label>
+                                                <input type="text" class="form-control" id="" placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group mb-0">
+                                                <label for="">Supplier Payment Deadline</label>
+                                                <input type="text" class="form-control" id="" placeholder="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="accomodation" role="tabpanel" aria-labelledby="accomodation-tab">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="">Service City</label>
+                                                <input type="text" class="form-control" id="" placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="">Foreign Currency</label>
+                                                <input type="text" class="form-control" id="" placeholder="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="">Component Wise Currency</label>
+                                                <input type="text" class="form-control" id="" placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="">Component Wise Markup</label>
+                                                <input type="text" class="form-control" id="" placeholder="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+        integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+        crossorigin="anonymous"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+</body>
+
+</html>
