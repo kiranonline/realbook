@@ -179,6 +179,7 @@ router.post('/',(req,res,next)=>{
                                 invv.transactionDate=f.transactionDate;
                                 invv.transactionType=f.transactionType;
                                 invv.transactionDescription=f.transactionDescription;
+                                /*change*/f.transactionNumber=id;
                                 invv.accountsTransaction=f;
                                 /*
                                 invv.gatePass= { 
@@ -206,6 +207,7 @@ router.post('/',(req,res,next)=>{
                                 invv.shippingPartyName=null;
                                 invv.refFileName=null;
                                 invv.txnCode=null;
+                                /*changed*/invv.transactionNumber=Number(id);
                                 ser1.prepareItem(id).then((dataret)=>{
                                     console.log(dataret)
                                     invv.itemDetails=dataret;
