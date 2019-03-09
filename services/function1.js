@@ -214,7 +214,7 @@ function prepareItem(vid){
                 v.discountRate=curvalue.discountRate;
                 v.godownName=curvalue.godownName;
                 v.rowId=i+1;
-                v.rowType="";
+                /*added*/v.rowType = "c",
                 v.itemTax=[{
                     taxAmount:24.3,
                     rate:9,
