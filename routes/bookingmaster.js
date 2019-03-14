@@ -31,10 +31,15 @@ router.post('/fetch',(req,res,next)=>{
                     console.log(data_fetched);
                     var tempdata = model1.bookingmaster.build(data_fetched);
                     tempdata.save().then(()=>{
-                        res.json({
-                            success:true,
-                            msg:"data fetched"
-                        });    
+                        sequelize.query(`CALL Adansa.ra_voucher_post_rb_v1('${data_fetched.RA_REFERENCE}');`).then(()=>{
+                            res.json({
+                                success:true,
+                                msg:"data fetched"
+                            }); 
+                        }).catch((err2)=>{
+                            console.log(`Error procedure: ${err2}`);
+                        })
+                           
                     }).catch((error1)=>{
                         res.status(500).json({
                             success:false,
@@ -118,10 +123,15 @@ router.get("/",(req,res,next)=>{
         ]
     }).then((result1)=>{
         console.log(result1.length);
-        sortBookings(result1).then((data)=>{
-            console.log(data);
-            res.render('bookingmaster',{layout:false,data:data});
-        })
+        if(result1.length==0){
+            res.render('bookingmaster',{layout:false,data:{}});
+        }else{
+            sortBookings(result1).then((data)=>{
+                console.log(data);
+                res.render('bookingmaster',{layout:false,data:data});
+            })
+        }
+        
     }).catch((qerror)=>{
         next(createError(550,qerror));
     })
