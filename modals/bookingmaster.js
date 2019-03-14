@@ -168,6 +168,15 @@ const bookingmaster = sequelize.define('bookingmaster',{
     SENT_TO_REALBOOK:{
         allowNull: true,
         type: Sequelize.DATEONLY
+    },
+    flag:{
+        allowNull:false,
+        type:Sequelize.INTEGER,
+        defaultValue: 0
+    },version:{
+        allowNull:false,
+        type:Sequelize.INTEGER,
+        defaultValue: 0
     }
 },{
     timestamps: true,
