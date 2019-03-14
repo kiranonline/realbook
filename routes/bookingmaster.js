@@ -8,12 +8,17 @@ var request = require('request');
 var fileupload = require('../modals/fileUpload').fileupload;
 
 
+router.get('/fetch/form',(req,res,next)=>{
+    res.render('bookingmaster_fetch_form',{
+        layout:false
+    })
+})
 
-
-router.get('/fetch',(req,res,next)=>{
+router.post('/fetch',(req,res,next)=>{
     var id = req.query.id || 152395;
     var url = "http://beta.redappletravel.com/crons/realbook_cron.php?id="+id;
     request(url,(error,response,body)=>{
+        console.log(response);
         if(error){
             next(createError(500,error));
         }
@@ -21,14 +26,28 @@ router.get('/fetch',(req,res,next)=>{
             if(response.body=="\n"){
                 next(createError(500,"Invalid Id"));
             }else{
-                var data_fetched=JSON.parse(response.body).json_master;
-                console.log(data_fetched);
-                var tempdata = model1.bookingmaster.build(data_fetched);
-                tempdata.save().then(()=>{
-                    res.send("Data fetched and saved successfully");    
-                }).catch((error1)=>{
-                    res.send(error1);
-                });
+                try{
+                    var data_fetched=JSON.parse(response.body).json_master;
+                    console.log(data_fetched);
+                    var tempdata = model1.bookingmaster.build(data_fetched);
+                    tempdata.save().then(()=>{
+                        res.json({
+                            success:true,
+                            msg:"data fetched"
+                        });    
+                    }).catch((error1)=>{
+                        res.status(500).json({
+                            success:false,
+                            msg:error1
+                        });
+                    });
+
+                }  catch{
+                    res.status(500).json({
+                        success:false,
+                        msg:error
+                    });
+                }              
             }
             
         }
@@ -71,7 +90,8 @@ function sortBookings(d){
             else{
                 var flg=0;
                 for(j=0;j<result.length;j++){
-                    if(result[j].RA_FILE_HANDLER==dd.RA_FILE_HANDLER){
+                    //if(result[j].RA_FILE_HANDLER==dd.RA_FILE_HANDLER){
+                    if(result[j].RA_REFERENCE==dd.RA_REFERENCE){
                         flg=1;
                         break;
                     }
@@ -92,14 +112,14 @@ function sortBookings(d){
 
 router.get("/",(req,res,next)=>{
     model1.bookingmaster.findAll({
-        attributes: ['id','RA_FILE_HANDLER', 'INVOICE_NUMBER','INVOICE_CURRENCY',
+        attributes: ['id','RA_REFERENCE','RA_FILE_HANDLER', 'INVOICE_NUMBER','INVOICE_CURRENCY',
             'INVOICE_DATE','TOTAL_IN_AMOUNTS','LEAD_PASSENGER',
             'PAYMENT_DEADLINE','RA_AGENT_CODE','FETCHED_ON','OPERATED_ON','SENT_TO_REALBOOK'
         ]
     }).then((result1)=>{
         console.log(result1.length);
         sortBookings(result1).then((data)=>{
-            console.log(data.length);
+            console.log(data);
             res.render('bookingmaster',{layout:false,data:data});
         })
     }).catch((qerror)=>{
@@ -143,7 +163,7 @@ router.post("/:id",(req,res,next)=>{
     var id = req.params.id;
     model1.bookingmaster.findAll({
         where:{
-            RA_FILE_HANDLER:id
+            RA_REFERENCE:id
         }
     }).then((result1)=>{
         categorise(result1).then((data)=>{

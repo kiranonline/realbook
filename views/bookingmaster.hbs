@@ -74,51 +74,16 @@
                         <tbody class="table-fixed">
                             {{#each data}}
                                 <tr>
-                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{index_modivied @index}}</td>
-                                    <!--<td>{{this.id}}</td>
-                                    <td>{{this.SBU}}</td>
-                                    <td>{{this.CHECK_IN_DATE}}</td>
-                                    <td>{{this.CHECK_OUT_DATE}}</td>
-                                    <td>{{this.EXCHANGE_RATE}}</td>-->
-                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.RA_FILE_HANDLER}}</td>
-                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.INVOICE_DATE}}</td>
-                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.INVOICE_NUMBER}}</td>
-                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.LEAD_PASSENGER}}</td>
-                                    <!--<td>{{this.NO_OF_NIGHTS}}</td>
-                                    <td>{{this.NO_OF_ROOMS}}</td>
-                                    <td>{{this.BOOKING_NOTES}}</td>
-                                    <td>{{this.PER_SERVICE_WISE_SUPPLIER_NAME}}</td>-->
-                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.RA_AGENT_CODE}}</td>
-                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.PAYMENT_DEADLINE}}</td>
-                                    <!--<td>{{this.PAYMENT_SLABS}}</td>
-                                    <td>{{this.PRODUCT_NAME}}</td>
-                                    <td>{{this.RA_REFERENCE}}</td>
-                                    <td>{{this.ROOM_CATEGORY}}</td>
-                                    <td>{{this.SERVICE_CATEGORY}}</td>
-                                    <td>{{this.SERVICE_CITY}}</td>
-                                    <td>{{this.SERVICE_COUNTRY}}</td>
-                                    <td>{{this.STAND_ALONE}}</td>
-                                    <td>{{this.TAX_CALCULATION}}</td>
-                                    <td>{{this.TOTAL_TAX_CALCULATION}}</td>-->
-                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.INVOICE_CURRENCY}}</td>
-                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')" class="text-right">{{this.TOTAL_IN_AMOUNTS}}</td>
-                                    <!--<td>{{this.FOREIGN_CURRENCY}}</td>
-                                    <td>{{this.SUPPLIER_PAYMENT_DEADLINE}}</td>
-                                    <td>{{this.COMPONENTS_WISE_NET_COST}}</td>
-                                    <td>{{this.COMPONENTS_WISE_MARKUP}}</td>
-                                    <td>{{this.COMPONENTS_WISE_SELLING_COST}}</td>
-                                    <td>{{this.COMPONENTS_WISE_DISCOUNT_COMISSION}}</td>
-                                    <td>{{this.OVER_ALL_DISCOUNT}}</td>
-                                    <td>{{this.OVER_ALL_PROFIT}}</td>
-                                    <td>{{this.OVER_ALL_LOSS}}</td>
-                                    <td>{{this.COMPONENTS_WISE_CURRENCY}}</td>
-                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.FETCHED_ON}}</td>
-                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.OPERATED_ON}}</td>-->
-                                    <td onclick="fetchdetail('{{this.RA_FILE_HANDLER}}')">{{this.SENT_TO_REALBOOK}}</td>
-                                    <!--<td class="text-center">
-                                        <a href="/itemmaster/form?id={{this.id}}" class="btn btn-primary actn"><i class="fas fa-pencil-alt"></i></a>
-                                        <button type="button" onclick="deleteITEM('{{this.id}}')" class="btn btn-danger actn" data-toggle="modal" data-target="#del"><i class="far fa-trash-alt"></i></button>
-                                    </td>-->
+                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')">{{index_modivied @index}}</td>
+                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')">{{this.RA_REFERENCE}}</td>
+                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')">{{this.INVOICE_DATE}}</td>
+                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')">{{this.INVOICE_NUMBER}}</td>
+                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')">{{this.LEAD_PASSENGER}}</td>
+                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')">{{this.RA_AGENT_CODE}}</td>
+                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')">{{this.PAYMENT_DEADLINE}}</td>
+                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')">{{this.INVOICE_CURRENCY}}</td>
+                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')" class="text-right">{{this.TOTAL_IN_AMOUNTS}}</td>
+                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')">{{this.SENT_TO_REALBOOK}}</td>
                                 </tr>
                             {{/each}}
                         </tbody>
@@ -314,6 +279,12 @@
                     var d = date.getDate();
                     return String(d)+"-"+String(m)+"-"+String(y);
                 }
+
+
+
+                {{#each data}}
+                    console.log('{{this.RA_REFERENCE}}')
+                {{/each}}
 
 
         </script>

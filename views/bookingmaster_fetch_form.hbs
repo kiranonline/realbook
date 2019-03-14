@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+            <title>Booking master data fetch</title>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    </head>
+    <style>
+        #frm{
+            width:45%;
+            margin: auto;
+        }
+        #frm-body{
+            padding: 30px 40px
+        }
+    </style>
+    <body>
+
+        <div class="container" style="margin-top: 50px">
+            <div class="panel panel-primary" id="frm">
+                <div class="panel-heading">Fetch data from redapple</div>
+                <div class="panel-body" id="frm-body">
+                    <form id="fetch">
+                        <div class="form-group">
+                            <label for="email">Id:</label>
+                            <input type="id" class="form-control" id="id">
+                        </div>
+                        <button type="button" id="ff" class="btn btn-default">Fetch</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+                $("#ff").on('click',function(){
+                    console.log("don");
+                    var id = $("#id").val();
+                    $.ajax({
+                        type: "POST",
+                        url: "/bookingmaster/fetch?id="+id,
+                        data: {
+                            id:id
+                        },
+                        crossDomain:true,
+                        success: function (data) {
+                            swal("Success", "Data fetched successfully","success");
+                        },
+                        error: function (xhr, status, error) {
+                            swal("Error", "Error fetching data","error");
+                        }
+                    });
+                });
+    </script>
+</html>
