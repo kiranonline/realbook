@@ -14,9 +14,30 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
         <title>Itemmaster Table</title>
     </head>
+    <style>
+        .table-wrapper{padding:20px;}
+        tr{cursor:pointer}
+        .sz{font-size: 20px}
+        .hdng{width: 100%;text-align: center;color:#4179ef }
+        .back-button{
+            position: fixed;
+            z-index: 100000;
+            top:10px;
+            left:10px;
+            background:#4179ef;
+            padding: 8px 11px;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 18px;
+        }
+        .back-button:hover{
+            color: #fff;
+        }
+    </style>
     <body>
-
+        <a class="back-button" href="/"><i class="fas fa-home"></i></a>
         <div class="table-wrapper">
+            <h4 class="hdng">Item Master</h4>
             <div class="table-responsive-sm">
                     <table class="table table-hover table-sm table-striped table-bordered" id="myTable">
                         <thead>

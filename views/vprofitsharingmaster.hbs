@@ -15,12 +15,29 @@
         <title>vprofit sharing Table</title>
     </head>
     <style>
-        .table-wrapper{padding:10px;}
+        .table-wrapper{padding:20px;}
         tr{cursor:pointer}
+        .sz{font-size: 20px}
+        .hdng{width: 100%;text-align: center;color:#4179ef }
+        .back-button{
+            position: fixed;
+            z-index: 100000;
+            top:10px;
+            left:10px;
+            background:#4179ef;
+            padding: 8px 11px;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 18px;
+        }
+        .back-button:hover{
+            color: #fff;
+        }
     </style>
     <body>
-
+        <a class="back-button" href="/"><i class="fas fa-home"></i></a>
         <div class="table-wrapper">
+            <h4 class="hdng">Vprofitsharing</h4>
             <div class="table-responsive-sm">
                     <table class="table table-hover table-sm table-striped table-bordered" id="myTable">
                         <thead>

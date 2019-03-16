@@ -25,59 +25,67 @@ router.get("/data",(req,res,next)=>{
     var fromdate= req.query.fromdate || null;
     var todate= req.query.todate || null;
     var comp = req.query.company || null;
-    console.log(fromdate,todate,comp)
-    if(fromdate != null && todate!=null && comp!=null){
-        sequelize.query("SELECT voucher.*,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0') INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) WHERE voucher.cid="+comp+" AND (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+")").then((result1)=>{
-            console.log(result1);
-            res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp});
-        })
-    }
-    else if(fromdate != null && todate!=null && comp==null){
-        //only date filter
-        /*voucher.findAll({
-            where:{
-                transactionDate:{
-                    [Op.between]: [fromdate,todate]
+    console.log(fromdate,todate,comp);
+    company_master.findAll({
+        attributes: ['id', 'name'],
+        where: {
+            is_supplier:1
+        }
+    }).then((comp_res)=>{
+        if(fromdate != null && todate!=null && comp!=null){
+            sequelize.query("SELECT voucher.*,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0') INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) WHERE voucher.cid="+comp+" AND (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+")").then((result1)=>{
+                console.log(result1);
+                res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
+            })
+        }
+        else if(fromdate != null && todate!=null && comp==null){
+            //only date filter
+            /*voucher.findAll({
+                where:{
+                    transactionDate:{
+                        [Op.between]: [fromdate,todate]
+                    }
                 }
-            }
-        }).then((result1)=>{
-            res.render('post_table',{layout:false,data:result1,fromdate:fromdate,todate:todate,comp:comp});
-        }).catch((qerror)=>{
-            next(createError(550,qerror));
-        })*/
-        sequelize.query("SELECT voucher.*,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0') INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) WHERE (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+")").then((result1)=>{
-            console.log(result1);
-            res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp});
-        })
-    }
-    else if(fromdate == null && todate==null && comp!=null){
-        //company filter
-        /*voucher.findAll({
-            where:{
-                cid:comp
-            }
-        }).then((result1)=>{
-            res.render('post_table',{layout:false,data:result1,fromdate:fromdate,todate:todate,comp:comp});
-        }).catch((qerror)=>{
-            next(createError(550,qerror));
-        })*/
-        sequelize.query("SELECT voucher.*,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0') INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) WHERE voucher.cid="+comp).then((result1)=>{
-            console.log(result1);
-            res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp});
-        })
-    }
-    else{
-        //no filter
-        /*voucher.findAll().then((result1)=>{
-            res.render('post_table',{layout:false,data:result1,fromdate:fromdate,todate:todate,comp:comp});
-        }).catch((qerror)=>{
-            next(createError(550,qerror));
-        })*/
-        sequelize.query("SELECT voucher.*,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0') INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id)" ).then((result1)=>{
-            console.log(result1);
-            res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp});
-        })
-    }   
+            }).then((result1)=>{
+                res.render('post_table',{layout:false,data:result1,fromdate:fromdate,todate:todate,comp:comp});
+            }).catch((qerror)=>{
+                next(createError(550,qerror));
+            })*/
+            sequelize.query("SELECT voucher.*,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0') INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) WHERE (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+")").then((result1)=>{
+                console.log(result1);
+                res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
+            })
+        }
+        else if(fromdate == null && todate==null && comp!=null){
+            //company filter
+            /*voucher.findAll({
+                where:{
+                    cid:comp
+                }
+            }).then((result1)=>{
+                res.render('post_table',{layout:false,data:result1,fromdate:fromdate,todate:todate,comp:comp});
+            }).catch((qerror)=>{
+                next(createError(550,qerror));
+            })*/
+            sequelize.query("SELECT voucher.*,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0') INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) WHERE voucher.cid="+comp).then((result1)=>{
+                console.log(result1);
+                res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
+            })
+        }
+        else{
+            //no filter
+            /*voucher.findAll().then((result1)=>{
+                res.render('post_table',{layout:false,data:result1,fromdate:fromdate,todate:todate,comp:comp});
+            }).catch((qerror)=>{
+                next(createError(550,qerror));
+            })*/
+            sequelize.query("SELECT voucher.*,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0') INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id)" ).then((result1)=>{
+                console.log(result1);
+                res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
+            })
+        }
+    });
+       
     
 });
 

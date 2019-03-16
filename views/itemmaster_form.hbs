@@ -13,11 +13,28 @@
     <link rel="stylesheet" href="/itemmaster/stylesheets/index.css">
     <title>Form</title>
   </head>
+  <style>
+      .back-button{
+            position: fixed;
+            z-index: 100000;
+            top:10px;
+            left:10px;
+            background:#4179ef;
+            padding: 8px 11px;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 18px;
+        }
+        .back-button:hover{
+            color: #fff;
+        }
+  </style>
   <body>
-
+      <a class="back-button" href="/"><i class="fas fa-home"></i></a>
       <div class="loader-container">
           <div class="loader"></div>
       </div>
+<div class="container" style="margin-top: 20px">
     <ul class="nav nav-tabs">
         <li class="nav-item">
         <a class="nav-link active" data-toggle="tab" href="#general">General</a>
@@ -28,74 +45,77 @@
     </ul>
 
     <!-- Tab panes -->
-    <div class="tab-content">
-        <div id="general" class="container tab-pane active"><br>
-            {{#if msg}}
-                <div class="alert err alert-dismissible fade show text-center" role="alert">
-                    <strong>Data saved sucessfully !</strong>&nbsp;<a href="/itemmaster/data/" class="btn blue btn-sm">Table</a>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {{/if}}
-
-                <div class="container" id="wrapper-main">
-                    <p class="text-center" id="form-heading">Item Master</p>
-                    <form class="row" method="POST" action="/itemmaster/form">
-
-
-                    <div class="col-sm" id="part1">
-
-                        
-                            {{#if editable}}     
-                                <input id="id" name="editID" value="{{e_id}}" type="hidden">    
-                            {{/if}}    
-                            {{#if backto}}     
-                                <input id="backto" name="backto" value="{{backto}}" type="hidden">    
-                            {{/if}}
-                            <div class="form-group">
-                                <label for="item_code">Item code</label>
-                                <input class="form-control form-control-sm" id="item_code" name="item_code" value="{{item_code}}" placeholder="Item Code" required>        
-                            </div>
-
-                            <div class="form-group">
-                                <label for="item_name">Item name</label>
-                                <input class="form-control form-control-sm" id="item_name" name="item_name" value="{{item_name}}" placeholder="Item name" required>        
-                            </div>
-
-                            <div class="form-group">
-                                <label for="hsn_code">HSN code</label>
-                                <input class="form-control form-control-sm" id="hsn_code" name="hsn_code" value="{{hsn_code}}" placeholder="HSN code" required>        
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="item_group">Item group</label>
-                                <select class="form-control form-control-sm" name="item_group" id="item_group">
-                                    <option value="api1">Api1</option>
-                                    <option value="api2">Api2</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="unit_master">Unit master</label>
-                                <select class="form-control form-control-sm" name="unit_master" id="unit_master">
-                                    <option value="api1">Api1</option>
-                                    <option value="api2">Api2</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group text-right">
-                                    <a href="/itemmaster/form" class="btn btn-theme">Clear fields</a>
-                                    <input type="submit" class="btn btn-theme"  value="Add Item">
-                            </div>
-
+    
+        <div class="tab-content">
+            <div id="general" class="container tab-pane active"><br>
+                {{#if msg}}
+                    <div class="alert err alert-dismissible fade show text-center" role="alert">
+                        <strong>Data saved sucessfully !</strong>&nbsp;<a href="/itemmaster/data/" class="btn blue btn-sm">Table</a>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
+                {{/if}}
 
-                </form> 
+                    <div class="container" id="wrapper-main">
+                        <p class="text-center" id="form-heading">Item Master</p>
+                        <form class="row" method="POST" action="/itemmaster/form">
+
+
+                        <div class="col-sm" id="part1">
+
+                            
+                                {{#if editable}}     
+                                    <input id="id" name="editID" value="{{e_id}}" type="hidden">    
+                                {{/if}}    
+                                {{#if backto}}     
+                                    <input id="backto" name="backto" value="{{backto}}" type="hidden">    
+                                {{/if}}
+                                <div class="form-group">
+                                    <label for="item_code">Item code</label>
+                                    <input class="form-control form-control-sm" id="item_code" name="item_code" value="{{item_code}}" placeholder="Item Code" required>        
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="item_name">Item name</label>
+                                    <input class="form-control form-control-sm" id="item_name" name="item_name" value="{{item_name}}" placeholder="Item name" required>        
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="hsn_code">HSN code</label>
+                                    <input class="form-control form-control-sm" id="hsn_code" name="hsn_code" value="{{hsn_code}}" placeholder="HSN code" required>        
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="item_group">Item group</label>
+                                    <select class="form-control form-control-sm" name="item_group" id="item_group">
+                                        <option value="api1">Api1</option>
+                                        <option value="api2">Api2</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="unit_master">Unit master</label>
+                                    <select class="form-control form-control-sm" name="unit_master" id="unit_master">
+                                        <option value="api1">Api1</option>
+                                        <option value="api2">Api2</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group text-right">
+                                        <a href="/itemmaster/form" class="btn btn-theme">Clear fields</a>
+                                        <input type="submit" class="btn btn-theme"  value="Add Item">
+                                </div>
+
+                        </div>
+
+                    </form> 
+                </div>
             </div>
+            
         </div>
-        
     </div>
+    
 
     
 

@@ -5,6 +5,7 @@
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     </head>
     <style>
         #frm{
@@ -14,9 +15,23 @@
         #frm-body{
             padding: 30px 40px
         }
+        .back-button{
+            position: fixed;
+            z-index: 100000;
+            top:10px;
+            left:10px;
+            background:#4179ef;
+            padding: 8px 11px;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 18px;
+        }
+        .back-button:hover{
+            color: #fff;
+        }
     </style>
     <body>
-
+        <a class="back-button" href="/"><i class="fas fa-home"></i></a>
         <div class="container" style="margin-top: 50px">
             <div class="panel panel-primary" id="frm">
                 <div class="panel-heading">Fetch data from redapple</div>

@@ -16,22 +16,39 @@
         <title>VOUCHER Table</title>
     </head>
     <style>
-        .table-wrapper{padding:10px;}
+        .table-wrapper{padding:20px;}
         .table-controls-sql{margin-bottom: 10px;}
         tr{cursor:pointer}
+        .sz{font-size: 20px}
+        .hdng{width: 100%;text-align: center;color:#4179ef }
+        .back-button{
+            position: fixed;
+            z-index: 100000;
+            top:10px;
+            left:10px;
+            background:#4179ef;
+            padding: 8px 11px;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 18px;
+        }
+        .back-button:hover{
+            color: #fff;
+        }
     </style>
     <body>
-
+         <a class="back-button" href="/"><i class="fas fa-home"></i></a>
         <div class="table-wrapper">
+            <h4 class="hdng">Post data to realbook</h4>
             <div class="card  table-controls-sql">
                 <form method="GET" class="card-body form-inline" id="filterForm"  action="/post/data">
                     <input type="text" class="form-control form-control-sm mb-2 mr-sm-2 datepicker" name="fromdate" type="text" id="fromdate" autocomplete="off" placeholder="From date" >
                     <input type="text" class="form-control form-control-sm mb-2 mr-sm-2 datepicker" name="todate" type="text" id="todate" autocomplete="off" placeholder="To date" >
-                    &&
                     <select class="form-control form-control-sm mb-2 mr-sm-2" name="company" id="comp">
-                        <option value="">All company</option>
-                        <option value="1349">1349</option>
-                        <option value="1">1</option>
+                            <option value="">All company</option>
+                        {{#each company}}
+                            <option value="{{this.id}}">{{this.name}}</option>
+                        {{/each}}
                     </select>
                   
                     <button type="submit" id="filter-btn" class="btn btn-primary mb-2 form-control-sm">Filter</button>
@@ -67,6 +84,7 @@
                                 <th scope="col">COMPANY NAME</th>
                                 <!--<th scope="col">SEG ID</th>-->
                                 <th scope="col">SYNCHRONIZATION</th>
+                                <th scope="col">SYNCHRONIZATION DATE</th>
                             </tr>
                         </thead>
                         <tbody class="table-fixed">
@@ -99,8 +117,14 @@
                                     <td onclick="fetchVdetail('{{this.id}}')">{{this.name}}</td>
                                     <!--<td>{{this.segid}}</td>-->
                                     <td class="text-center">
-                                        <button onclick="post('{{this.id}}')" class="btn btn-primary actn"><i class="fa fa-share-square"></i></button>
+                                        {{#if realbookID}}
+                                            <a onclick="post('{{this.id}}')" class="btn btn-link actn"><img id="sync{{this.id}}" src="/icons/green.jpeg"></a>
+                                        {{else}}
+                                            <a onclick="post('{{this.id}}')" class="btn btn-link actn"><img id="sync{{this.id}}" src="/icons/red.jpeg"></a>
+                                        {{/if}}
+                                        
                                     </td>
+                                    <td onclick="fetchVdetail('{{this.id}}')">{{DateFormate this.updatedAt}}</td>
                                 </tr>
                             {{/each}}
                         </tbody>
@@ -232,9 +256,11 @@
                         },
                         crossDomain:true,
                         success: function (data) {
-                            swal("Success", "ID:"+String(data[0].id)+"\t MSG:"+String(data[0].msg), "success");
+                            $("#sync"+String(id)).attr('src',"/icons/green.jpeg");
+                            swal("Success", "MSG:"+String(data[0].msg), "success");
                         },
                         error: function (xhr, status, error) {
+                            $("#sync"+String(id)).attr('src',"/icons/err.jpeg");
                             swal("Error", "Error posting data", "error");
                         }
                     });

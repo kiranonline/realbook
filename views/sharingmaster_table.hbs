@@ -14,27 +14,43 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
         <title>Sharingmaster Table</title>
     </head>
+    <style>
+        .back-button{
+            position: fixed;
+            z-index: 100000;
+            top:10px;
+            left:10px;
+            background:#4179ef;
+            padding: 8px 11px;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 18px;
+        }
+        .back-button:hover{
+            color: #fff;
+        }
+    </style>
     <body>
-        
+            <a class="back-button" href="/"><i class="fas fa-home"></i></a>
             <div class="wrapper">
                     <!-- Sidebar  -->
-                    <nav id="sidebar">            
+                    <nav id="sidebar">
+                        <div style="padding-top:40px" class="">
+
+                        </div>            
                         <ul class="list-unstyled components accordion" id="accor1">
-                {{#each supply}}
-                    <li class="{{this.id}}">
-                        <button type="button"  data-target="#comp{{index_modivied @index}}" data-toggle="collapse" aria-expanded="false" aria-controls="comp{{index_modivied @index}}">{{this.name}}<i class="fas fa-sort-down"></i></button>
-                            <ul class="collapse list-unstyled" id="comp{{index_modivied @index}}" data-parent="#accor1">
-                                {{#each ../component}}
-                                    <li class="{{this.id}}">
-                                        <a href="/sharingmaster/data/{{../this.id}}/{{this.id}}">{{this.name}}</a>
-                                    </li>
-                            {{/each}}
-                        </ul>
-                    </li>
-                {{/each}}
-                                                        
-                                                        
-                            
+                        {{#each supply}}
+                            <li class="{{this.id}}">
+                                <button type="button"  data-target="#comp{{index_modivied @index}}" data-toggle="collapse" aria-expanded="false" aria-controls="comp{{index_modivied @index}}">{{this.name}}<i class="fas fa-sort-down"></i></button>
+                                    <ul class="collapse list-unstyled" id="comp{{index_modivied @index}}" data-parent="#accor1">
+                                        {{#each ../component}}
+                                            <li class="{{this.id}}">
+                                                <a href="/sharingmaster/data/{{../this.id}}/{{this.id}}">{{this.name}}</a>
+                                            </li>
+                                    {{/each}}
+                                </ul>
+                            </li>
+                        {{/each}}
                         </ul>
                     </nav>
 

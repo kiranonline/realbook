@@ -27,9 +27,23 @@
       .form label{
           color: white;
       }
+      .back-button{
+            position: fixed;
+            z-index: 100000;
+            top:10px;
+            left:10px;
+            background:#4179ef;
+            padding: 8px 11px;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 18px;
+        }
+        .back-button:hover{
+            color: #fff;
+        }
   </style>
   <body>
-
+    <a class="back-button" href="/"><i class="fas fa-home"></i></a>
     <div class="container" id="wrapper-main">
         <p class="text-center" id="form-heading">Edit Profit Sharing</p>
         <form class="form" method="POST" id="frmm" action="/vprofitsharing/edit">

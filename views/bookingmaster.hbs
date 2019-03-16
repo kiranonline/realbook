@@ -19,9 +19,23 @@
         tr{cursor:pointer}
         .sz{font-size: 20px}
         .hdng{width: 100%;text-align: center;color:#4179ef }
+        .back-button{
+            position: fixed;
+            z-index: 100000;
+            top:10px;
+            left:10px;
+            background:#4179ef;
+            padding: 8px 11px;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 18px;
+        }
+        .back-button:hover{
+            color: #fff;
+        }
     </style>
     <body>
-
+        <a class="back-button" href="/"><i class="fas fa-home"></i></a>
         <div class="table-wrapper">
             <h4 class="hdng">Booking Master</h4>
             <div class="table-responsive-sm">
@@ -183,8 +197,6 @@
 
                         </div>
                     </div>
-                    
-           
                 </div>
                 
                 <!-- Modal footer -->
@@ -240,6 +252,7 @@
                             $("#vdbody2").html("");
                             $(".fetched").html(formateDate(data.info.FETCHED_ON));
                             $(".operated").html(formateDate(data.info.OPERATED_ON));
+                            
                             if(data.hotel.length>0){
                                 data.hotel.forEach((ii,index)=>{
                                     index1=index+1;
@@ -273,11 +286,18 @@
 
 
                 function formateDate(d){
-                    var date = new Date(d);
-                    var y = date.getFullYear();
-                    var m = date.getMonth()+1;
-                    var d = date.getDate();
-                    return String(d)+"-"+String(m)+"-"+String(y);
+                    if(d != null){
+                        var date = new Date(d);
+                        var y = date.getFullYear();
+                        var m = date.getMonth()+1;
+                        var d = date.getDate();
+                        console.log("11");
+                        return String(d)+"-"+String(m)+"-"+String(y);
+                    }
+                    else{
+                        console.log("22");
+                        return ""
+                    }
                 }
 
 
