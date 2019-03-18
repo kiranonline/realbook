@@ -64,7 +64,8 @@ const ledgermaster = sequelize.define('ledgermaster', {
     },
     status:{
         type:Sequelize.INTEGER,
-        allowNull: true
+        allowNull: true,
+        defaultValue:1
     },
     cid:{
         type:Sequelize.INTEGER,

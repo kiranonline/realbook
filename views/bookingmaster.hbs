@@ -122,8 +122,11 @@
                 <div class="modal-header">
                     
                     <div class="row">
-                        <div class="col-md-5">
-                            <h4 class="modal-title">Booking Details</h4>
+                        <div class="col-md-2" style="display:inline-block">
+                            <h4 class="modal-title">Details</h4>
+                        </div>
+                        <div class="col-md-3">
+                            <h5 style="float:right">Txn. no : <span class="txn"></span></h5>
                         </div>
                         <div class="col-md-3">
                             <h5 style="float:right">Fetched On : <span class="fetched"></span></h5>
@@ -250,6 +253,7 @@
                             console.log(data);
                             $("#vdbody1").html("")
                             $("#vdbody2").html("");
+                            $(".txn").html(data.info.RA_REFERENCE);
                             $(".fetched").html(formateDate(data.info.FETCHED_ON));
                             $(".operated").html(formateDate(data.info.OPERATED_ON));
                             

@@ -90,11 +90,11 @@
                         <tbody class="table-fixed">
                             {{#each data}}
                                 <tr>
-                                    <td onclick="fetchVdetail('{{this.id}}')">{{index_modivied @index}}</td>
-                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.transactionDate}}</td>
-                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.transactionNumber}}</td>
-                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.transactionType}}</td>
-                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.refFileName}}</td>
+                                    <td onclick="fetchVdetail('{{this.vid}}')">{{index_modivied @index}}</td>
+                                    <td onclick="fetchVdetail('{{this.vid}}')">{{this.transactionDate}}</td>
+                                    <td onclick="fetchVdetail('{{this.vid}}')">{{this.transactionNumber}}</td>
+                                    <td onclick="fetchVdetail('{{this.vid}}')">{{this.transactionType}}</td>
+                                    <td onclick="fetchVdetail('{{this.vid}}')">{{this.refFileName}}</td>
                                     <!--
                                     <td onclick="fetchVdetail('{{this.id}}')">{{this.transactionDescription}}</td>
                                     <td>{{this.id}}</td>
@@ -111,20 +111,20 @@
                                     <td>{{this.status}}</td>
                                     <td>{{this.currencySymbol}}</td>
                                     <td>{{this.gstin}}</td>-->
-                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.partyName}}</td>
-                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.currencySymbol}}</td>
-                                    <td onclick="fetchVdetail('{{this.id}}')" class="text-right">{{greater this.partyCr this.partyDr}}</td>
-                                    <td onclick="fetchVdetail('{{this.id}}')">{{this.name}}</td>
+                                    <td onclick="fetchVdetail('{{this.vid}}')">{{this.partyName}}</td>
+                                    <td onclick="fetchVdetail('{{this.vid}}')">{{this.currencySymbol}}</td>
+                                    <td onclick="fetchVdetail('{{this.vid}}')" class="text-right">{{greater this.partyCr this.partyDr}}</td>
+                                    <td onclick="fetchVdetail('{{this.vid}}')">{{this.name}}</td>
                                     <!--<td>{{this.segid}}</td>-->
                                     <td class="text-center">
                                         {{#if realbookID}}
-                                            <a onclick="post('{{this.id}}')" class="btn btn-link actn"><img id="sync{{this.id}}" src="/icons/green.jpeg"></a>
+                                            <a onclick="post('{{this.vid}}')" class="btn btn-link actn"><img id="sync{{this.vid}}" src="/icons/green.jpeg"></a>
                                         {{else}}
-                                            <a onclick="post('{{this.id}}')" class="btn btn-link actn"><img id="sync{{this.id}}" src="/icons/red.jpeg"></a>
+                                            <a onclick="post('{{this.vid}}')" class="btn btn-link actn"><img id="sync{{this.vid}}" src="/icons/red.jpeg"></a>
                                         {{/if}}
                                         
                                     </td>
-                                    <td onclick="fetchVdetail('{{this.id}}')">{{DateFormate this.updatedAt}}</td>
+                                    <td onclick="fetchVdetail('{{this.vid}}')">{{DateFormate this.updatedAt}}</td>
                                 </tr>
                             {{/each}}
                         </tbody>

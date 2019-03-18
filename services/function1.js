@@ -48,7 +48,8 @@ function vbill1(Vid,VDid){
             attributes: ['referenceNo','referenceDate','billAmount','creditPeriod','isNewReference'],
             where:{
                 vid:Vid,
-                vdid:VDid
+                vdid:VDid,
+                status:1
             }
         }).then((result4)=>{
             if(result4.length!=0){
@@ -80,7 +81,8 @@ function vtax1(Vid,VDid){
             attributes: ['taxLedgerid','rate','taxAmount','extraData'],
             where:{
                 vid:Vid,
-                vdid:VDid
+                vdid:VDid,
+                status:1
             }
         }).then((result5)=>{
             var taxLedger=[];
@@ -122,7 +124,8 @@ function vcc1(Vid,VDid){
             attributes: ['costcenterName','costAmount','date','groupName'],
             where:{
                 vid:Vid,
-                vdid:VDid
+                vdid:VDid,
+                status:1
             }
         }).then((result7)=>{
             if(result7.length!=0){
@@ -198,7 +201,7 @@ function push1(data,action){
 function prepareItem(vid){
     return new Promise((resolve,reject)=>{
         var ans=[];
-        var p1= sequelize.query("SELECT vitem.amount AS itemAmount ,itemmaster.item_name AS itemName ,unit_master.unit_name AS unitName ,itemmaster.item_code AS itemCode ,vitem.qty AS quantity, vitem.disc_amt AS discountAmount ,ledgermaster.ledger_name AS ledgerName , vitem.disc_rate AS discountRate ,vitem.godownname AS godownName FROM vitem INNER JOIN `itemmaster` ON vitem.item_id=itemmaster.id INNER JOIN `unit_master` ON vitem.unit_id=unit_master.unit_id INNER JOIN `ledgermaster` on vitem.lid=ledgermaster.id WHERE vitem.vid="+vid);
+        var p1= sequelize.query("SELECT vitem.amount AS itemAmount ,itemmaster.item_name AS itemName ,unit_master.unit_name AS unitName ,itemmaster.item_code AS itemCode ,vitem.qty AS quantity, vitem.disc_amt AS discountAmount ,ledgermaster.ledger_name AS ledgerName , vitem.disc_rate AS discountRate ,vitem.godownname AS godownName FROM vitem INNER JOIN `itemmaster` ON vitem.item_id=itemmaster.id INNER JOIN `unit_master` ON vitem.unit_id=unit_master.unit_id INNER JOIN `ledgermaster` on vitem.lid=ledgermaster.id WHERE vitem.status=1 AND  vitem.vid="+vid);
         Promise.all([p1]).then((results)=>{
             var tmpr= results[0][1];
             tmpr.forEach((curvalue,i)=>{

@@ -33,7 +33,7 @@ router.get("/data",(req,res,next)=>{
         }
     }).then((comp_res)=>{
         if(fromdate != null && todate!=null && comp!=null){
-            sequelize.query("SELECT voucher.*,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0') INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) WHERE voucher.cid="+comp+" AND (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+")").then((result1)=>{
+            sequelize.query("SELECT voucher.*,voucher.id AS vid,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) WHERE voucher.cid="+comp+" AND (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+") AND voucher.status=1").then((result1)=>{
                 console.log(result1);
                 res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
             })
@@ -51,7 +51,7 @@ router.get("/data",(req,res,next)=>{
             }).catch((qerror)=>{
                 next(createError(550,qerror));
             })*/
-            sequelize.query("SELECT voucher.*,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0') INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) WHERE (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+")").then((result1)=>{
+            sequelize.query("SELECT voucher.*,voucher.id AS vid,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) WHERE (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+") AND voucher.status=1").then((result1)=>{
                 console.log(result1);
                 res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
             })
@@ -67,7 +67,7 @@ router.get("/data",(req,res,next)=>{
             }).catch((qerror)=>{
                 next(createError(550,qerror));
             })*/
-            sequelize.query("SELECT voucher.*,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0') INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) WHERE voucher.cid="+comp).then((result1)=>{
+            sequelize.query("SELECT voucher.*,voucher.id AS vid,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) WHERE voucher.status=1 AND voucher.cid="+comp ).then((result1)=>{
                 console.log(result1);
                 res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
             })
@@ -79,8 +79,8 @@ router.get("/data",(req,res,next)=>{
             }).catch((qerror)=>{
                 next(createError(550,qerror));
             })*/
-            sequelize.query("SELECT voucher.*,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0') INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id)" ).then((result1)=>{
-                console.log(result1);
+            sequelize.query("SELECT voucher.*,voucher.id AS vid,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) WHERE voucher.status=1" ).then((result1)=>{
+                console.log(result1[0].length);
                 res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
             })
         }
@@ -126,7 +126,8 @@ router.post('/',(req,res,next)=>{
                     'bankName','date','ledger',['narration','ledgerType']
                 ],
                 where:{
-                    vid:id
+                    vid:id,
+                    status:1
                 }
             }).then((result2)=>{
                 var ledgerDetails=[];
@@ -266,7 +267,8 @@ router.post('/',(req,res,next)=>{
                     'bankName','date','ledger'
                 ],
                 where:{
-                    vid:id
+                    vid:id,
+                    status:1
                 }
             }).then((result2)=>{
                 var ledgerDetails=[];
