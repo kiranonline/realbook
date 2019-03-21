@@ -33,6 +33,16 @@
         .back-button:hover{
             color: #fff;
         }
+        td.details-control {
+            background: url('https://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
+            cursor: pointer;
+        }
+        tr.shown td.details-control {
+            background: url('https://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
+        }
+        .inner-table .sorting{
+            display: none !important;
+        }
     </style>
     <body>
         <a class="back-button" href="/"><i class="fas fa-home"></i></a>
@@ -43,173 +53,108 @@
                         <thead>
                             <tr>
                                 <th scope="col">NO.</th>
-                                <!--<th scope="col">ID</th>
-                                <th scope="col">SUB</th>
-                                <th scope="col">CHECK_IN_DATE</th>
-                                <th scope="col">CHECK_OUT_DATE</th>
-                                <th scope="col">EXCHANGE_RATE</th>-->
-                                <th scope="col">TXN  NO</th>
+                                <th scope="col"></th>
+                                <th scope="col">RA REFERENCE</th>
                                 <th scope="col">INVOICE DATE</th>
                                 <th scope="col">INVOICE NUMBER</th>
                                 <th scope="col">LEAD PASSENGER</th>
-                                <!--<th scope="col">NO_OF_NIGHTS</th>
-                                <th scope="col">NO_OF_ROOMS</th>
-                                <th scope="col">BOOKING_NOTES</th>
-                                <th scope="col">PER_SERVICE_WISE_SUPPLIER NAME</th>-->
                                 <th scope="col">RA AGENT CODE</th>
                                 <th scope="col">PAYMENT DEADLINE</th>
-                                <!--<th scope="col">PAYMENT_SLABS</th>
-                                <th scope="col">PRODUCT_NAME</th>
-                                <th scope="col">RA_REFERENCE</th>
-                                <th scope="col">ROOM_CATEGORY</th>
-                                <th scope="col">SERVICE_CATEGORY</th>
-                                <th scope="col">SERVICE_CITY</th>
-                                <th scope="col">SERVICE_COUNTRY</th>
-                                <th scope="col">STAND_ALONE</th>
-                                <th scope="col">TAX_CALCULATION</th>
-                                <th scope="col">TOTAL_TAX_CALCULATION</th>-->
                                 <th scope="col">CURRENCY</th>
-                                <th scope="col" class="text-right">AMOUNT</th>
-                                <!--<th scope="col">FOREIGN_CURRENCY</th>
-                                <th scope="col">SUPPLIER_PAYMENT_DEADLINE</th>
-                                <th scope="col">COMPONENTS_WISE_NET_COST</th>
-                                <th scope="col">COMPONENTS_WISE_MARKUP</th>
-                                <th scope="col">COMPONENTS_WISE_SELLING_COST</th>
-                                <th scope="col">COMPONENTS_WISE_DISCOUNT_COMISSION</th>
-                                <th scope="col">OVER_ALL_DISCOUNT</th>
-                                <th scope="col">OVER_ALL_PROFIT</th>
-                                <th scope="col">OVER_ALL_LOSS</th>
-                                <th scope="col">COMPONENTS_WISE_CURRENCY</th>
+                                <th scope="col" class="text-right">TOTAL AMOUNT</th>
+                                <th scope="col">SUB</th>
+                                <th scope="col">CHECK IN DATE</th>
+                                <th scope="col">CHECK OUT DATE</th>
+                                <th scope="col">EXCHANGE RATE</th>
+                                <th scope="col">RA FILE HANDLER</th>
+                                <th scope="col">NO OF NIGHTS</th>
+                                <th scope="col">NO OF ROOMS</th>
+                                <th scope="col">BOOKING NOTES</th>
+                                <th scope="col">PAYMENT SLABS</th>
+                                <th scope="col">PRODUCT NAME</th>
+                                <th scope="col">ROOM CATEGORY</th>
+                                <th scope="col">SERVICE CATEGORY</th>
+                                <th scope="col">SERVICE CITY</th>
+                                <th scope="col">SERVICE COUNTRY</th>
+                                <th scope="col">STAND ALONE</th>
+                                <th scope="col">TAX CALCULATION</th>
+                                <th scope="col">TOTAL TAX CALCULATION</th>
+                                <th scope="col">FOREIGN CURRENCY</th>
+                                <th scope="col">SUPPLIER PAYMENT DEADLINE</th>
+                                <th scope="col">COMPONENTS WISE NET COST</th>
+                                <th scope="col">COMPONENTS WISE MARKUP</th>
+                                <th scope="col">COMPONENTS WISE SELLING COST</th>
+                                <th scope="col">COMPONENTS WISE DISCOUNT COMISSION</th>
+                                <th scope="col">OVER ALL DISCOUNT</th>
+                                <th scope="col">OVER ALL PROFIT</th>
+                                <th scope="col">OVER ALL LOSS</th>
+                                <th scope="col">COMPONENTS WISE CURRENCY</th>
+                                <th scope="col">PER SERVICE WISE SUPPLIER CODE</th>
                                 <th scope="col">FETCHED ON</th>
-                                <th scope="col">OPERATED ON</th>-->
+                                <th scope="col">OPERATED ON</th>
                                 <th scope="col text-center"><i class="fas fa-sync-alt sz"></i></th>
                             </tr>
                         </thead>
                         <tbody class="table-fixed">
                             {{#each data}}
-                                <tr>
-                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')">{{index_modivied @index}}</td>
-                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')">{{this.RA_REFERENCE}}</td>
-                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')">{{this.INVOICE_DATE}}</td>
-                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')">{{this.INVOICE_NUMBER}}</td>
-                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')">{{this.LEAD_PASSENGER}}</td>
-                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')">{{this.RA_AGENT_CODE}}</td>
-                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')">{{this.PAYMENT_DEADLINE}}</td>
-                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')">{{this.INVOICE_CURRENCY}}</td>
-                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')" class="text-right">{{this.TOTAL_IN_AMOUNTS}}</td>
-                                    <td onclick="fetchdetail('{{this.RA_REFERENCE}}')">{{this.SENT_TO_REALBOOK}}</td>
+                                <tr id="row{{index_modivied @index}}">
+               
+                                    <td >{{index_modivied @index}}</td>
+                                    <td class="details-control"></td>
+                                    <td >{{this.RA_REFERENCE}}</td>
+                                    <td >{{this.INVOICE_DATE}}</td>
+                                    <td >{{this.INVOICE_NUMBER}}</td>
+                                    <td >{{this.LEAD_PASSENGER}}</td>
+                                    <td >{{this.RA_AGENT_CODE}}</td>
+                                    <td >{{this.PAYMENT_DEADLINE}}</td>
+                                    <td >{{this.INVOICE_CURRENCY}}</td>
+                                    <td  class="text-right">{{this.TOTAL_IN_AMOUNTS}}</td>
+                                    <td >{{thiS.SBU}}</td>
+                                    <td >{{thiS.CHECK_IN_DATE}}</td>
+                                    <td >{{this.CHECK_OUT_DATE}}</td>
+                                    <td >{{this.EXCHANGE_RATE}}</td>
+                                    <td >{{this.RA_FILE_HANDLER}}</td>
+                                    <td >{{this.NO_OF_NIGHTS}}</td>
+                                    <td >{{this.NO_OF_ROOMS}}</td>
+                                    <td >{{this.BOOKING_NOTES}}</td>
+                                    <td >{{this.PAYMENT_SLABS}}</td>
+                                    <td >{{this.PRODUCT_NAME}}</td>
+                                    <td >{{thiS.ROOM_CATEGORY}}</td>
+                                    <td >{{thiS.SERVICE_CATEGORY}}</td>
+                                    <td >{{thiS.SERVICE_CITY}}</td>
+                                    <td >{{thiS.SERVICE_COUNTRY}}</td>
+                                    <td >{{this.STAND_ALONE}}</td>
+                                    <td >{{this.TAX_CALCULATION}}</td>
+                                    <td >{{this.TOTAL_TAX_CALCULATION}}</td>
+                                    <td >{{this.FOREIGN_CURRENCY}}</td>
+                                    <td >{{this.SUPPLIER_PAYMENT_DEADLINE}}</td>
+                                    <td >{{this.COMPONENTS_WISE_NET_COST}}</td>
+                                    <td >{{this.COMPONENTS_WISE_MARKUP}}</td>
+                                    <td >{{this.COMPONENTS_WISE_SELLING_COST}}</td>
+                                    <td >{{thiS.COMPONENTS_WISE_DISCOUNT_COMISSION}}</td>
+                                    <td >{{thiS.OVER_ALL_DISCOUNT}}</td>
+
+                                    <td >{{thiS.OVER_ALL_PROFIT}}</td>
+                                    <td >{{this.OVER_ALL_LOSS}}</td>
+                                    <td >{{this.COMPONENTS_WISE_CURRENCY}}</td>
+                                    <td >{{this.PER_SERVICE_SUPPLIER_CODE}}</td>
+                                    <td >{{this.FETCHED_ON}}</td>
+                                   <td></td>
+                                   <td></td>
+
+
+
+
+
+
+
+
                                 </tr>
                             {{/each}}
                         </tbody>
                     </table>
             </div>
         </div>
-
-
-
-        
-
-            
-            
-            
-            
-    <!-- The Modal -->
-    <div class="modal fade" id="vdetailsFetched">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-            
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    
-                    <div class="row">
-                        <div class="col-md-2" style="display:inline-block">
-                            <h4 class="modal-title">Details</h4>
-                        </div>
-                        <div class="col-md-3">
-                            <h5 style="float:right">Txn. no : <span class="txn"></span></h5>
-                        </div>
-                        <div class="col-md-3">
-                            <h5 style="float:right">Fetched On : <span class="fetched"></span></h5>
-                        </div>
-                        <div class="col-md-3">
-                            <h5 style="float:right">Operated On : <span class="operated"></span></h5>
-                        </div>
-                        <div class="col-md-1">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        
-                    </div>
-                
-                </div>
-                
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a data-toggle="tab" href="#hotel">Hotel</a></li>
-                        <li><a data-toggle="tab" href="#transportation">Transportation</a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div id="hotel" class="tab-pane fade in active">
-                            <table class="table table-sm">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">No</th>
-                                        <th scope="col">Room category</th>
-                                        <th scope="col">Per service wise supplier name</th>
-                                        <th scope="col">No of rooms</th>
-                                        <th scope="col">No of nights</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="vdbody1">
-                                                                
-                                </tbody>
-                            </table>
-                        </div>
-                        <div id="transportation" class="tab-pane fade">
-                            <table class="table table-sm">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">No</th>
-                                        <th scope="col">Car category</th>
-                                        <th scope="col">Per service wise supplier name</th>
-                                        <th scope="col">No of seats</th>
-                                        <th scope="col">No of kilometer</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="vdbody2">
-                                                                
-                                </tbody>
-                            </table>
-
-                        </div>
-                        <div id="transportation" class="tab-pane fade">
-                            <table class="table table-sm">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">No</th>
-                                        <th scope="col">Car category</th>
-                                        <th scope="col">Per service wise supplier name</th>
-                                        <th scope="col">No of seats</th>
-                                        <th scope="col">No of kilometer</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="vdbody2">
-                                                                
-                                </tbody>
-                            </table>
-
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                </div>
-                
-            </div>
-        </div>
-    </div>
 
 
 
@@ -223,93 +168,152 @@
          <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src="/itemmaster/javascripts/table.js"></script>
         <script>
+            
+
+
             $(document).ready(function () {
-                $('#myTable').DataTable();
+                var table = $('#myTable').DataTable({
+                    "order": [[1, 'asc']],
+                    rowCallback: function ( row, data, index ) {
+                        console.log('rowCallback');
+                    }
+                });
+
+
+                $('#myTable tbody').on('click', 'tr', function () {
+                    //console.log('clicked');
+                    var tr = $(this);
+                    var rowid = tr.attr('id');
+                    console.log(rowid);
+                    var row = table.row( tr );
+                    //console.log(row); 
+                    if ( row.child.isShown() ) {
+                        // This row is already open - close it
+                        row.child.hide();
+                        tr.removeClass('shown');
+                    }
+                    else {
+                        // Open this row
+                        var d = row.data();
+                        console.log(d[2]);
+                        $.ajax({
+                            type: "POST",
+                            url: "/bookingmaster/"+d[2],
+                            data: {
+                                id:d[2]
+                            },
+                            crossDomain:true,
+                            success: function (data) {
+                                console.log(data);
+                                row.child( '<div class="inner-table"><table class="table table-hover table-sm table-striped table-bordered" id = "child_details'+rowid+'"><tbody class="child-body"></tbody></table></div>').show();
+                                
+                                $('#child_details'+rowid).DataTable({
+                                    destroy: true,
+                                    data: data,
+                                    columns:[
+                                        { "data" : null,"defaultContent": "" },
+                                        { "data" : null,"defaultContent": "" },
+                                        { "data" : "RA_REFERENCE" },
+                                        { "data" : "INVOICE_DATE" },
+                                        { "data" : "INVOICE_NUMBER" },
+                                        { "data" : "LEAD_PASSENGER" },
+                                        { "data" : "RA_AGENT_CODE" },
+                                        { "data" : "PAYMENT_DEADLINE" },
+                                        { "data" : "INVOICE_CURRENCY" },
+                                        { "data" : "TOTAL_IN_AMOUNTS" },
+                                        { "data" : "SBU" },
+                                        { "data" : "CHECK_IN_DATE" },
+                                        { "data" : "CHECK_OUT_DATE" },
+                                        { "data" : "EXCHANGE_RATE" },
+                                        { "data" : "RA_FILE_HANDLER" },
+                                        { "data" : "NO_OF_NIGHTS" },
+                                        { "data" : "NO_OF_ROOMS" },
+                                        { "data" : "BOOKING_NOTES" },
+                                        { "data" : "PAYMENT_SLABS" },
+                                        { "data" : "PRODUCT_NAME" },
+                                        { "data" : "ROOM_CATEGORY" },
+                                        { "data" : "SERVICE_CATEGORY" },
+                                        { "data" : "SERVICE_CITY" },
+                                        { "data" : "SERVICE_COUNTRY" },
+                                        { "data" : "STAND_ALONE" },
+                                        { "data" : "TAX_CALCULATION" },
+                                        { "data" : "TOTAL_TAX_CALCULATION" },
+                                        { "data" : "FOREIGN_CURRENCY" },
+                                        { "data" : "SUPPLIER_PAYMENT_DEADLINE" },
+                                        { "data" : "COMPONENTS_WISE_NET_COST" },
+                                        { "data" : "COMPONENTS_WISE_MARKUP" },
+                                        { "data" : "COMPONENTS_WISE_SELLING_COST" },
+                                        { "data" : "COMPONENTS_WISE_DISCOUNT_COMISSION" },
+                                        { "data" : "OVER_ALL_DISCOUNT" },
+                                        { "data" : "OVER_ALL_PROFIT" },
+                                        { "data" : "OVER_ALL_LOSS" },
+                                        { "data" : "COMPONENTS_WISE_CURRENCY" },
+                                        { "data" : "PER_SERVICE_SUPPLIER_CODE" },
+                                        { "data" : "FETCHED_ON" },
+                                        
+                                    ],
+                                    "searching": false,
+                                    "paging":   false,
+                                    "ordering": false
+                                });
+                                tr.addClass('shown');
+                            },
+                            error: function (xhr, status, error) {
+                                swal("Error", "Error detching details", "error");
+                            }
+                        });
+                        
+                    }
+                });
+
+
             });
 
-
-
-            /*function deleteITEM(idI){
-                $(".cnf").attr('onclick',"dell('"+ idI +"')");
-            }
-
-            function dell(idI){
-                window.location = "/itemmaster/form/delete/"+idI;
-            }*/
-
-
-
-
-            //fetch vdetail
-                function fetchdetail(id){
-                     $.ajax({
-                        type: "POST",
-                        url: "/bookingmaster/"+id,
-                        data: {
-                            id:id
-                        },
-                        crossDomain:true,
-                        success: function (data) {
-                            console.log(data);
-                            $("#vdbody1").html("")
-                            $("#vdbody2").html("");
-                            $(".txn").html(data.info.RA_REFERENCE);
-                            $(".fetched").html(formateDate(data.info.FETCHED_ON));
-                            $(".operated").html(formateDate(data.info.OPERATED_ON));
-                            
-                            if(data.hotel.length>0){
-                                data.hotel.forEach((ii,index)=>{
-                                    index1=index+1;
-                                    $("#vdbody1").append('<tr><td>'+index1+'</td><td>'+ii.ROOM_CATEGORY+'</td><td>'+ii.PER_SERVICE_WISE_SUPPLIER_NAME+'</td><td>'+ii.NO_OF_ROOMS+'</td><td>'+ii.NO_OF_NIGHTS+'</td></td>')
-                                });
-                               
-                            }
-                            else{
-                                $("#vdbody1").append("No record found");
-                            }
-                            if(data.transport.length>0){
-                                data.transport.forEach((ii,index)=>{
-                                    index1=index+1;
-                                    $("#vdbody2").append('<tr><td>'+index1+'</td><td>'+ii.ROOM_CATEGORY+'</td><td>'+ii.PER_SERVICE_WISE_SUPPLIER_NAME+'</td><td>'+ii.NO_OF_ROOMS+'</td><td>'+ii.NO_OF_NIGHTS+'</td></td>')
-                                });
-                               
-                            }
-                            else{
-                                $("#vdbody2").append("No record found");
-                            }
-                           
-                            
-                             $("#vdetailsFetched").modal("show");
-                            
-                        },
-                        error: function (xhr, status, error) {
-                            swal("Error", "Error detching details", "error");
-                        }
-                    });
-                }
-
-
-                function formateDate(d){
-                    if(d != null){
-                        var date = new Date(d);
-                        var y = date.getFullYear();
-                        var m = date.getMonth()+1;
-                        var d = date.getDate();
-                        console.log("11");
-                        return String(d)+"-"+String(m)+"-"+String(y);
-                    }
-                    else{
-                        console.log("22");
-                        return ""
-                    }
-                }
-
-
-
-                {{#each data}}
-                    console.log('{{this.RA_REFERENCE}}')
-                {{/each}}
-
+            /*
+            '<thead>'+
+                                        '<th scope="col">NO.</th>'+
+                                        '<th scope="col"></th>'+
+                                        '<th scope="col">RA REFERENCE</th>'+
+                                        '<th scope="col">INVOICE DATE</th>'+
+                                        '<th scope="col">INVOICE NUMBER</th>'+
+                                        '<th scope="col">LEAD PASSENGER</th>'+
+                                        '<th scope="col">RA AGENT CODE</th>'+
+                                        '<th scope="col">PAYMENT DEADLINE</th>'+
+                                        '<th scope="col">CURRENCY</th>'+
+                                        '<th scope="col" class="text-right">TOTAL AMOUNT</th>'+
+                                        '<th scope="col">SUB</th>'+
+                                        '<th scope="col">CHECK IN DATE</th>'+
+                                        '<th scope="col">CHECK OUT DATE</th>'+
+                                        '<th scope="col">EXCHANGE RATE</th>'+
+                                        '<th scope="col">RA FILE HANDLER</th>'+
+                                        '<th scope="col">NO OF NIGHTS</th>'+
+                                        '<th scope="col">NO OF ROOMS</th>'+
+                                        '<th scope="col">BOOKING NOTES</th>'+
+                                        '<th scope="col">PAYMENT SLABS</th>'+
+                                        '<th scope="col">PRODUCT NAME</th>'+
+                                        '<th scope="col">ROOM CATEGORY</th>'+
+                                        '<th scope="col">SERVICE CATEGORY</th>'+
+                                        '<th scope="col">SERVICE CITY</th>'+
+                                        '<th scope="col">SERVICE COUNTRY</th>'+
+                                        '<th scope="col">STAND ALONE</th>'+
+                                        '<th scope="col">TAX CALCULATION</th>'+
+                                        '<th scope="col">TOTAL TAX CALCULATION</th>'+
+                                        '<th scope="col">FOREIGN CURRENCY</th>'+
+                                        '<th scope="col">SUPPLIER PAYMENT DEADLINE</th>'+
+                                        '<th scope="col">COMPONENTS WISE NET COST</th>'+
+                                        '<th scope="col">COMPONENTS WISE MARKUP</th>'+
+                                        '<th scope="col">COMPONENTS WISE SELLING COST</th>'+
+                                        '<th scope="col">COMPONENTS WISE DISCOUNT COMISSION</th>'+
+                                        '<th scope="col">OVER ALL DISCOUNT</th>'+
+                                        '<th scope="col">OVER ALL PROFIT</th>'+
+                                        '<th scope="col">OVER ALL LOSS</th>'+
+                                        '<th scope="col">COMPONENTS WISE CURRENCY</th>'+
+                                        '<th scope="col">PER SERVICE WISE SUPPLIER CODE</th>'+
+                                        '<th scope="col">FETCHED ON</th>'+
+                                        '<th scope="col">OPERATED ON</th>'+
+                                        '<th scope="col text-center"><i class="fas fa-sync-alt sz"></i></th>'+
+                                    '</thead>'+
+                                    */
 
         </script>
     </body>

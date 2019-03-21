@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+        <link rel="stylesheet" href="/itemmaster/stylesheets/table.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+        <title>Booking master Table</title>
+    </head>
+    <style>
+        .table-wrapper{padding:15px;}
+        tr{cursor:pointer}
+        .sz{font-size: 20px}
+        .hdng{width: 100%;text-align: center;color:#4179ef }
+        .back-button{
+            position: fixed;
+            z-index: 100000;
+            top:10px;
+            left:10px;
+            background:#4179ef;
+            padding: 8px 11px;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 18px;
+        }
+        .back-button:hover{
+            color: #fff;
+        }
+        td.details-control {
+            background: url('https://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
+            cursor: pointer;
+        }
+        tr.shown td.details-control {
+            background: url('https://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
+        }
+        .inner-table{
+            padding:40px;
+        }
+    </style>
+    <body>
+        <a class="back-button" href="/"><i class="fas fa-home"></i></a>
+        <div class="table-wrapper">
+            <h4 class="hdng">Booking Master</h4>
+            <div class="table-responsive-sm">
+                    <table class="table table-hover table-sm table-striped table-bordered" id="myTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">NO.</th>
+                                <th scope="col"></th>
+                                <!--<th scope="col">ID</th>
+                                <th scope="col">SUB</th>
+                                <th scope="col">CHECK_IN_DATE</th>
+                                <th scope="col">CHECK_OUT_DATE</th>
+                                <th scope="col">EXCHANGE_RATE</th>-->
+                                <th scope="col">TXN  NO</th>
+                                <th scope="col">INVOICE DATE</th>
+                                <th scope="col">INVOICE NUMBER</th>
+                                <th scope="col">LEAD PASSENGER</th>
+                                <!--<th scope="col">NO_OF_NIGHTS</th>
+                                <th scope="col">NO_OF_ROOMS</th>
+                                <th scope="col">BOOKING_NOTES</th>
+                                <th scope="col">PER_SERVICE_WISE_SUPPLIER NAME</th>-->
+                                <th scope="col">RA AGENT CODE</th>
+                                <th scope="col">PAYMENT DEADLINE</th>
+                                <!--<th scope="col">PAYMENT_SLABS</th>
+                                <th scope="col">PRODUCT_NAME</th>
+                                <th scope="col">RA_REFERENCE</th>
+                                <th scope="col">ROOM_CATEGORY</th>
+                                <th scope="col">SERVICE_CATEGORY</th>
+                                <th scope="col">SERVICE_CITY</th>
+                                <th scope="col">SERVICE_COUNTRY</th>
+                                <th scope="col">STAND_ALONE</th>
+                                <th scope="col">TAX_CALCULATION</th>
+                                <th scope="col">TOTAL_TAX_CALCULATION</th>-->
+                                <th scope="col">CURRENCY</th>
+                                <th scope="col" class="text-right">AMOUNT</th>
+                                <!--<th scope="col">FOREIGN_CURRENCY</th>
+                                <th scope="col">SUPPLIER_PAYMENT_DEADLINE</th>
+                                <th scope="col">COMPONENTS_WISE_NET_COST</th>
+                                <th scope="col">COMPONENTS_WISE_MARKUP</th>
+                                <th scope="col">COMPONENTS_WISE_SELLING_COST</th>
+                                <th scope="col">COMPONENTS_WISE_DISCOUNT_COMISSION</th>
+                                <th scope="col">OVER_ALL_DISCOUNT</th>
+                                <th scope="col">OVER_ALL_PROFIT</th>
+                                <th scope="col">OVER_ALL_LOSS</th>
+                                <th scope="col">COMPONENTS_WISE_CURRENCY</th>
+                                <th scope="col">FETCHED ON</th>
+                                <th scope="col">OPERATED ON</th>-->
+                                <th scope="col text-center"><i class="fas fa-sync-alt sz"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-fixed">
+                            {{#each data}}
+                                <tr>
+                                                                 
+                                    <td >{{index_modivied @index}}</td>
+                                    <td class="details-control"></td>
+                                    <td >{{this.RA_REFERENCE}}</td>
+                                    <td >{{this.INVOICE_DATE}}</td>
+                                    <td >{{this.INVOICE_NUMBER}}</td>
+                                    <td >{{this.LEAD_PASSENGER}}</td>
+                                    <td >{{this.RA_AGENT_CODE}}</td>
+                                    <td >{{this.PAYMENT_DEADLINE}}</td>
+                                    <td >{{this.INVOICE_CURRENCY}}</td>
+                                    <td  class="text-right">{{this.TOTAL_IN_AMOUNTS}}</td>
+                                    <td >{{this.SENT_TO_REALBOOK}}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+
+
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="/itemmaster/javascripts/table.js"></script>
+        <script>
+            
+
+
+            $(document).ready(function () {
+                var table = $('#myTable').DataTable({
+                    "order": [[1, 'asc']],
+                    rowCallback: function ( row, data, index ) {
+                        console.log('rowCallback');
+                    }
+                });
+
+
+                $('#myTable tbody').on('click', 'tr', function () {
+                    //console.log('clicked');
+                    var tr = $(this);
+                    var row = table.row( tr );
+                    //console.log(row); 
+                    if ( row.child.isShown() ) {
+                        // This row is already open - close it
+                        row.child.hide();
+                        tr.removeClass('shown');
+                    }
+                    else {
+                        // Open this row
+                        var d = row.data();
+                        console.log(d[2]);
+                        $.ajax({
+                            type: "POST",
+                            url: "/bookingmaster/"+d[2],
+                            data: {
+                                id:d[2]
+                            },
+                            crossDomain:true,
+                            success: function (data) {
+                                console.log(data);
+                                row.child( '<div class="inner-table"><table class="table table-hover table-sm table-striped table-bordered" id = "child_details"><thead><tr><th>CHECKIN DATE</th><th>ROOM CATEGORY</th><th>NO OF NIGHTS</th></tr></thead><tbody></tbody></table></div>').show();
+                                
+                                $('#child_details').DataTable({
+                                    destroy: true,
+                                    data: data.hotel,
+                                    columns:[
+                                        { "data" : "CHECK_IN_DATE" },
+                                        { "data" : "ROOM_CATEGORY" },
+                                        { "data" : "NO_OF_NIGHTS" }
+                                    ],
+                                    "searching": false,
+                                    "paging":   false,
+                                });
+                                tr.addClass('shown');
+                            },
+                            error: function (xhr, status, error) {
+                                swal("Error", "Error detching details", "error");
+                            }
+                        });
+                        
+                    }
+                });
+
+
+            });
+
+            
+
+
+
+
+            /*function deleteITEM(idI){
+                $(".cnf").attr('onclick',"dell('"+ idI +"')");
+            }
+
+            function dell(idI){
+                window.location = "/itemmaster/form/delete/"+idI;
+            }*/
+
+
+        /*
+
+            //fetch vdetail
+                function fetchdetail(id){
+                     $.ajax({
+                        type: "POST",
+                        url: "/bookingmaster/"+id,
+                        data: {
+                            id:id
+                        },
+                        crossDomain:true,
+                        success: function (data) {
+                            console.log(data);
+                            $("#vdbody1").html("")
+                            $("#vdbody2").html("");
+                            $(".txn").html(data.info.RA_REFERENCE);
+                            $(".fetched").html(formateDate(data.info.FETCHED_ON));
+                            $(".operated").html(formateDate(data.info.OPERATED_ON));
+                            
+                            if(data.hotel.length>0){
+                                data.hotel.forEach((ii,index)=>{
+                                    index1=index+1;
+                                    $("#vdbody1").append('<tr><td>'+index1+'</td><td>'+ii.ROOM_CATEGORY+'</td><td>'+ii.PER_SERVICE_WISE_SUPPLIER_NAME+'</td><td>'+ii.NO_OF_ROOMS+'</td><td>'+ii.NO_OF_NIGHTS+'</td></td>')
+                                });
+                               
+                            }
+                            else{
+                                $("#vdbody1").append("No record found");
+                            }
+                            if(data.transport.length>0){
+                                data.transport.forEach((ii,index)=>{
+                                    index1=index+1;
+                                    $("#vdbody2").append('<tr><td>'+index1+'</td><td>'+ii.ROOM_CATEGORY+'</td><td>'+ii.PER_SERVICE_WISE_SUPPLIER_NAME+'</td><td>'+ii.NO_OF_ROOMS+'</td><td>'+ii.NO_OF_NIGHTS+'</td></td>')
+                                });
+                               
+                            }
+                            else{
+                                $("#vdbody2").append("No record found");
+                            }
+                           
+                            
+                             $("#vdetailsFetched").modal("show");
+                            
+                        },
+                        error: function (xhr, status, error) {
+                            swal("Error", "Error detching details", "error");
+                        }
+                    });
+                }
+
+                
+                function formateDate(d){
+                    if(d != null){
+                        var date = new Date(d);
+                        var y = date.getFullYear();
+                        var m = date.getMonth()+1;
+                        var d = date.getDate();
+                        console.log("11");
+                        return String(d)+"-"+String(m)+"-"+String(y);
+                    }
+                    else{
+                        console.log("22");
+                        return ""
+                    }
+                }
+
+            */
+        </script>
+    </body>
+</html>
