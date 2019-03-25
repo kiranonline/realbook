@@ -261,7 +261,8 @@
                         },
                         error: function (xhr, status, error) {
                             $("#sync"+String(id)).attr('src',"/icons/err.jpeg");
-                            swal("Error", "Error posting data", "error");
+                            console.log(xhr);
+                            swal("Error",  "MSG:"+String(xhr.responseJSON.msg), "error");
                         }
                     });
                 }

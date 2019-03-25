@@ -19,10 +19,7 @@ router.get('/form', function(req, res, next) {
     var msgText = req.query.msgText;
     var backto = req.query.backto || null;
     var p1 = modals2.taxmaster.findAll({
-        attributes: ['name','id','pid'],
-        where:{
-            pid:0
-        }
+        attributes: ['name','id']
     });
     Promise.all([p1]).then((values)=>{
         if(id==null){

@@ -17,18 +17,24 @@ const taxmaster = sequelize.define('taxmaster', {
         type:Sequelize.STRING,
         allowNull: true
     },
-    category:{
-        type:Sequelize.STRING,
-        allowNull: true
-    },
     country:{
         type:Sequelize.STRING(100),
         allowNull: true
     },
-    state:{
-        type:Sequelize.STRING(20),
-        allowNull: true
+    currency:{
+        type: Sequelize.STRING,
+        allowNull:true
     },
+    tax_rate:{
+        type:Sequelize.DECIMAL(2),
+        allowNull:true
+    },
+    from_dt:{
+        type:Sequelize.DATE,
+    },
+    to_dt:{
+        type:Sequelize.DATE,
+    },  
     cid:{
         type:Sequelize.INTEGER,
         allowNull: true
@@ -56,26 +62,6 @@ const taxmaster = sequelize.define('taxmaster', {
     uid_update:{
         type:Sequelize.INTEGER,
         allowNull: true
-    },
-    isSystem:{
-        type:Sequelize.INTEGER,
-        allowNull: true,
-        defaultValue:1
-    },
-    applied_on:{
-        type:Sequelize.INTEGER,
-        allowNull: true,
-        defaultValue:0
-    },
-    tax_system:{
-        type:Sequelize.STRING(20),
-        allowNull: true,
-        defaultValue:'1'
-    },
-    pid:{
-        type:Sequelize.INTEGER,
-        allowNull: true,
-        defaultValue:0
     }
 },{
     timestamps: false,

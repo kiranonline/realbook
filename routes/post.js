@@ -99,7 +99,7 @@ router.post('/',(req,res,next)=>{
     voucher.findAll({
         attributes: ['transactionDate','transactionNumber','transactionType','transactionDescription',
             'txnCode','voucherAlias','apiRef','docLink','fxRate','isFx','isInv','refFileName','isSEZ',
-            'isAbatement','gstin','currencySymbol','realbookID','module','cid','segid'
+            'isAbatement','gstin','realbookID','module','cid','segid'
         ],
         where:{
             id:id
@@ -128,7 +128,7 @@ router.post('/',(req,res,next)=>{
             });
             vdetail.findAll({
                 attributes: ['vid','cr','dr','accessibleAmount','bankInstrumentNo','bankInstrumentDate','bankInstrumentType',
-                    'bankName','date','ledger',['narration','ledgerType']
+                    'bankName','date','ledger','currency_id',['narration','ledgerType']
                 ],
                 where:{
                     vid:id,
@@ -137,7 +137,14 @@ router.post('/',(req,res,next)=>{
             }).then((result2)=>{
                 var ledgerDetails=[];
                 result2.forEach((ii,index)=>{
+                        
                         var element =ii.dataValues;
+                        var cur =  element.currency_id;
+                        delete element['currency_id'];
+                        ser1.currency(cur).then((da)=>{
+                            console.log(da[0].symbol);
+                            f.currencySymbol = da[0].symbol;
+                        });
                         ser1.dd(element.date).then((d)=>{
                             element.date=d;
                         });
@@ -241,7 +248,7 @@ router.post('/',(req,res,next)=>{
                                             res.status(500).send(errordb);
                                         })
                                     }).catch((errr)=>{
-                                        res.status(500).send("Error");
+                                        res.status(500).send(errr);
                                     });
                                 }).catch((errrr)=>{
                                     res.status(500).send("Error");
@@ -269,7 +276,7 @@ router.post('/',(req,res,next)=>{
             });
             vdetail.findAll({
                 attributes: ['vid','cr','dr','accessibleAmount','bankInstrumentNo','bankInstrumentDate','bankInstrumentType',
-                    'bankName','date','ledger'
+                    'bankName','date','ledger','currency_id'
                 ],
                 where:{
                     vid:id,
@@ -277,8 +284,16 @@ router.post('/',(req,res,next)=>{
                 }
             }).then((result2)=>{
                 var ledgerDetails=[];
+                console.log("iiiiiiiiiiiiiiiiiiiiiiiiiii");
                 result2.forEach((ii,index)=>{
                         var element =ii.dataValues;
+                        var cur =  element.currency_id;
+                        delete element['currency_id'];
+                        
+                        ser1.currency(cur).then((da)=>{
+                            console.log(da[0].symbol);
+                            f.currencySymbol = da[0].symbol;
+                        });
                         ser1.dd(element.date).then((d)=>{
                             element.date=d;
                         });
@@ -339,7 +354,7 @@ router.post('/',(req,res,next)=>{
                                         res.status(500).send(errordb);
                                     })
                                 }).catch((errr)=>{
-                                    res.status(500).send("Error");
+                                    res.status(500).send(errr);
                                 });
                             }
                         })
@@ -358,7 +373,7 @@ router.post('/',(req,res,next)=>{
             });
             vdetail.findAll({
                 attributes: ['vid','cr','dr','accessibleAmount','bankInstrumentNo','bankInstrumentDate','bankInstrumentType',
-                    'bankName','date','ledger',['narration','ledgerType']
+                    'bankName','date','ledger','currency_id',['narration','ledgerType']
                 ],
                 where:{
                     vid:id
@@ -367,6 +382,12 @@ router.post('/',(req,res,next)=>{
                 var ledgerDetails=[];
                 result2.forEach((ii,index)=>{
                         var element =ii.dataValues;
+                        var cur =  element.currency_id;
+                        delete element['currency_id'];
+                        ser1.currency(cur).then((da)=>{
+                            console.log(da[0].symbol);
+                            f.currencySymbol = da[0].symbol;
+                        });
                         ser1.dd(element.date).then((d)=>{
                             element.date=d;
                         });
@@ -468,10 +489,10 @@ router.post('/',(req,res,next)=>{
                                             res.status(500).send(errordb);
                                         })
                                     }).catch((errr)=>{
-                                        res.status(500).send("Error");
+                                        res.status(500).send(errr);
                                     });
                                 }).catch((errrr)=>{
-                                    res.status(500).send("Error");
+                                    res.status(500).send(errrr);
                                 })
                                
                             }

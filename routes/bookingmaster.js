@@ -177,9 +177,9 @@ router.post('/local/:RA_REFERENCE',(req,res,next)=>{
             success : false,
             msg : err
         })
-    })
+    });
 
-})
+});
 
 
 

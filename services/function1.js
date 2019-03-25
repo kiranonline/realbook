@@ -12,6 +12,18 @@ var moment = require('moment');
 var vitem = require('../modals/vitem').vitem;
 
 
+
+function currency(d){
+    return new Promise((resolve,reject)=>{
+        sequelize.query(`SELECT symbol FROM currency WHERE id=${d};`).then((data)=>{
+            return resolve(data[0]);
+        }).catch((err)=>{
+            return reject(err);
+        })
+    })
+   
+}
+
 function dd(d){
     return new Promise((resolve,reject)=>{
         try{
@@ -333,4 +345,4 @@ function push3(data,action){
 }
 
 
-module.exports={ led1,vbill1,vtax1,vcc1,push1,dd,prepareItem,push2,push3 }
+module.exports={ led1,vbill1,vtax1,vcc1,push1,dd,prepareItem,push2,push3,currency }
