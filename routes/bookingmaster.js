@@ -120,4 +120,73 @@ router.post("/:id",(req,res,next)=>{
 
 
 
+
+
+//fetch existing details
+// bookingmaster/local/{{id}}
+
+router.get('/local/:RA_REFERENCE',(req,res,next)=>{
+    var RA_REFERENCE = req.params.RA_REFERENCE;
+    var p1 = model1.bookingmaster.findAll({
+        where:{
+            RA_REFERENCE : RA_REFERENCE
+        }
+    });
+
+    Promise.all([p1]).then((results)=>{
+        var data = results[0]
+        res.json({
+            success: true,
+            msg: "data sent successfully.",
+            RA_REFERENCE : RA_REFERENCE,
+            data : data
+        })
+    }).catch((err)=>{
+        res.json({
+            success : false,
+            msg : err
+        })
+    })
+});
+
+
+
+
+
+//edit if exist or create new
+//bookingmaster/local/{{id}}
+
+router.post('/local/:RA_REFERENCE',(req,res,next)=>{
+    var RA_REFERENCE = req.params.RA_REFERENCE;
+    var data = req.body.data;
+    console.log(data);
+    var p1 = model1.bookingmaster.destroy({
+        where:{
+            RA_REFERENCE : RA_REFERENCE
+        }
+    });
+    var p2 = model1.bookingmaster.bulkCreate(data);
+    
+    Promise.all([p1,p2]).then((results)=>{
+        res.json({
+            success : true,
+            msg : "data saved successfully."
+        })
+    }).catch((err)=>{
+        res.json({
+            success : false,
+            msg : err
+        })
+    })
+
+})
+
+
+
+
+
+
+
+
+
 module.exports=router;

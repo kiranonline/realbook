@@ -99,7 +99,7 @@ router.post('/',(req,res,next)=>{
     voucher.findAll({
         attributes: ['transactionDate','transactionNumber','transactionType','transactionDescription',
             'txnCode','voucherAlias','apiRef','docLink','fxRate','isFx','isInv','refFileName','isSEZ',
-            'isAbatement','gstin','currencySymbol','realbookID','module'
+            'isAbatement','gstin','currencySymbol','realbookID','module','cid','segid'
         ],
         where:{
             id:id
@@ -107,7 +107,12 @@ router.post('/',(req,res,next)=>{
     }).then((result1)=>{
         let f= result1[0].dataValues;
         var type_module=f.module;
+        var type_cid=f.cid;
+        var type_segid=f.segid;	
         delete f['module'];
+        delete f['cid'];
+        delete f['segid'];
+        console.log(type_cid,type_segid);
         if(type_module=='so' || type_module=='po'){
             //inv
             /*
@@ -221,7 +226,7 @@ router.post('/',(req,res,next)=>{
                                     console.log(dataret)
                                     invv.itemDetails=dataret;
                                     console.log(JSON.stringify(invv));
-                                    var pp=ser1.push2(invv,action);
+                                    var pp=ser1.push2(invv,action,type_cid,type_segid);
                                     pp.then((backed)=>{
                                         voucher.update({
                                             realbookID:backed.voucherId
@@ -319,7 +324,7 @@ router.post('/',(req,res,next)=>{
                                 }
                                 f.ledgerDetails=ledgerDetails;
                                 console.log(JSON.stringify(f));
-                                var pp=ser1.push1(f,action);
+                                var pp=ser1.push1(f,action,type_cid,type_segid);
                                 pp.then((backed)=>{
                                     voucher.update({
                                         realbookID:backed.id
@@ -448,7 +453,7 @@ router.post('/',(req,res,next)=>{
                                     console.log(dataret)
                                     invv.itemDetails=dataret;
                                     console.log(JSON.stringify(invv));
-                                    var pp=ser1.push2(invv,action);
+                                    var pp=ser1.push2(invv,action,type_cid,type_segid);
                                     pp.then((backed)=>{
                                         voucher.update({
                                             realbookID:backed.voucherId

@@ -153,26 +153,26 @@ function vcc1(Vid,VDid){
 
 
 
-function push1(data,action){
+function push1(data,action,cid,segid){
     return new Promise((resolve,reject)=>{
         //console.log("2");
         var url;
         if(action=='update'){
-            url='http://api.realbooks.in/AMSSERVICE/api/accv/v2/vupdate/1349/1349'
+            url='http://api.realbooks.in/AMSSERVICE/api/accv/v2/vupdate/'+cid+'/'+segid;
         }
         else{
-            url = 'http://api.realbooks.in/AMSSERVICE/api/accv/v2/vcreate/1349/1349';
+            url = 'http://api.realbooks.in/AMSSERVICE/api/accv/v2/vcreate/'+cid+'/'+segid;
         }
         console.log(url);
         request.post({
             url: url,
             headers: {
-                'accountName': 'apichk'
+                'accountName': 'redapple'
             },            
             json:{
-                accessKey : "U76GHF498HNMR345",
-                secretKey : "U76GHF498HNMR345",
-                emailid :  "noreply@realbooks.in",
+                accessKey : "REDAPPLEGHF498HNMR345",
+                secretKey : "REDAPPLEGHF498HNMR345",
+                emailid :  "senthil@redapple.com",
                 json_obj : data
             }
         },
@@ -243,28 +243,28 @@ function prepareItem(vid){
 
 
 
-function push2(data,action){
+function push2(data,action,cid,segid){
     return new Promise((resolve,reject)=>{
         //console.log("2");
         var url;
         if(action=='update'){
-            url='http://api.realbooks.in/AMSSERVICE/api/accv/v2/psvupdate/1349/1349';
+            url='http://api.realbooks.in/AMSSERVICE/api/accv/v2/psvupdate/'+cid+'/'+segid
             
             
         }
         else{
-            url = 'http://api.realbooks.in/AMSSERVICE/api/accv/v2/psvcreate/1349/1349';
+            url = 'http://api.realbooks.in/AMSSERVICE/api/accv/v2/psvcreate/'+cid+'/'+segid
         }
         console.log(url);
         request.post({
             url: url,
             headers: {
-                'accountName': 'apichk'
+                'accountName': 'redapple'
             },            
             json:{
-                accessKey : "U76GHF498HNMR345",
-                secretKey : "U76GHF498HNMR345",
-                emailid :  "noreply@realbooks.in",
+                accessKey : "REDAPPLEGHF498HNMR345",
+                secretKey : "REDAPPLEGHF498HNMR345",
+                emailid :  "senthil@redapple.com",
                 json_obj : data
             }
         },
