@@ -40,8 +40,9 @@
         tr.shown td.details-control {
             background: url('https://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
         }
-        .inner-table .sorting{
-            display: none !important;
+        .hhh{
+            visibility: hidden;
+            opacity:0; 
         }
     </style>
     <body>
@@ -205,7 +206,10 @@
                             crossDomain:true,
                             success: function (data) {
                                 console.log(data);
-                                row.child( '<div class="inner-table"><table class="table table-hover table-sm table-striped table-bordered" id = "child_details'+rowid+'"><tbody class="child-body"></tbody></table></div>').show();
+                                row.child( '<div class="inner-table"><table class="table table-hover table-sm table-striped table-bordered" id = "child_details'+rowid+'"><thead class="hhh"><tr><th>No</th><th></th><th>RA REFERENCE</th><th>INVOICE DATE</th><th>INVOICE NUMBER</th><th>LEAD PASSENGER</th><th>RA AGENT CODE</th><th>PAYMENT DEADLINE</th><th>CURRENCY</th>'+
+                                            '<th>TOTAL AMOUNT</th><th>SUB</th><th>CHECK IN DATE</th><th>CHECK OUT DATE</th><th>EXCHANGE RATE</th><th>RA FILE HANDLER</th><th>NO OF NIGHTS</th><th>NO OF ROOMS</th><th>BOOKING NOTES</th><th>PAYMENT SLABS</th><th>PRODUCT NAME</th><th>ROOM CATEGORY</th><th>SERVICE CATEGORY</th><th>SERVICE CITY</th><th>SERVICE COUNTRY</th><th>STAND ALONE</th><th>TAX CALCULATION</th>'+
+                                            '<th>TOTAL TAX CALCULATION</th><th>FOREIGN CURRENCY</th><th>SUPPLIER PAYMENT DEADLINE</th><th>COMPONENTS WISE NET COST</th><th>COMPONENTS WISE MARKUP</th><th>COMPONENTS WISE SELLING COST</th><th>COMPONENTS WISE DISCOUNT COMISSION</th><th>OVER ALL DISCOUNT</th><th>OVER ALL PROFIT</th><th>OVER ALL LOSS</th><th>COMPONENTS WISE CURRENCY</th><th>PER SERVICE WISE SUPPLIER CODE</th><th>FETCHED ON</th><th>OPERATED ON</th><th><i class="fas fa-sync-alt sz"></i></th>'+
+                                            '</tr></thead><tbody class="child-body"></tbody></table></div>').show();
                                 
                                 $('#child_details'+rowid).DataTable({
                                     destroy: true,
@@ -250,6 +254,8 @@
                                         { "data" : "COMPONENTS_WISE_CURRENCY" },
                                         { "data" : "PER_SERVICE_SUPPLIER_CODE" },
                                         { "data" : "FETCHED_ON" },
+                                        { "data" : null,"defaultContent": "" },
+                                        { "data" : null,"defaultContent": "" }
                                         
                                     ],
                                     "searching": false,
