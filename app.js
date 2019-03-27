@@ -8,7 +8,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var exphbs = require("express-handlebars");
 var bodyParser = require('body-parser');
-
+var cors = require('cors')
 
 
 
@@ -27,6 +27,7 @@ var suppliermaster = require('./routes/suppliermaster');
 //app
 var app = express();
 
+app.use(cors())
 
 const hbs = exphbs.create({
   defaultLayout: 'main',
