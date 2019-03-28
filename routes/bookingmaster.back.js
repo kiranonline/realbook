@@ -8,11 +8,13 @@ var request = require('request');
 var fileupload = require('../modals/fileUpload').fileupload;
 
 
+
 router.get('/fetch/form',(req,res,next)=>{
     res.render('bookingmaster_fetch_form',{
         layout:false
     })
 })
+
 
 router.post('/fetch',(req,res,next)=>{
     var id = req.query.id || 152395;
@@ -58,7 +60,6 @@ router.post('/fetch',(req,res,next)=>{
         }
     });
 });
-
 
 
 router.post('/push',(req,res,next)=>{
@@ -230,7 +231,7 @@ router.post("/:id",(req,res,next)=>{
                     RA_AGENT_CODE:data_fetched.RA_AGENT_CODE,
                     PER_SERVICE_WISE_SUPPLIER_NAME:data_fetched.PER_SERVICE_WISE_SUPPLIER_NAME
                 }
-                */
+*/
 
 
 module.exports=router;
