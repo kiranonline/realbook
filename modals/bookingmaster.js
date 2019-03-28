@@ -177,7 +177,43 @@ const bookingmaster = sequelize.define('bookingmaster',{
         allowNull:false,
         type:Sequelize.INTEGER,
         defaultValue: 0
+    },
+
+
+
+    FIRSTNAME:{
+        allowNull: true,
+        type:Sequelize.STRING 
+    },
+    SELLINGCOST:{
+        allowNull: true,
+        type:Sequelize.STRING 
+    },
+    COMPONENT_WISE_SELLING_COST_CURRENCY:{
+        allowNull: true,
+        type:Sequelize.STRING 
+    },
+    COMPONENTS_WISE_NET_COST_CURRENCY:{
+        allowNull: true,
+        type:Sequelize.STRING 
+    },
+    ARRIVALDATE :{
+        allowNull: true,
+        type:Sequelize.STRING 
+    },
+    CITY :{
+        allowNull: true,
+        type:Sequelize.STRING
+    },
+    TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST:{
+        allowNull: true,
+        type:Sequelize.STRING
+    },
+    TOUR_TRANSFER_COMPONENTS_WISE_NET_COST:{
+        allowNull: true,
+        type:Sequelize.STRING
     }
+    
 },{
     timestamps: true,
     createdAt: 'FETCHED_ON',

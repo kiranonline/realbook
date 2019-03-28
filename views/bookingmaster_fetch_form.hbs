@@ -54,7 +54,8 @@
     <script>
                 $("#ff").on('click',function(){
                     console.log("don");
-                    var id = $("#id").val();
+                    let id = $("#id").val();
+                    let type= $("#sel1").val();
                     $.ajax({
                         type: "POST",
                         url: "/bookingmaster/fetch?id="+id,

@@ -29,22 +29,50 @@ router.post('/fetch',(req,res,next)=>{
             if(response.body=="\n"){
                 next(createError(500,"Invalid Id"));
             }else{
-                helpers.singleBookingPrepare(response).then(()=>{
-                    res.json({
-                        success:true,
-                        msg:"data fetched"
-                    });
-                }).catch((err)=>{
-                    res.status(500).json({
-                        success:false,
-                        msg:err
-                    });
-                })              
+                var data_fetched=JSON.parse(response.body).json_master;
+                console.log(data_fetched.hasOwnProperty("Booking"));
+                if(data_fetched.hasOwnProperty("Booking")){
+                    helpers.packagePrepare(data_fetched).then(()=>{
+                        res.json({
+                            success:true,
+                            msg:"data fetched"
+                        });
+                    }).catch((err)=>{
+                        res.status(500).json({
+                            success:false,
+                            msg:err
+                        });
+                    }) 
+                }
+                else{
+                    helpers.singleBookingPrepare(data_fetched).then(()=>{
+                        res.json({
+                            success:true,
+                            msg:"data fetched"
+                        });
+                    }).catch((err)=>{
+                        res.status(500).json({
+                            success:false,
+                            msg:err
+                        });
+                    }) 
+                }                          
             }
             
         }
     });
 });
+
+
+
+
+
+
+
+
+
+
+
 
 
 
