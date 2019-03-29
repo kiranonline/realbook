@@ -1,62 +1,132 @@
 <app-header></app-header>
 <main>
-  <div class="container-fluid">
+  <div class="container-fluid"><!-- *ngFor="let bookingArray of bookingArray.json_maste.Booking"-->
+        <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="">First Name</label>
+                        <input type="text" [(ngModel)]="bookingArray.data[0].FIRSTNAME" class="form-control" id="" placeholder="">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="">Invoice Currency</label>
+                        <input type="text" [(ngModel)]="bookingArray.data[0].INVOICE_CURRENCY" class="form-control" id="" placeholder="">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="">Invoice Number</label>
+                        <input type="text" [(ngModel)]="bookingArray.data[0].INVOICE_NUMBER" class="form-control" id="" placeholder="">
+                    </div>
+                </div>
+            </div>
       <div class="row">
           <div class="col-4">
               <div class="form-group">
-                  <label for="">SBU</label>
-                  <input type="text" [(ngModel)]="SBU" class="form-control" id="" placeholder="">
+                  <label for="">Exchange Rate</label>
+                  <input type="text" [(ngModel)]="bookingArray.data[0].EXCHANGE_RATE" class="form-control" id="" placeholder="">
               </div>
           </div>
           <div class="col-4">
               <div class="form-group">
-                  <label for="">Agent CODE ( RA Agents )</label>
-                  <input type="text" [(ngModel)]="RA_AGENT_CODE" class="form-control" id="" placeholder="">
+                  <label for="">Booking Reference(RA File Handler)</label>
+                  <input type="text" [(ngModel)]="bookingArray.data[0].RA_FILE_HANDLER" class="form-control" id="" placeholder="">
               </div>
           </div>
           <div class="col-4">
               <div class="form-group">
-                  <label for="">Booking Reference ( RA File Handler )</label>
-                  <input type="text" [(ngModel)]="RA_FILE_HANDLER" class="form-control" id="" placeholder="">
+                  <label for="">Invoice Date</label>
+                  <input type="text" [(ngModel)]="bookingArray.data[0].INVOICE_DATE" class="form-control" id="" placeholder="">
               </div>
           </div>
       </div>
       <div class="row">
           <div class="col-4">
               <div class="form-group">
-                  <label for="">Lead Passenger</label>
-                  <input type="text" [(ngModel)]="LEAD_PASSENGER" class="form-control" id="" placeholder="">
+                  <label for="">Payment Deadline</label>
+                  <input type="text" [(ngModel)]="bookingArray.data[0].PAYMENT_DEADLINE" class="form-control" id="" placeholder="">
               </div>
           </div>
           <div class="col-4">
-              <div class="form-group">
-                  <label for="">Check In</label>
-                  <div class="input-group mb-3">
-                      <input type="text" class="form-control" [(ngModel)]="CHECK_IN_DATE" id="" placeholder="" data-provide="datepicker">
-                      <div class="input-group-append">
-                          <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <div class="col-4">
-              <div class="form-group">
-                  <label for="">Check Out</label>
-                  <div class="input-group mb-3">
-                      <input type="text" class="form-control" [(ngModel)]="CHECK_OUT_DATE" id="" placeholder="" data-provide="datepicker">
-                      <div class="input-group-append">
-                          <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
-                      </div>
-                  </div>
-              </div>
-          </div>
+                <div class="form-group">
+                    <label for="">RA Reference</label>
+                    <input type="text" [(ngModel)]="bookingArray.data[0].RA_REFERENCE" class="form-control" id="" placeholder="{{bookingArray.SUPPLIER_PAYMENT_DEADLINE}}">
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="">RA Agent Code</label>
+                    <input type="text" [(ngModel)]="bookingArray.data[0].RA_AGENT_CODE" class="form-control" id="" placeholder="">
+                </div>
+            </div>
       </div>
-      <div class="row mb-5">
+      <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="">Stand Alone</label>
+                    <input type="text" [(ngModel)]="bookingArray.data[0].STAND_ALONE" class="form-control" id="" placeholder="">
+                </div>
+            </div>
+            <div class="col-4">
+                  <div class="form-group">
+                      <label for="">Foreign Currency</label>
+                      <input type="text" [(ngModel)]="bookingArray.data[0].FOREIGN_CURRENCY" class="form-control" id="" placeholder="{{bookingArray.SUPPLIER_PAYMENT_DEADLINE}}">
+                  </div>
+              </div>
+              <div class="col-4">
+                  <div class="form-group">
+                      <label for="">SBU</label>
+                      <input type="text" [(ngModel)]="bookingArray.data[0].SBU" class="form-control" id="" placeholder="">
+                  </div>
+              </div>
+        </div>
+        <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="">Selling Cost</label>
+                        <input type="text" [(ngModel)]="bookingArray.data[0].SELLING_COST" class="form-control" id="" placeholder="">
+                    </div>
+                </div>
+                <div class="col-4">
+                      <div class="form-group">
+                          <label for="">Supplier Payment Deadline</label>
+                          <input type="text" [(ngModel)]="bookingArray.data[0].SUPPLIER_PAYMENT_DEADLINE" class="form-control" id="" placeholder="">
+                      </div>
+                  </div>
+                  <div class="col-4">
+                      <div class="form-group">
+                          <label for="">Component Wise Discount Comission</label>
+                          <input type="text" [(ngModel)]="bookingArray.data[0].COMPONENTS_WISE_DISCOUNT_COMISSION" class="form-control" id="" placeholder="">
+                      </div>
+                  </div>
+            </div>
+            <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="">Component Wise Currency</label>
+                            <input type="text" [(ngModel)]="bookingArray.data[0].COMPONENTS_WISE_CURRENCY" class="form-control" id="" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                          <div class="form-group">
+                              <label for="">Service Country</label>
+                              <input type="text" [(ngModel)]="bookingArray.data[0].SERVICE_COUNTRY" class="form-control" id="" placeholder="{{bookingArray.SUPPLIER_PAYMENT_DEADLINE}}">
+                          </div>
+                      </div>
+                      <div class="col-4">
+                          <div class="form-group">
+                              <label for="">Tax Calculation</label>
+                              <input type="text" [(ngModel)]="bookingArray.data[0].TAX_CALCULATION" class="form-control" id="" placeholder="">
+                          </div>
+                      </div>
+                </div>
+      <!-- <div class="row mb-5">
           <div class="col-4">
               <div class="form-group">
                   <label for="">Invoice Date</label>
                   <div class="input-group mb-3">
-                      <input type="text" class="form-control" [(ngModel)]="INVOICE_DATE" id="" placeholder="" data-provide="datepicker">
+                      <input type="text" class="form-control" [(ngModel)]="bookingArray.InvoiceDate" id="" placeholder="" data-provide="datepicker">
                       <div class="input-group-append">
                           <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
                       </div>
@@ -66,109 +136,129 @@
           <div class="col-4">
               <div class="form-group">
                   <label for="">Invoice Number</label>
-                  <input type="text" [(ngModel)]="INVOICE_NUMBER" class="form-control" id="" placeholder="">
+                  <input type="text" [(ngModel)]="bookingArray.InvoiceNumber" class="form-control" id="" placeholder="">
               </div>
           </div>
           <div class="col-4">
               <div class="form-group">
                   <label for="">Invoice Currency</label>
-                  <input type="text" [(ngModel)]="INVOICE_CURRENCY" class="form-control" id="" placeholder="">
+                  <input type="text" [(ngModel)]="bookingArray.InvoiceCurrency" class="form-control" id="" placeholder="">
               </div>
           </div>
-      </div>
-      <div class="row align-items-end" *ngFor="let data of subFormArray; let i = index">
+      </div> -->
+      <div class="row align-items-end">
+        <!-- <div class="col-2">
+            <div class="form-group">
+                <label for="">Supplier Payment Deadline</label>
+            </div>
+        </div> -->
+        <div class="col-2">
+            <div class="form-group">
+                <label for="">Service Category</label>
+            </div>
+        </div>
+        <div class="col-2">
+                <div class="form-group">
+                    <label for="">Product Name</label>
+                </div>
+            </div>
+            <div class="col-2">
+                    <div class="form-group">
+                        <label for="">Per Service Supplier Name</label>
+                    </div>
+            </div>
+        <div class="col-2">
+                <div class="form-group">
+                    <label for="">Per Service Supplier Code</label>
+                </div>
+        </div>
+        <div class="col-2">
+            <div class="form-group">
+                <label for="">Amounts<br><small>Component Wise Selling Cost</small></label>
+                <!-- <input type="text" (blur)="totalAmout(item.amount)" [(ngModel)]="item.amount" class="form-control mb-4" id="" placeholder=""> -->
+            </div>
+        </div>
+    </div>
+      <div class="row align-items-end" *ngFor="let bookingData of bookingArray.data; let i = index;">
+          <!-- <div class="col-2">
+              <div class="form-group">
+                  <input type="text" formControlName = "SUPPLIER_PAYMENT_DEADLINE" [(ngModel)]="bookingArray.SupplierPaymentDeadline" class="form-control mb-4" id="" placeholder="{{bookingArray.SERVICE_CATEGORY}}">
+              </div>
+          </div> -->
+          <div class="col-2">
+                <div class="form-group">
+                    <input type="text" [(ngModel)]="bookingArray.data[i].SERVICE_CATEGORY" class="form-control mb-4" id="" placeholder="">
+                </div>
+            </div>
+        <div class="col-2">
+                <div class="form-group">
+                    <input type="text" [(ngModel)]="bookingArray.data[i].PRODUCT_NAME" class="form-control mb-4" id="" placeholder="">
+                </div>
+            </div>
           <div class="col-2">
               <div class="form-group">
-                  <label for="">Service Category</label>
-                  <input type="text" [(ngModel)]="SERVICE_CATEGORY" class="form-control mb-4" id="" placeholder="">
-                  <!-- <input type="text" [(ngModel)]="" class="form-control mb-4" id="" placeholder="">
-                  <input type="text" [(ngModel)]="" class="form-control mb-4" id="" placeholder="">
-                  <input type="text" [(ngModel)]="" class="form-control mb-4" id="" placeholder=""> -->
+                  <input type="text" [(ngModel)]="bookingArray.data[i].PER_SERVICE_WISE_SUPPLIER_NAME" class="form-control mb-4" id="" placeholder="">
               </div>
           </div>
           <div class="col-2">
               <div class="form-group">
-                  <label for="">Product Name</label>
-                  <input type="text" [(ngModel)]="PRODUCT_NAME" class="form-control mb-4" id="" placeholder="">
-                  <!-- <input type="text" [(ngModel)]="" class="form-control mb-4" id="" placeholder="">
-                  <input type="text" [(ngModel)]="" class="form-control mb-4" id="" placeholder="">
-                  <input type="text" [(ngModel)]="" class="form-control mb-4" id="" placeholder=""> -->
+                  <input type="text" [(ngModel)]="bookingArray.data[i].PER_SERVICE_SUPPLIER_CODE" class="form-control mb-4" id="" placeholder="">
               </div>
           </div>
-          <div class="col-2">
+          <!-- <div class="col-2">
               <div class="form-group">
-                  <label for="">Service Country</label>
-                  <input type="text" [(ngModel)]="SERVICE_COUNTRY" class="form-control mb-4" id="" placeholder="">
-                  <!-- <input type="text" [(ngModel)]="" class="form-control mb-4" id="" placeholder="">
-                  <input type="text" [(ngModel)]="" class="form-control mb-4" id="" placeholder="">
-                  <input type="text" [(ngModel)]="" class="form-control mb-4" id="" placeholder=""> -->
+                  <input type="text" formControlName = "TAX_CALCULATION" [(ngModel)]="subBookingForm.TaxCalculation" class="form-control mb-4" id="" placeholder="">
               </div>
-          </div>
+          </div> -->
           <div class="col-2">
               <div class="form-group">
-                  <label for="">Per Service Supplier Code</label>
-                  <input type="text" [(ngModel)]="PER_SERVICE_SUPPLIER_CODE" class="form-control mb-4" id="" placeholder="">
-                  <!-- <input type="text" [(ngModel)]="" class="form-control mb-4" id="" placeholder="">
-                  <input type="text" [(ngModel)]="" class="form-control mb-4" id="" placeholder="">
-                  <input type="text" [(ngModel)]="" class="form-control mb-4" id="" placeholder=""> -->
-              </div>
-          </div>
-          <div class="col-2">
-              <div class="form-group">
-                  <label for="">Amounts<br><small>Component Wise Selling Cost</small></label>
-                  <input type="text" class="form-control mb-4" id="" placeholder="">
-                  <!-- <input type="text" [(ngModel)]="" class="form-control mb-4" id="" placeholder="">
-                  <input type="text" [(ngModel)]="" class="form-control mb-4" id="" placeholder="">
-                  <input type="text" [(ngModel)]="" class="form-control mb-4" id="" placeholder=""> -->
+                  <!-- <label for="">Amounts<br><small>Component Wise Selling Cost</small></label> -->
+                  <input type="text" (blur)="totalAmout(item.amount)" [(ngModel)]="item.amount" class="form-control mb-4" id="" placeholder="">
               </div>
           </div>
           <div class="col-auto align-self-center mt-5">
-              <div class="form-action-group d-flex align-items-center justify-content-between mb-4">
-                  <button type="button" class="btn btn-light mr-2" data-toggle="modal" data-target="#exampleModalCenter"><i
-                          class="ion ion-ios-more text-dark"></i></button>
-                  <button type="button" (click)="addSubArray(i,event)" class="btn btn-light mr-2"><i
-                          class="ion ion-md-add text-primary"></i></button>
-                  <button type="button" (click)="removeField(i, $event);" class="btn btn-light"><i
-                          class="ion ion-ios-trash text-danger"></i></button>
-              </div>
-              <!-- <div class="form-action-group d-flex align-items-center justify-content-between mb-4">
-                  <button type="button" class="btn btn-light mr-2" data-toggle="modal" data-target="#exampleModalCenter"><i
-                          class="ion ion-ios-more text-dark"></i></button>
-                  <button type="button" class="btn btn-light mr-2"><i
-                          class="ion ion-md-add text-primary"></i></button>
-                  <button type="button" class="btn btn-light"><i
-                          class="ion ion-ios-trash text-danger"></i></button>
-              </div>
-              <div class="form-action-group d-flex align-items-center justify-content-between mb-4">
-                  <button type="button" class="btn btn-light mr-2" data-toggle="modal" data-target="#exampleModalCenter"><i
-                          class="ion ion-ios-more text-dark"></i></button>
-                  <button type="button" class="btn btn-light mr-2"><i
-                          class="ion ion-md-add text-primary"></i></button>
-                  <button type="button" class="btn btn-light"><i
-                          class="ion ion-ios-trash text-danger"></i></button>
-              </div>
-              <div class="form-action-group d-flex align-items-center justify-content-between mb-4">
-                  <button type="button" class="btn btn-light mr-2" data-toggle="modal" data-target="#exampleModalCenter"><i
-                          class="ion ion-ios-more text-dark"></i></button>
-                  <button type="button" class="btn btn-light mr-2"><i
-                          class="ion ion-md-add text-primary"></i></button>
-                  <button type="button" class="btn btn-light"><i
-                          class="ion ion-ios-trash text-danger"></i></button>
-              </div> -->
-          </div>
+                <div class="form-action-group d-flex align-items-center justify-content-between mb-4">
+                    <button type="button" class="btn btn-light mr-2" (click)="selectField(i);" data-toggle="modal" data-target="#exampleModalCenter"><i
+                            class="ion ion-ios-more text-dark"></i></button>
+                    <button type="button" (click)="deleteItem(i);" class="btn btn-light"><i
+                            class="ion ion-ios-trash text-danger"></i></button>
+                </div>
+            </div>
+      </div>
+      <div class="row" style="float: right;">
+        <button type="button" (click)="addItem()" class="btn btn-light mr-2"><i
+            class="ion ion-md-add text-primary"></i></button>
       </div>
       <div class="row">
           <div class="col-10">
+            <div class="form-group row">
+                    <label for="" class="ml-auto col-auto col-form-label">Over All Discount</label>
+                    <div class="col-2">
+                        <input type="text" [(ngModel)]="bookingArray.data[0].OVER_ALL_DISCOUNT" class="form-control" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group row">
+                        <label for="" class="ml-auto col-auto col-form-label">Over All Profit</label>
+                        <div class="col-2">
+                            <input type="text" [(ngModel)]="bookingArray.data[0].OVER_ALL_PROFIT" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                            <label for="" class="ml-auto col-auto col-form-label">Over ALL Loss</label>
+                            <div class="col-2">
+                                <input type="text" [(ngModel)]="bookingArray.data[0].OVER_ALL_LOSS" class="form-control" placeholder="">
+                            </div>
+                        </div>
               <div class="form-group row">
                   <label for="" class="ml-auto col-auto col-form-label">Total In Amounts</label>
                   <div class="col-2">
-                      <input type="text" [(ngModel)]="TOTAL_IN_AMOUNTS" class="form-control">
+                      <input type="text" [(ngModel)]="bookingArray.data[0].TOTAL_IN_AMOUNTS" class="form-control" placeholder="">
                   </div>
               </div>
               <div class="form-group row">
                   <label for="" class="ml-auto col-auto col-form-label">Total Tax Calculation</label>
                   <div class="col-2">
-                      <input type="text" [(ngModel)]="TOTAL_TAX_CALCULATION" class="form-control">
+                      <input type="text" [(ngModel)]="bookingArray.data[0].TOTAL_TAX_CALCULATION" class="form-control" placeholder="">
                   </div>
               </div>
           </div>
@@ -179,7 +269,7 @@
               <div class="form-group mb-0">
                   <label for="exampleFormControlTextarea1">Booking Note</label>
                   <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"
-                      style="resize: none;" [(ngModel)]="BOOKING_NOTES"></textarea>
+                      style="resize: none;" [(ngModel)]="bookingArray.data[0].BOOKING_NOTES" placeholder=""></textarea>
               </div>
           </div>
           <div class="col-4">
@@ -198,7 +288,7 @@
       aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
           <div class="modal-content">
-              <div class="modal-header">
+              <!-- <div class="modal-header">
                   <ul class="nav nav-tabs" id="myTab" role="tablist">
                       <li class="nav-item">
                           <a class="nav-link active" id="supplier-tab" data-toggle="tab" href="#supplier" role="tab" aria-controls="supplier" aria-selected="true">Supplier Details</a>
@@ -207,120 +297,93 @@
                           <a class="nav-link" id="accomodation-tab" data-toggle="tab" href="#accomodation" role="tab" aria-controls="accomodation" aria-selected="false">Accomodation Details</a>
                       </li>
                   </ul>
-              </div>
+              </div> -->
               <div class="modal-body">
-                  <div class="tab-content" id="myTabContent">
-                      <div class="tab-pane fade show active" id="supplier" role="tabpanel" aria-labelledby="supplier-tab">
-                          <div class="container-fluid">
-                              <div class="row">
+                    <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="">City</label>
+                                        <input type="text" [(ngModel)]="bookingArray.data[index].CITY" class="form-control" id="" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="">Components Wise Selling Cost</label>
+                                        <input type="text" [(ngModel)]="bookingArray.data[index].COMPONENTS_WISE_SELLING_COST" class="form-control" id="" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                    <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="">Components Wise Selling Cost Currency</label>
+                                                <input type="text" [(ngModel)]="bookingArray.data[index].COMPONENTS_WISE_SELLING_COST_CURRENCY" class="form-control" id="" placeholder="">
+                                            </div>
+                                        </div>
                                   <div class="col-6">
                                       <div class="form-group">
-                                          <label for="">Service City</label>
-                                          <input [(ngModel)]="SERVICE_CITY" type="text" class="form-control" id="" placeholder="">
-                                      </div>
-                                  </div>
-                                  <div class="col-6">
-                                      <div class="form-group">
-                                          <label for="">Foreign Currency</label>
-                                          <input type="text" [(ngModel)]="FOREIGN_CURRENCY" class="form-control" id="" placeholder="">
+                                          <label for="">Components Wise Markup</label>
+                                          <input type="text" [(ngModel)]="bookingArray.data[index].COMPONENTS_WISE_MARKUP" class="form-control" id="" placeholder="">
                                       </div>
                                   </div>
                               </div>
                               <div class="row">
-                                  <div class="col-6">
-                                      <div class="form-group">
-                                          <label for="">Component Wise Currency</label>
-                                          <input type="text" [(ngModel)]="COMPONENTS_WISE_CURRENCY" class="form-control" id="" placeholder="">
+                                      <div class="col-6">
+                                          <div class="form-group">
+                                              <label for="">Component Wise Net Cost</label>
+                                              <input type="text" [(ngModel)]="bookingArray.data[index].COMPONENTS_WISE_NET_COST" class="form-control" id="" placeholder="">
+                                          </div>
+                                      </div>
+                                      <div class="col-6">
+                                          <div class="form-group">
+                                              <label for="">Components Wise Net Cost Currency</label>
+                                              <input type="text" [(ngModel)]="bookingArray.data[index].COMPONENTS_WISE_NET_COST_CURRENCY" class="form-control" id="" placeholder="">
+                                          </div>
                                       </div>
                                   </div>
-                                  <div class="col-6">
-                                      <div class="form-group">
-                                          <label for="">Component Wise Markup</label>
-                                          <input type="text" [(ngModel)]="COMPONENTS_WISE_MARKUP" class="form-control" id="" placeholder="">
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="row">
-                                  <div class="col-6">
-                                      <div class="form-group">
-                                          <label for="">Component Wise Net Cost</label>
-                                          <input type="text" [(ngModel)]="COMPONENTS_WISE_NET_COST" class="form-control" id="" placeholder="">
-                                      </div>
-                                  </div>
-                                  <div class="col-6">
-                                      <div class="form-group">
-                                          <label for="">Component Wise Discount Commission</label>
-                                          <input type="text" [(ngModel)]="COMPONENTS_WISE_DISCOUNT_COMISSION" class="form-control" id="" placeholder="">
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="row">
-                                  <div class="col-6">
-                                      <div class="form-group">
-                                          <label for="">Overall Loss</label>
-                                          <input type="text" [(ngModel)]="OVER_ALL_LOSS" class="form-control" id="" placeholder="">
-                                      </div>
-                                  </div>
-                                  <div class="col-6">
-                                      <div class="form-group">
-                                          <label for="">Overall Profit</label>
-                                          <input type="text" [(ngModel)]="OVER_ALL_PROFIT" class="form-control" id="" placeholder="">
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="row">
-                                  <div class="col-6">
-                                      <div class="form-group mb-0">
-                                          <label for="">Overall Discounts</label>
-                                          <input type="text" [(ngModel)]="OVER_ALL_DISCOUNT" class="form-control" id="" placeholder="">
-                                      </div>
-                                  </div>
-                                  <div class="col-6">
-                                      <div class="form-group mb-0">
-                                          <label for="">Supplier Payment Deadline</label>
-                                          <input type="text" [(ngModel)]="SUPPLIER_PAYMENT_DEADLINE" class="form-control" id="" placeholder="">
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="tab-pane fade" id="accomodation" role="tabpanel" aria-labelledby="accomodation-tab">
-                          <div class="container-fluid">
-                              <div class="row">
-                                  <div class="col-6">
-                                      <div class="form-group">
-                                          <label for="">Service City</label>
-                                          <input type="text" [(ngModel)]="SERVICE_CITY" class="form-control" id="" placeholder="">
-                                      </div>
-                                  </div>
-                                  <div class="col-6">
-                                      <div class="form-group">
-                                          <label for="">Foreign Currency</label>
-                                          <input type="text" [(ngModel)]="FOREIGN_CURRENCY" class="form-control" id="" placeholder="">
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="row">
-                                  <div class="col-6">
-                                      <div class="form-group">
-                                          <label for="">Component Wise Currency</label>
-                                          <input type="text" [(ngModel)]="COMPONENTS_WISE_CURRENCY" class="form-control" id="" placeholder="">
-                                      </div>
-                                  </div>
-                                  <div class="col-6">
-                                      <div class="form-group">
-                                          <label for="">Component Wise Markup</label>
-                                          <input type="text" [(ngModel)]="COMPONENTS_WISE_MARKUP" class="form-control" id="" placeholder="">
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
+                                  <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="">CheckIn Date</label>
+                                                <input type="text" [(ngModel)]="bookingArray.data[index].CHECK_IN_DATE" class="form-control" id="" placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="">CheckOut Date</label>
+                                                <input type="text" [(ngModel)]="bookingArray.data[index].CHECK_OUT_DATE" class="form-control" id="" placeholder="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="">No of Nights</label>
+                                                <input type="text" [(ngModel)]="bookingArray.data[index].NO_OF_NIGHTS" class="form-control" id="" placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="">No of Rooms</label>
+                                                <input type="text" [(ngModel)]="bookingArray.data[index].NO_OF_ROOMS" class="form-control" id="" placeholder="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                            
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="">Room Type</label>
+                                                    <input type="text" [(ngModel)]="bookingArray.data[index].ROOM_TYPE" class="form-control" id="" placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>
+                        </div>
               </div>
-              <div class="modal-footer">
+              <!-- <div class="modal-footer">
                   <button type="button" class="btn btn-primary">Save changes</button>
-              </div>
+              </div> -->
           </div>
       </div>
   </div>
