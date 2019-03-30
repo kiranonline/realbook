@@ -2,7 +2,7 @@
     "dbConfig" :{
         "host" : "localhost",
         "user" : "root",
-        "password" : "",
+        "password" : "5495",
         "database" : "Adansa",
         "dialect" : "mysql"
     }
