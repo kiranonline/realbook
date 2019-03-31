@@ -65,6 +65,7 @@ let packagePrepare = (package)=>{
                     toPush.push(r);
                 });
                 if(toPush.length==final_data.length){
+                    console.log(toPush);
                     model1.bookingmaster.bulkCreate(toPush).then(()=>{
                         sequelize.query(`CALL Adansa.ra_voucher_post_rb_v1('${data_fetched.RAReference}');`).then(()=>{
                             return resolve();

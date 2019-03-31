@@ -29,7 +29,7 @@ router.post('/fetch',(req,res,next)=>{
             if(response.body=="\n"){
                 next(createError(500,"Invalid Id"));
             }else{
-                var data_fetched=JSON.parse(response.body).json_master;
+                var data_fetched=JSON.parse(response.body).json_master[0];
                 console.log(data_fetched.hasOwnProperty("Booking"));
                 if(data_fetched.hasOwnProperty("Booking")){
                     helpers.packagePrepare(data_fetched).then(()=>{
