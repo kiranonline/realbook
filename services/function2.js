@@ -13,21 +13,24 @@ let singleBookingPrepare = (booking)=>{
         try{
             let data_fetched = booking;
             console.log(data_fetched);
-            var tempdata = model1.bookingmaster.build(data_fetched[0]);
-            console.log("I am done");
-            tempdata.save().then(()=>{
+            renameKeys(keyMap, data_fetched,function(r){
+                var tempdata = model1.bookingmaster.build(r);
                 console.log("I am done");
-                sequelize.query(`CALL Adansa.ra_voucher_post_rb_v1('${data_fetched.RA_REFERENCE}');`).then(()=>{
-                    return resolve();
-                }).catch((err2)=>{
-                    console.log(`Error procedure: ${err2}`);
-                    return resolve();
-                })
-                   
-            }).catch((error1)=>{
-                console.log(error1)
-                return reject(error1);
+                tempdata.save().then(()=>{
+                    console.log("I am done");
+                    sequelize.query(`CALL Adansa.ra_voucher_post_rb_v1('${data_fetched.RA_REFERENCE}');`).then(()=>{
+                        return resolve();
+                    }).catch((err2)=>{
+                        console.log(`Error procedure: ${err2}`);
+                        return resolve();
+                    })
+                    
+                }).catch((error1)=>{
+                    console.log(error1)
+                    return reject(error1);
+                });
             });
+            
     
         } 
         catch(error){
@@ -104,8 +107,11 @@ keyMap = {
     InvoiceNumber : 'INVOICE_NUMBER',
     ExchangeRate : 'EXCHANGE_RATE',
     RaFileHandler : 'RA_FILE_HANDLER',
+    RAFileHandler :  'RA_FILE_HANDLER',
     InvoiceDate : 'INVOICE_DATE',
+    LeadPassenger : 'LEAD_PASSENGER',
     PaymentDeadline : 'PAYMENT_DEADLINE',
+    PaymentSlabs : 'PAYMENT_SLABS',
     RAReference : 'RA_REFERENCE',
     ServiceCountry : 'SERVICE_COUNTRY',
     StandAlone : 'STAND_ALONE',
@@ -136,6 +142,15 @@ keyMap = {
     NoOfRooms : 'NO_OF_ROOMS',
     RoomType : 'ROOM_CATEGORY',
     ProductName :'PRODUCT_NAME',
+    RoomCategory : 'ROOM_CATEGORY',
+    ServiceCity : 'SERVICE_CITY',
+    ComponentWiseNetCost : 'COMPONENTS_WISE_NET_COST',
+    ComponentWiseMarkup : 'COMPONENTS_WISE_MARKUP',
+    ComponentWiseSellingCost : 'COMPONENTS_WISE_SELLING_COS',
+    ComponentWiseDiscountCommission : 'COMPONENTS_WISE_DISCOUNT_COMISSION',
+    ComponentWiseCurrency : 'COMPONENTS_WISE_CURRENCY',
+
+
     
     ArrivalDate : 'ARRIVALDATE',
     City : 'CITY',
