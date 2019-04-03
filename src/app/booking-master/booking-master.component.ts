@@ -41,7 +41,7 @@ export class BookingMasterComponent implements OnInit {
 
   add(i: any) {
     console.log(i);
-    this.bookingArray.push(this.subbookingArray[this.subbookingArray.length] = []);
+    this.bookingArray.push(this.subbookingArray[this.subbookingArray.length]);
   }
   
   totalAmount(amount: any) : void {
@@ -51,7 +51,7 @@ export class BookingMasterComponent implements OnInit {
 
   deleteItem(i: any): void {
     // console.log(this.bookingArray.data.su[this.subbookingArray.length + 1]);
-    this.subbookingArray.removeAt(i);
+    this.subbookingArray.splice(i, 1);
   }
 
   addSubArray(i: any,event: Event) {
