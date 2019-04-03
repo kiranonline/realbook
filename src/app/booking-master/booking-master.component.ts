@@ -28,7 +28,7 @@ export class BookingMasterComponent implements OnInit {
 
   removeField(i: any, event: Event) {
     let clickedItem = event.srcElement;
-    this.bookingArray.data.dynamic.splice(i,1);
+    this.subbookingArray.splice(i,1);
     // console.log(this.subFormArray);
   }
 
@@ -41,7 +41,7 @@ export class BookingMasterComponent implements OnInit {
 
   add(i: any) {
     console.log(i);
-    this.bookingArray.push(this.bookingArray.data.dynamic[i] = []);
+    this.bookingArray.push(this.subbookingArray[this.subbookingArray.length] = []);
   }
   
   totalAmount(amount: any) : void {
@@ -50,13 +50,13 @@ export class BookingMasterComponent implements OnInit {
   }
 
   deleteItem(i: any): void {
-    console.log(this.bookingArray.data[i]);
-    this.bookingArray.data.dynamic.removeAt(i);
+    // console.log(this.bookingArray.data.su[this.subbookingArray.length + 1]);
+    this.subbookingArray.removeAt(i);
   }
 
   addSubArray(i: any,event: Event) {
     let clickedItem = event.srcElement;
-    this.bookingArray.data.dynamic.push(i, event);
+    this.subbookingArray.push(i, event);
   }
   // This function is triggered whenever
   // a form field is sorted or repositioned
