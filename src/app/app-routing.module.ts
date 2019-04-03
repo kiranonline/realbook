@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { BookingMasterComponent } from './booking-master/booking-master.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/bookingmaster/local/:id', pathMatch: 'full' },
+  // { path: '', redirectTo: '/bookingmaster/local/:id', pathMatch: 'full' },
   { path: 'bookingmaster/local/:id', component: BookingMasterComponent },
 ];
 

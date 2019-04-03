@@ -25,12 +25,11 @@ export class BookingMasterComponent implements OnInit {
       // this.router.navigate(['/user/admin/' + loginData]);
     });
   }
-  subFormArray : any[] = [];
 
   removeField(i: any, event: Event) {
     let clickedItem = event.srcElement;
-    this.subFormArray.splice(i,1);
-    console.log(this.subFormArray);
+    this.bookingArray.data.dynamic.splice(i,1);
+    // console.log(this.subFormArray);
   }
 
   index = 0;
@@ -40,36 +39,24 @@ export class BookingMasterComponent implements OnInit {
     // console.log(dynamicFormData);
   }
 
-  createItem(): FormGroup {
-    return this.formBuilder.group({
-      // SERVICE_CATEGORY : '',
-      // PRODUCT_NAME : '',
-      // SERVICE_COUNTRY : '',
-      // PER_SERVICE_SUPPLIER_CODE : '',
-      // Amount : ''
-      
-    });
+  add(i: any) {
+    console.log(i);
+    this.bookingArray.push(this.bookingArray.data.dynamic[i] = []);
   }
-
   
   totalAmount(amount: any) : void {
     // this.bookingArray.TOTAL_IN_AMOUNTS = this.bookingArray.TOTAL_IN_AMOUNTS + amount;
     console.log("amount" + amount);
   }
 
-  addItem(): void {
-    this.items = this.orderForm.get('items') as FormArray;
-    this.items.push(this.createItem());
-  }
-
   deleteItem(i: any): void {
-    this.items = this.orderForm.get('items') as FormArray;
-    this.items.removeAt(i);
+    console.log(this.bookingArray.data[i]);
+    this.bookingArray.data.dynamic.removeAt(i);
   }
 
   addSubArray(i: any,event: Event) {
     let clickedItem = event.srcElement;
-    this.subFormArray.push(i, event);
+    this.bookingArray.data.dynamic.push(i, event);
   }
   // This function is triggered whenever
   // a form field is sorted or repositioned
@@ -83,11 +70,8 @@ export class BookingMasterComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, public http: HttpClient, public api: Api, public router: Router, private auth: AuthService, public route: ActivatedRoute) { }
   // booking_Id = 'RED6127143';
   bookingArray : any = [];
+  subbookingArray : any = [];
   ngOnInit() {
-    // this.api.getBookingData().subscribe(formData => {
-    //   console.log(JSON.stringify(formData));
-    //   this.bookingArray = JSON.stringify(formData);
-    // });
 
     // this.orderForm = this.formBuilder.group({
     //   items: this.formBuilder.array([this.createItem()])
@@ -99,6 +83,7 @@ export class BookingMasterComponent implements OnInit {
       this.api.getBookingData(this.booking_Id).subscribe(formData => {
         console.log(JSON.stringify(formData));
         this.bookingArray = formData;
+        this.subbookingArray = this.bookingArray.data.dynamic;
       });  
     });
     
