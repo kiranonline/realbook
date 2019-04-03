@@ -234,25 +234,43 @@ router.get('/local/:RA_REFERENCE',(req,res,next)=>{
 router.post('/local/:RA_REFERENCE',(req,res,next)=>{
     var RA_REFERENCE = req.params.RA_REFERENCE;
     var data = req.body.data;
-    console.log(data);
-    var p1 = model1.bookingmaster.destroy({
-        where:{
-            RA_REFERENCE : RA_REFERENCE
+    var dynamic = data.dynamic;
+    delete data['dynamic'];
+    var tosave=[];
+    dynamic.forEach((d,i)=>{
+        var m = { ...d, ...data}
+        tosave.push(m);
+        if(tosave.length==dynamic.length){
+            console.log(tosave)
+            
+            var p1 = model1.bookingmaster.destroy({
+                where:{
+                    RA_REFERENCE : RA_REFERENCE
+                }
+            });
+            var p2 = model1.bookingmaster.bulkCreate(tosave);
+            p1.then(()=>{
+                console.log("deleted");
+                p2.then(()=>{
+                    console.log("created");
+                    res.json({
+                        success : true,
+                        msg : "data saved successfully."
+                    })
+                }).catch((err)=>{
+                    res.json({
+                        success : false,
+                        msg : err
+                    })
+                })
+            }).catch((err)=>{
+                res.json({
+                    success : false,
+                    msg : err
+                })
+            })
         }
-    });
-    var p2 = model1.bookingmaster.bulkCreate(data);
-    
-    Promise.all([p1,p2]).then((results)=>{
-        res.json({
-            success : true,
-            msg : "data saved successfully."
-        })
-    }).catch((err)=>{
-        res.json({
-            success : false,
-            msg : err
-        })
-    });
+    })
 
 });
 
