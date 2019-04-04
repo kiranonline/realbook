@@ -36,16 +36,26 @@
           </div>
           <div class="col-4">
               <div class="form-group">
-                  <label for="">Invoice Date</label>
-                  <input type="text" [(ngModel)]="bookingArray.data.INVOICE_DATE" class="form-control" id="" placeholder="">
+
+                    <label for="">Invoice Date</label>
+                    <div class="input-group mb-4">
+                  <input type="text" [(ngModel)]="bookingArray.data.INVOICE_DATE" class="form-control" id="" placeholder="" data-provide="datepicker">
+                  <div class="input-group-append">
+                      <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
+                  </div></div>
               </div>
           </div>
       </div>
       <div class="row">
           <div class="col-4">
               <div class="form-group">
-                  <label for="">Payment Deadline</label>
-                  <input type="text" [(ngModel)]="bookingArray.data.PAYMENT_DEADLINE" class="form-control" id="" placeholder="">
+
+                    <label for="">Payment Deadline</label>
+                    <div class="input-group mb-4">
+                  <input type="text" [(ngModel)]="bookingArray.data.PAYMENT_DEADLINE" class="form-control" id="" placeholder="" data-provide="datepicker">
+                  <div class="input-group-append">
+                      <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
+                  </div></div>
               </div>
           </div>
           <div class="col-4">
@@ -179,7 +189,7 @@
             </div>
         </div>
     </div>
-      <div class="row align-items-end" *ngFor="let bookingData of subbookingArray; let i = index;">
+      <div class="row align-items-end" *ngFor="let subbookingArray of bookingArray.data.dynamic; let i = index;">
           <!-- <div class="col-2">
               <div class="form-group">
                   <input type="text" formControlName = "SUPPLIER_PAYMENT_DEADLINE" [(ngModel)]="bookingArray.SupplierPaymentDeadline" class="form-control mb-4" id="" placeholder="{{bookingArray.SERVICE_CATEGORY}}">
@@ -187,22 +197,22 @@
           </div> -->
           <div class="col-2">
                 <div class="form-group">
-                    <input type="text" [(ngModel)]="bookingData.SERVICE_CATEGORY" class="form-control mb-4" id="" placeholder="">
+                    <input type="text" [(ngModel)]="subbookingArray.SERVICE_CATEGORY" class="form-control mb-4" id="" placeholder="">
                 </div>
             </div>
         <div class="col-2">
                 <div class="form-group">
-                    <input type="text" [(ngModel)]="bookingData.PRODUCT_NAME" class="form-control mb-4" id="" placeholder="">
+                    <input type="text" [(ngModel)]="subbookingArray.PRODUCT_NAME" class="form-control mb-4" id="" placeholder="">
                 </div>
             </div>
           <div class="col-2">
               <div class="form-group">
-                  <input type="text" [(ngModel)]="bookingData.PER_SERVICE_WISE_SUPPLIER_NAME" class="form-control mb-4" id="" placeholder="">
+                  <input type="text" [(ngModel)]="subbookingArray.PER_SERVICE_WISE_SUPPLIER_NAME" class="form-control mb-4" id="" placeholder="">
               </div>
           </div>
           <div class="col-2">
               <div class="form-group">
-                  <input type="text" [(ngModel)]="bookingData.PER_SERVICE_SUPPLIER_CODE" class="form-control mb-4" id="" placeholder="">
+                  <input type="text" [(ngModel)]="subbookingArray.PER_SERVICE_SUPPLIER_CODE" class="form-control mb-4" id="" placeholder="">
               </div>
           </div>
           <!-- <div class="col-2">
@@ -224,10 +234,10 @@
                             class="ion ion-ios-trash text-danger"></i></button>
                 </div>
             </div>
-      </div>
-      <div class="row" style="float: right;">
-        <button type="button" (click)="add(i)" class="btn btn-light mr-2"><i
-            class="ion ion-md-add text-primary"></i></button>
+            <div class="row" style="float: right;">
+                <button type="button" (click)="addSubArray(i)" class="btn btn-light mr-2"><i
+                    class="ion ion-md-add text-primary"></i></button>
+              </div>
       </div>
       <div class="row">
           <div class="col-10">
@@ -345,14 +355,24 @@
                                   <div class="row">
                                         <div class="col-6">
                                             <div class="form-group">
-                                                <label for="">CheckIn Date</label>
-                                                <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].CHECK_IN_DATE" class="form-control" id="" placeholder="">
+
+                                                    <label for="">CheckIn Date</label>
+                                                    <div class="input-group mb-6">
+                                                <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].CHECK_IN_DATE" class="form-control" id="" placeholder="" data-provide="datepicker">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
+                                                </div></div>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-group">
-                                                <label for="">CheckOut Date</label>
-                                                <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].CHECK_OUT_DATE" class="form-control" id="" placeholder="">
+
+                                                    <label for="">CheckOut Date</label>
+                                                    <div class="input-group mb-6">
+                                                <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].CHECK_OUT_DATE" class="form-control" id="" placeholder="" data-provide="datepicker">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
+                                                </div></div>
                                             </div>
                                         </div>
                                     </div>

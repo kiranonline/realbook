@@ -22,7 +22,7 @@ export class BookingMasterComponent implements OnInit {
   booking() {
     this.api.editBookingData(this.booking_Id, this.bookingArray).subscribe(data => {
       console.log(data);
-      // this.router.navigate(['/user/admin/' + loginData]);
+      this.router.navigate(['/bookingmaster/local/' + this.booking_Id]);
     });
   }
 
@@ -35,13 +35,15 @@ export class BookingMasterComponent implements OnInit {
   index = 0;
 
   selectField(i: any) {
+    // alert(i);
     this.index = i;
     // console.log(dynamicFormData);
   }
 
-  add(i: any) {
-    console.log(i);
-    this.bookingArray.push(this.subbookingArray[this.subbookingArray.length]);
+  add(i: any) : void {
+    // alert(this.subbookingArray.length)
+    this.subbookingArray.push(this.subbookingArray[i]);
+    console.log(this.bookingArray);
   }
   
   totalAmount(amount: any) : void {
@@ -51,12 +53,13 @@ export class BookingMasterComponent implements OnInit {
 
   deleteItem(i: any): void {
     // console.log(this.bookingArray.data.su[this.subbookingArray.length + 1]);
-    this.subbookingArray.splice(i, 1);
+    this.bookingArray.data.dynamic.splice(i, 1);
   }
 
-  addSubArray(i: any,event: Event) {
-    let clickedItem = event.srcElement;
-    this.subbookingArray.push(i, event);
+  addSubArray(i: any) {
+    // let clickedItem = event.srcElement;
+    this.bookingArray.data.dynamic.push(this.subbookingArray);
+    console.log(this.bookingArray);
   }
   // This function is triggered whenever
   // a form field is sorted or repositioned
@@ -70,7 +73,7 @@ export class BookingMasterComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, public http: HttpClient, public api: Api, public router: Router, private auth: AuthService, public route: ActivatedRoute) { }
   // booking_Id = 'RED6127143';
   bookingArray : any = [];
-  subbookingArray : any = [];
+  subbookingArray : any = {};
   ngOnInit() {
 
     // this.orderForm = this.formBuilder.group({
@@ -83,7 +86,8 @@ export class BookingMasterComponent implements OnInit {
       this.api.getBookingData(this.booking_Id).subscribe(formData => {
         console.log(JSON.stringify(formData));
         this.bookingArray = formData;
-        this.subbookingArray = this.bookingArray.data.dynamic;
+        this.booking_Id = this.bookingArray.data.RA_REFERENCE;
+        // this.subbookingArray = this.bookingArray.data.dynamic;
       });  
     });
     
