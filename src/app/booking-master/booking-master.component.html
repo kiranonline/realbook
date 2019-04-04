@@ -184,10 +184,15 @@
         </div>
         <div class="col-2">
             <div class="form-group">
-                <label for="">Amounts<br><small>Component Wise Selling Cost</small></label>
-                <!-- <input type="text" (blur)="totalAmout(item.amount)" [(ngModel)]="item.amount" class="form-control mb-4" id="" placeholder=""> -->
+                <label for="">City</label>
             </div>
         </div>
+        <!-- <div class="col-2">
+            <div class="form-group">
+                <label for="">Amounts<br><small>Component Wise Selling Cost</small></label>
+                <input type="text" (blur)="totalAmout(item.amount)" [(ngModel)]="item.amount" class="form-control mb-4" id="" placeholder="">
+            </div>
+        </div> -->
     </div>
       <div class="row align-items-end" *ngFor="let subbookingArray of bookingArray.data.dynamic; let i = index;">
           <!-- <div class="col-2">
@@ -215,15 +220,9 @@
                   <input type="text" [(ngModel)]="subbookingArray.PER_SERVICE_SUPPLIER_CODE" class="form-control mb-4" id="" placeholder="">
               </div>
           </div>
-          <!-- <div class="col-2">
-              <div class="form-group">
-                  <input type="text" formControlName = "TAX_CALCULATION" [(ngModel)]="subBookingForm.TaxCalculation" class="form-control mb-4" id="" placeholder="">
-              </div>
-          </div> -->
           <div class="col-2">
               <div class="form-group">
-                  <!-- <label for="">Amounts<br><small>Component Wise Selling Cost</small></label> -->
-                  <input type="text" (blur)="totalAmout(item.amount)" [(ngModel)]="item.amount" class="form-control mb-4" id="" placeholder="">
+                  <input type="text" [(ngModel)]="subbookingArray.CITY" class="form-control mb-4" id="" placeholder="">
               </div>
           </div>
           <div class="col-auto align-self-center mt-5">
@@ -313,8 +312,8 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label for="">City</label>
-                                        <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].CITY" class="form-control" id="" placeholder="">
+                                        <label for="">Service City</label>
+                                        <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].SERVICE_CITY" class="form-control" id="" placeholder="">
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -396,6 +395,27 @@
                                                 <div class="form-group">
                                                     <label for="">Room Type</label>
                                                     <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].ROOM_TYPE" class="form-control" id="" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="">Room Category</label>
+                                                    <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].ROOM_CATEGORY" class="form-control" id="" placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                            
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="">TOUR TRANSFER COMPONENTS WISE SELLING COST</label>
+                                                    <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST" class="form-control" id="" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="">TOUR TRANSFER COMPONENTS WISE NET COST</label>
+                                                    <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].TOUR_TRANSFER_COMPONENTS_WISE_NET_COST" class="form-control" id="" placeholder="">
                                                 </div>
                                             </div>
                                         </div>
