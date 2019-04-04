@@ -8,6 +8,7 @@ import { AuthService } from "../auth.service";
 import { forEach } from '@angular/router/src/utils/collection';
 import { iterateListLike } from '@angular/core/src/change_detection/change_detection_util';
 import { isNgTemplate } from '@angular/compiler';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-booking-master',
@@ -18,8 +19,13 @@ export class BookingMasterComponent implements OnInit {
 
   orderForm: FormGroup;
   items : FormArray;
-
+  btnTitle:any = 'Invoice Currency';
+  selectedValue(i){
+    console.log(i);
+    this.btnTitle = i;
+  }
   booking() {
+    swal("Saved!");
     this.api.editBookingData(this.booking_Id, this.bookingArray).subscribe(data => {
       console.log(data);
       this.router.navigate(['/bookingmaster/local/' + this.booking_Id]);
