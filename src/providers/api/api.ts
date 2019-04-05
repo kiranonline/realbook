@@ -30,4 +30,9 @@ export class Api {
         console.log(this.apiUrl);
         return this.http.get(this.apiUrl + '/bookingmaster/local/' + bookingid);
     }
+
+    public getAllCurrency() {
+        console.log(this.apiUrl);
+        return this.http.get(this.apiUrl + '/api/currency/getall');
+    }
 }

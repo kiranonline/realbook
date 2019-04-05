@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import swal from 'sweetalert';
 import { AuthService } from "./auth.service";
 import { Api } from '../providers/api/api';
 
@@ -13,6 +12,8 @@ import { AppComponent } from './app.component';
 import { BookingMasterComponent } from './booking-master/booking-master.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { ToastrService } from './toastr-service.service';
+import { from } from 'rxjs';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { FooterComponent } from './footer/footer.component';
     CommonModule,
     FormsModule,
   ],
-  providers: [Api, AuthService],
+  providers: [Api, AuthService, ToastrService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
