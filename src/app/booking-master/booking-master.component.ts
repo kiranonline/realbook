@@ -23,8 +23,8 @@ export class BookingMasterComponent implements OnInit {
   booking() {
     this.api.editBookingData(this.booking_Id, this.bookingArray).subscribe(data => {
       console.log(data);
-      this.toastrService.Success("Saved!");
       this.router.navigate(['/bookingmaster/local/' + this.booking_Id]);
+      return this.toastrService.Success("Saved!");
     });
   }
 
@@ -43,30 +43,33 @@ export class BookingMasterComponent implements OnInit {
   }
 
   add() : void {
+    
+    let data = [{
+      "CHECK_IN_DATE": "",
+      "CHECK_OUT_DATE": null,
+      "PER_SERVICE_WISE_SUPPLIER_NAME": null,
+      "LEAD_PASSENGER": "",
+      "NO_OF_NIGHTS": null,
+      "NO_OF_ROOMS": null,
+      "PAYMENT_SLABS": "NA",
+      "PRODUCT_NAME": "",
+      "ROOM_CATEGORY": "",
+      "SERVICE_CATEGORY": "",
+      "SERVICE_CITY": "",
+      "COMPONENTS_WISE_NET_COST": "",
+      "COMPONENTS_WISE_MARKUP": "",
+      "COMPONENTS_WISE_SELLING_COST": null,
+      "PER_SERVICE_SUPPLIER_CODE": "",
+      "COMPONENT_WISE_SELLING_COST_CURRENCY": null,
+      "COMPONENTS_WISE_NET_COST_CURRENCY": null,
+      "ARRIVALDATE": null,
+      "CITY": null,
+      "TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST": null,
+      "TOUR_TRANSFER_COMPONENTS_WISE_NET_COST": null
+    }]
+    this.bookingArray["data"] = {};
+    this.bookingArray["data"].dynamic=data;
     // alert(this.subbookingArray.length)
-    this.bookingArray.data.dynamic.push(this.subbookingArray = {
-                "CHECK_IN_DATE": "",
-                "CHECK_OUT_DATE": null,
-                "PER_SERVICE_WISE_SUPPLIER_NAME": null,
-                "LEAD_PASSENGER": "",
-                "NO_OF_NIGHTS": null,
-                "NO_OF_ROOMS": null,
-                "PAYMENT_SLABS": "NA",
-                "PRODUCT_NAME": "",
-                "ROOM_CATEGORY": "",
-                "SERVICE_CATEGORY": "",
-                "SERVICE_CITY": "",
-                "COMPONENTS_WISE_NET_COST": "",
-                "COMPONENTS_WISE_MARKUP": "",
-                "COMPONENTS_WISE_SELLING_COST": null,
-                "PER_SERVICE_SUPPLIER_CODE": "",
-                "COMPONENT_WISE_SELLING_COST_CURRENCY": null,
-                "COMPONENTS_WISE_NET_COST_CURRENCY": null,
-                "ARRIVALDATE": null,
-                "CITY": null,
-                "TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST": null,
-                "TOUR_TRANSFER_COMPONENTS_WISE_NET_COST": null
-    });
     console.log(this.bookingArray);
     this.toastrService.Success("Added new fields!");
   }
@@ -79,7 +82,7 @@ export class BookingMasterComponent implements OnInit {
   deleteItem(i: any): void {
     // console.log(this.bookingArray.data.su[this.subbookingArray.length + 1]);
     this.bookingArray.data.dynamic.splice(i, 1);
-    this.toastrService.Warning("Deleted field!");
+    return this.toastrService.Warning("Deleted field!");
   }
 
   addSubArray(i: any) {
@@ -87,7 +90,7 @@ export class BookingMasterComponent implements OnInit {
     this.bookingArray.data.dynamic.push(this.subbookingArray);
     console.log(this.bookingArray);
 
-    this.toastrService.Success("Added new fields!");
+    return this.toastrService.Success("Added new fields!");
   }
   // This function is triggered whenever
   // a form field is sorted or repositioned
@@ -101,9 +104,9 @@ export class BookingMasterComponent implements OnInit {
   dataCur : any = {};
   constructor(private toastrService: ToastrService,private formBuilder: FormBuilder, public http: HttpClient, public api: Api, public router: Router, private auth: AuthService, public route: ActivatedRoute) { }
   // booking_Id = 'RED6127143';
-  bookingArray : any = [];
+  bookingArray : any = {};
   subbookingArray : any = {};
-  cData = "CURRENCY";
+  cData = "";
 
   ngOnInit() {
 
