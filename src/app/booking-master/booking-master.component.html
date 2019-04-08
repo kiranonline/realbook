@@ -1,17 +1,18 @@
 <app-header></app-header>
 <main>
   <div class="container-fluid"><!-- *ngFor="let bookingArray of bookingArray.json_maste.Booking"-->
+
         <div class="row">
                 <div class="col-4">
                     <div class="form-group">
                         <label for="">First Name</label>
-                        <input type="text" [(ngModel)]="bookingArray.data.FIRSTNAME" class="form-control" id="" placeholder="">
+                        <input type="text" required [(ngModel)]="bookingArray.data.FIRSTNAME" class="form-control" placeholder="">
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="form-group">
                         <label>Invoice Currency</label>
-                        <select class="form-control" [(ngModel)]="bookingArray.data.INVOICE_CURRENCY">
+                        <select id="INVOICE_CURRENCY" class="form-control" [(ngModel)]="bookingArray.data.INVOICE_CURRENCY">
                                 <option *ngFor="let cData of dataCur.currency">{{cData}}</option>
                         </select>
                     </div>
@@ -19,7 +20,7 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label for="">Invoice Number</label>
-                        <input type="text" [(ngModel)]="bookingArray.data.INVOICE_NUMBER" class="form-control" id="" placeholder="">
+                        <input type="text" id="INVOICE_NUMBER" [(ngModel)]="bookingArray.data.INVOICE_NUMBER" class="form-control" placeholder="">
                     </div>
                 </div>
             </div>
@@ -27,13 +28,13 @@
           <div class="col-4">
               <div class="form-group">
                   <label for="">Exchange Rate</label>
-                  <input type="number" [(ngModel)]="bookingArray.data.EXCHANGE_RATE" class="form-control" id="" placeholder="">
+                  <input type="number" id="EXCHANGE_RATE" [(ngModel)]="bookingArray.data.EXCHANGE_RATE" class="form-control" placeholder="">
               </div>
           </div>
           <div class="col-4">
               <div class="form-group">
                   <label for="">Booking Reference(RA File Handler)</label>
-                  <input type="text" [(ngModel)]="bookingArray.data.RA_FILE_HANDLER" class="form-control" id="" placeholder="">
+                  <input type="text" id="RA_FILE_HANDLER" [(ngModel)]="bookingArray.data.RA_FILE_HANDLER" class="form-control" placeholder="">
               </div>
           </div>
           <div class="col-4">
@@ -41,7 +42,7 @@
 
                     <label for="">Invoice Date</label>
                     <div class="input-group mb-4">
-                  <input type="date" [(ngModel)]="bookingArray.data.INVOICE_DATE" class="form-control" id="" placeholder="">
+                  <input type="date" id="INVOICE_DATE" [(ngModel)]="bookingArray.data.INVOICE_DATE" class="form-control" placeholder="">
                   <div class="input-group-append">
                       <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
                   </div></div>
@@ -54,7 +55,7 @@
 
                     <label for="">Payment Deadline</label>
                     <div class="input-group mb-4">
-                  <input type="date" [(ngModel)]="bookingArray.data.PAYMENT_DEADLINE" class="form-control" id="" placeholder="">
+                  <input type="date" id="PAYMENT_DEADLINE" [(ngModel)]="bookingArray.data.PAYMENT_DEADLINE" class="form-control" placeholder="">
                   <div class="input-group-append">
                       <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
                   </div></div>
@@ -63,13 +64,13 @@
           <div class="col-4">
                 <div class="form-group">
                     <label for="">RA Reference</label>
-                    <input type="text" [(ngModel)]="bookingArray.data.RA_REFERENCE" class="form-control" id="" placeholder="">
+                    <input type="text" id="RA_REFERENCE" [(ngModel)]="bookingArray.data.RA_REFERENCE" class="form-control" placeholder="">
                 </div>
             </div>
             <div class="col-4">
                 <div class="form-group">
                     <label for="">RA Agent Code</label>
-                    <input type="text" [(ngModel)]="bookingArray.data.RA_AGENT_CODE" class="form-control" id="" placeholder="">
+                    <input type="text" [(ngModel)]="bookingArray.data.RA_AGENT_CODE" class="form-control" id="RA_AGENT_CODE" placeholder="">
                 </div>
             </div>
       </div>
@@ -77,13 +78,13 @@
             <div class="col-4">
                 <div class="form-group">
                     <label for="">Stand Alone</label>
-                    <input type="text" [(ngModel)]="bookingArray.data.STAND_ALONE" class="form-control" id="" placeholder="">
+                    <input type="text" [(ngModel)]="bookingArray.data.STAND_ALONE" class="form-control" id="STAND_ALONE" placeholder="">
                 </div>
             </div>
             <div class="col-4">
                     <div class="form-group">
                             <label>Foreign Currency</label>
-                            <select class="form-control" [(ngModel)]="bookingArray.data.FOREIGN_CURRENCY">
+                            <select class="form-control" id="FOREIGN_CURRENCY" [(ngModel)]="bookingArray.data.FOREIGN_CURRENCY">
                                     <option *ngFor="let cData of dataCur.currency">{{cData}}</option>
                             </select>
                     </div>
@@ -91,7 +92,7 @@
               <div class="col-4">
                   <div class="form-group">
                       <label for="">SBU</label>
-                      <input type="text" [(ngModel)]="bookingArray.data.SBU" class="form-control" id="" placeholder="">
+                      <input type="text" [(ngModel)]="bookingArray.data.SBU" class="form-control" id="SBU" placeholder="">
                   </div>
               </div>
         </div>
@@ -99,19 +100,19 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label for="">Selling Cost</label>
-                        <input type="number" [(ngModel)]="bookingArray.data.SELLING_COST" class="form-control" id="" placeholder="">
+                        <input type="number" [(ngModel)]="bookingArray.data.SELLING_COST" class="form-control">
                     </div>
                 </div>
                 <div class="col-4">
                       <div class="form-group">
                           <label for="">Supplier Payment Deadline</label>
-                          <input type="date" [(ngModel)]="bookingArray.data.SUPPLIER_PAYMENT_DEADLINE" class="form-control" id="" placeholder="">
+                          <input type="date" [(ngModel)]="bookingArray.data.SUPPLIER_PAYMENT_DEADLINE" class="form-control">
                       </div>
                   </div>
                   <div class="col-4">
                       <div class="form-group">
                           <label for="">Component Wise Discount Comission</label>
-                          <input type="number" [(ngModel)]="bookingArray.data.COMPONENTS_WISE_DISCOUNT_COMISSION" class="form-control" id="" placeholder="">
+                          <input type="number" [(ngModel)]="bookingArray.data.COMPONENTS_WISE_DISCOUNT_COMISSION" class="form-control">
                       </div>
                   </div>
             </div>
@@ -119,19 +120,19 @@
                     <div class="col-4">
                         <div class="form-group">
                             <label for="">Component Wise Currency</label>
-                            <input type="number" [(ngModel)]="bookingArray.data.COMPONENTS_WISE_CURRENCY" class="form-control" id="" placeholder="">
+                            <input type="number" [(ngModel)]="bookingArray.data.COMPONENTS_WISE_CURRENCY" class="form-control">
                         </div>
                     </div>
                     <div class="col-4">
                           <div class="form-group">
                               <label for="">Service Country</label>
-                              <input type="text" [(ngModel)]="bookingArray.data.SERVICE_COUNTRY" class="form-control" id="" placeholder="{{bookingArray.SUPPLIER_PAYMENT_DEADLINE}}">
+                              <input type="text" [(ngModel)]="bookingArray.data.SERVICE_COUNTRY" class="form-control">
                           </div>
                       </div>
                       <div class="col-4">
                           <div class="form-group">
                               <label for="">Tax Calculation</label>
-                              <input type="number" [(ngModel)]="bookingArray.data.TAX_CALCULATION" class="form-control" id="" placeholder="">
+                              <input type="number" [(ngModel)]="bookingArray.data.TAX_CALCULATION" class="form-control">
                           </div>
                       </div>
                 </div>
@@ -206,27 +207,28 @@
           </div> -->
           <div class="col-2">
                 <div class="form-group">
-                    <input type="text" [(ngModel)]="subbookingArray.SERVICE_CATEGORY" class="form-control mb-4" id="" placeholder="">
+               
+                    <input type="text" [(ngModel)]="subbookingArray.SERVICE_CATEGORY" class="form-control mb-4"><!--id="SERVICE_CATEGORY" placeholder="" name="SERVICE_CATEGORY" #SERVICE_CATEGORY="ngModel" id="SERVICE_CATEGORY"-->
                 </div>
             </div>
         <div class="col-2">
                 <div class="form-group">
-                    <input type="text" [(ngModel)]="subbookingArray.PRODUCT_NAME" class="form-control mb-4" id="" placeholder="">
+                    <input type="text" [(ngModel)]="subbookingArray.PRODUCT_NAME" class="form-control mb-4"><!--id="PRODUCT_NAME" placeholder="" name="PRODUCT_NAME" #PRODUCT_NAME="ngModel" id="PRODUCT_NAME"-->
                 </div>
             </div>
           <div class="col-2">
               <div class="form-group">
-                  <input type="text" [(ngModel)]="subbookingArray.PER_SERVICE_WISE_SUPPLIER_NAME" class="form-control mb-4" id="" placeholder="">
+                  <input type="text" [(ngModel)]="subbookingArray.PER_SERVICE_WISE_SUPPLIER_NAME" class="form-control mb-4"><!-- id="PER_SERVICE_WISE_SUPPLIER_NAME" placeholder="" name="PER_SERVICE_WISE_SUPPLIER_NAME" #PER_SERVICE_WISE_SUPPLIER_NAME="ngModel" id="PER_SERVICE_WISE_SUPPLIER_NAME"-->
               </div>
           </div>
           <div class="col-2">
               <div class="form-group">
-                  <input type="text" [(ngModel)]="subbookingArray.PER_SERVICE_SUPPLIER_CODE" class="form-control mb-4" id="" placeholder="">
+                  <input type="text" [(ngModel)]="subbookingArray.PER_SERVICE_SUPPLIER_CODE" class="form-control mb-4"><!--name="PER_SERVICE_SUPPLIER_CODE" #PER_SERVICE_SUPPLIER_CODE="ngModel" id="PER_SERVICE_SUPPLIER_CODE"-->
               </div>
           </div>
           <div class="col-2">
               <div class="form-group">
-                  <input type="text" [(ngModel)]="subbookingArray.CITY" class="form-control mb-4" id="" placeholder="">
+                  <input type="text" [(ngModel)]="subbookingArray.CITY" class="form-control mb-4" id="CITY" placeholder=""><!-- name="CITY" #CITY="ngModel" id="CITY"-->
               </div>
           </div>
           <div class="col-auto align-self-center mt-5">
@@ -235,45 +237,41 @@
                             class="ion ion-ios-more text-dark"></i></button>
                     <button type="button" (click)="deleteItem(i);" class="btn btn-light"><i
                             class="ion ion-ios-trash text-danger"></i></button>
-                    <button type="button" (click)="addSubArray(i)" class="btn btn-light mr-2"><i
+                    <button type="button" (click)="add(i)" class="btn btn-light mr-2"><i
                             class="ion ion-md-add text-primary"></i></button>
                 </div>
             </div>
       </div>
       <div class="row">
-        <button type="button" (click)="add()" class="btn btn-light mr-2"><i
-            class="ion ion-md-add text-primary"></i></button>
-        </div>
-      <div class="row">
           <div class="col-10">
             <div class="form-group row">
                     <label for="" class="ml-auto col-auto col-form-label">Over All Discount</label>
                     <div class="col-2">
-                        <input type="number" [(ngModel)]="bookingArray.data.OVER_ALL_DISCOUNT" class="form-control" placeholder="">
+                        <input type="number" [(ngModel)]="bookingArray.data.OVER_ALL_DISCOUNT" id="OVER_ALL_DISCOUNT" class="form-control" placeholder="" name="OVER_ALL_DISCOUNT" #name="ngModel">
                     </div>
                 </div>
                 <div class="form-group row">
                         <label for="" class="ml-auto col-auto col-form-label">Over All Profit</label>
                         <div class="col-2">
-                            <input type="number" [(ngModel)]="bookingArray.data.OVER_ALL_PROFIT" class="form-control" placeholder="">
+                            <input type="number" [(ngModel)]="bookingArray.data.OVER_ALL_PROFIT" id="OVER_ALL_PROFIT" class="form-control" placeholder="" name="OVER_ALL_PROFIT" #name="ngModel">
                         </div>
                     </div>
                     <div class="form-group row">
                             <label for="" class="ml-auto col-auto col-form-label">Over ALL Loss</label>
                             <div class="col-2">
-                                <input type="number" [(ngModel)]="bookingArray.data.OVER_ALL_LOSS" class="form-control" placeholder="">
+                                <input type="number" [(ngModel)]="bookingArray.data.OVER_ALL_LOSS" id="OVER_ALL_LOSS" class="form-control" placeholder="" name="OVER_ALL_LOSS" #name="ngModel">
                             </div>
                         </div>
               <div class="form-group row">
                   <label for="" class="ml-auto col-auto col-form-label">Total In Amounts</label>
                   <div class="col-2">
-                      <input type="number" [(ngModel)]="bookingArray.data.TOTAL_IN_AMOUNTS" class="form-control" placeholder="">
+                      <input type="number" [(ngModel)]="bookingArray.data.TOTAL_IN_AMOUNTS" id="TOTAL_IN_AMOUNTS" class="form-control" placeholder="" name="TOTAL_IN_AMOUNTS" #name="ngModel">
                   </div>
               </div>
               <div class="form-group row">
                   <label for="" class="ml-auto col-auto col-form-label">Total Tax Calculation</label>
                   <div class="col-2">
-                      <input type="number" [(ngModel)]="bookingArray.data.TOTAL_TAX_CALCULATION" class="form-control" placeholder="">
+                      <input type="number" [(ngModel)]="bookingArray.data.TOTAL_TAX_CALCULATION" id="TOTAL_TAX_CALCULATION" class="form-control" placeholder="" name="TOTAL_TAX_CALCULATION" #name="ngModel">
                   </div>
               </div>
           </div>
@@ -284,7 +282,7 @@
               <div class="form-group mb-0">
                   <label for="exampleFormControlTextarea1">Booking Note</label>
                   <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"
-                      style="resize: none;" [(ngModel)]="bookingArray.data.BOOKING_NOTES" placeholder=""></textarea>
+                      style="resize: none;" [(ngModel)]="bookingArray.data.BOOKING_NOTES" id="BOOKING_NOTES" placeholder=""  name="BOOKING_NOTES" #name="ngModel"></textarea>
               </div>
           </div>
           <div class="col-4">
@@ -319,13 +317,13 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label for="">Service City</label>
-                                        <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].SERVICE_CITY" class="form-control" id="" placeholder="">
+                                        <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].SERVICE_CITY" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label for="">Components Wise Selling Cost</label>
-                                        <input type="number" [(ngModel)]="bookingArray.data.dynamic[index].COMPONENTS_WISE_SELLING_COST" class="form-control" id="" placeholder="">
+                                        <input type="number" [(ngModel)]="bookingArray.data.dynamic[index].COMPONENTS_WISE_SELLING_COST" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -341,7 +339,7 @@
                                   <div class="col-6">
                                       <div class="form-group">
                                           <label for="">Components Wise Markup</label>
-                                          <input type="number" [(ngModel)]="bookingArray.data.dynamic[index].COMPONENTS_WISE_MARKUP" class="form-control" id="" placeholder="">
+                                          <input type="number" [(ngModel)]="bookingArray.data.dynamic[index].COMPONENTS_WISE_MARKUP" class="form-control">
                                       </div>
                                   </div>
                               </div>
@@ -349,7 +347,7 @@
                                       <div class="col-6">
                                           <div class="form-group">
                                               <label for="">Component Wise Net Cost</label>
-                                              <input type="number" [(ngModel)]="bookingArray.data.dynamic[index].COMPONENTS_WISE_NET_COST" class="form-control" id="" placeholder="">
+                                              <input type="number" [(ngModel)]="bookingArray.data.dynamic[index].COMPONENTS_WISE_NET_COST" class="form-control">
                                           </div>
                                       </div>
                                       <div class="col-6">
@@ -368,7 +366,7 @@
 
                                                     <label for="">CheckIn Date</label>
                                                     <div class="input-group mb-6">
-                                                <input type="date" [(ngModel)]="bookingArray.data.dynamic[index].CHECK_IN_DATE" class="form-control" id="" placeholder="">
+                                                <input type="date" [(ngModel)]="bookingArray.data.dynamic[index].CHECK_IN_DATE" class="form-control">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
                                                 </div></div>
@@ -379,7 +377,7 @@
 
                                                     <label for="">CheckOut Date</label>
                                                     <div class="input-group mb-6">
-                                                <input type="date" [(ngModel)]="bookingArray.data.dynamic[index].CHECK_OUT_DATE" class="form-control" id="" placeholder="">
+                                                <input type="date" [(ngModel)]="bookingArray.data.dynamic[index].CHECK_OUT_DATE" class="form-control">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
                                                 </div></div>
@@ -390,13 +388,13 @@
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <label for="">No of Nights</label>
-                                                <input type="number" [(ngModel)]="bookingArray.data.dynamic[index].NO_OF_NIGHTS" class="form-control" id="" placeholder="">
+                                                <input type="number" [(ngModel)]="bookingArray.data.dynamic[index].NO_OF_NIGHTS" class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <label for="">No of Rooms</label>
-                                                <input type="number" [(ngModel)]="bookingArray.data.dynamic[index].NO_OF_ROOMS" class="form-control" id="" placeholder="">
+                                                <input type="number" [(ngModel)]="bookingArray.data.dynamic[index].NO_OF_ROOMS" class="form-control">
                                             </div>
                                         </div>
                                     </div>
@@ -405,13 +403,13 @@
                                             <div class="col-6">
                                                 <div class="form-group">
                                                     <label for="">Room Type</label>
-                                                    <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].ROOM_TYPE" class="form-control" id="" placeholder="">
+                                                    <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].ROOM_TYPE" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-6">
                                                 <div class="form-group">
                                                     <label for="">Room Category</label>
-                                                    <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].ROOM_CATEGORY" class="form-control" id="" placeholder="">
+                                                    <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].ROOM_CATEGORY" class="form-control">
                                                 </div>
                                             </div>
                                         </div>
@@ -420,13 +418,13 @@
                                             <div class="col-6">
                                                 <div class="form-group">
                                                     <label for="">TOUR TRANSFER COMPONENTS WISE SELLING COST</label>
-                                                    <input type="number" [(ngModel)]="bookingArray.data.dynamic[index].TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST" class="form-control" id="" placeholder="">
+                                                    <input type="number" [(ngModel)]="bookingArray.data.dynamic[index].TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-6">
                                                 <div class="form-group">
                                                     <label for="">TOUR TRANSFER COMPONENTS WISE NET COST</label>
-                                                    <input type="number" [(ngModel)]="bookingArray.data.dynamic[index].TOUR_TRANSFER_COMPONENTS_WISE_NET_COST" class="form-control" id="" placeholder="">
+                                                    <input type="number" [(ngModel)]="bookingArray.data.dynamic[index].TOUR_TRANSFER_COMPONENTS_WISE_NET_COST" class="form-control">
                                                 </div>
                                             </div>
                                         </div>

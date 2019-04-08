@@ -20,94 +20,105 @@ export class BookingMasterComponent implements OnInit {
 
   orderForm: FormGroup;
   items : FormArray;
-  booking() {
-    this.api.editBookingData(this.booking_Id, this.bookingArray).subscribe(data => {
-      console.log(data);
-      this.router.navigate(['/bookingmaster/local/' + this.booking_Id]);
-      return this.toastrService.Success("Saved!");
-    });
-  }
-
-  removeField(i: any, event: Event) {
-    let clickedItem = event.srcElement;
-    this.subbookingArray.splice(i,1);
-    // console.log(this.subFormArray);
-  }
+  bookingArray : any = {};
+  subbookingArray : any = [];
+  cData = "";
+  arrdata = {
+    "CHECK_IN_DATE": "",
+    "CHECK_OUT_DATE": null,
+    "PER_SERVICE_WISE_SUPPLIER_NAME": null,
+    "LEAD_PASSENGER": "",
+    "NO_OF_NIGHTS": null,
+    "NO_OF_ROOMS": null,
+    "PAYMENT_SLABS": "NA",
+    "PRODUCT_NAME": "",
+    "ROOM_CATEGORY": "",
+    "SERVICE_CATEGORY": "",
+    "SERVICE_CITY": "",
+    "COMPONENTS_WISE_NET_COST": "",
+    "COMPONENTS_WISE_MARKUP": "",
+    "COMPONENTS_WISE_SELLING_COST": null,
+    "PER_SERVICE_SUPPLIER_CODE": "",
+    "COMPONENT_WISE_SELLING_COST_CURRENCY": null,
+    "COMPONENTS_WISE_NET_COST_CURRENCY": null,
+    "ARRIVALDATE": null,
+    "CITY": null,
+    "TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST": null,
+    "TOUR_TRANSFER_COMPONENTS_WISE_NET_COST": null
+  };
 
   index = 0;
-
+  booking_Id = '';
+  dataCur : any = {};
+  constructor(private toastrService: ToastrService,private formBuilder: FormBuilder, public http: HttpClient, public api: Api, public router: Router, private auth: AuthService, public route: ActivatedRoute) { 
+    this.currencyFunc();
+    this.fetchData();
+    this.add(0);
+  }
+  // booking_Id = 'RED6127143';
+  booking() {
+    this.booking_Id = this.bookingArray.data.RA_REFERENCE;
+    console.log(JSON.stringify(this.bookingArray));
+    this.api.editBookingData(this.booking_Id, this.bookingArray).subscribe(data => {
+      console.log(this.bookingArray);
+      // debugger;
+      this.router.navigate(['/bookingmaster/local/' + this.booking_Id]);
+      this.toastrService.Success("Saved!");
+    });
+  }
   selectField(i: any) {
     // alert(i);
     this.index = i;
     // console.log(dynamicFormData);
   }
 
-  add() : void {
-    
-    let data = [{
-      "CHECK_IN_DATE": "",
-      "CHECK_OUT_DATE": null,
-      "PER_SERVICE_WISE_SUPPLIER_NAME": null,
-      "LEAD_PASSENGER": "",
-      "NO_OF_NIGHTS": null,
-      "NO_OF_ROOMS": null,
-      "PAYMENT_SLABS": "NA",
-      "PRODUCT_NAME": "",
-      "ROOM_CATEGORY": "",
-      "SERVICE_CATEGORY": "",
-      "SERVICE_CITY": "",
-      "COMPONENTS_WISE_NET_COST": "",
-      "COMPONENTS_WISE_MARKUP": "",
-      "COMPONENTS_WISE_SELLING_COST": null,
-      "PER_SERVICE_SUPPLIER_CODE": "",
-      "COMPONENT_WISE_SELLING_COST_CURRENCY": null,
-      "COMPONENTS_WISE_NET_COST_CURRENCY": null,
-      "ARRIVALDATE": null,
-      "CITY": null,
-      "TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST": null,
-      "TOUR_TRANSFER_COMPONENTS_WISE_NET_COST": null
-    }]
-    this.bookingArray["data"] = {};
-    this.bookingArray["data"].dynamic=data;
-    // alert(this.subbookingArray.length)
-    console.log(this.bookingArray);
-    this.toastrService.Success("Added new fields!");
-  }
-  
-  totalAmount(amount: any) : void {
-    // this.bookingArray.TOTAL_IN_AMOUNTS = this.bookingArray.TOTAL_IN_AMOUNTS + amount;
-    console.log("amount" + amount);
-  }
-
   deleteItem(i: any): void {
     // console.log(this.bookingArray.data.su[this.subbookingArray.length + 1]);
     this.bookingArray.data.dynamic.splice(i, 1);
-    return this.toastrService.Warning("Deleted field!");
+    this.toastrService.Warning("Deleted field!");
   }
 
-  addSubArray(i: any) {
-    // let clickedItem = event.srcElement;
-    this.bookingArray.data.dynamic.push(this.subbookingArray);
+  addSubArray(i) {
+    this.bookingArray.data.dynamic.push(this.arrdata);
+    //this.bookingArray.data.dynamic = this.subbookingArray;
+    console.log(this.subbookingArray);
+
+    // this.toastrService.Success("Added new fields!");
+  }
+  currencyFunc() {
+    this.api.getAllCurrency().subscribe(datacurreny=>{
+    
+    console.log(datacurreny);
+    this.dataCur = datacurreny;
+    });
+  };
+  fetchData() {
+  this.route.paramMap.subscribe(params => {
+    this.booking_Id = params.get('id');
+    console.log(this.booking_Id);
     console.log(this.bookingArray);
-
-    return this.toastrService.Success("Added new fields!");
+    this.api.getBookingData(this.booking_Id).subscribe(formData => {
+      console.log(JSON.stringify(formData));
+      this.bookingArray = formData;
+      // this.booking_Id = this.bookingArray.RA_REFERENCE;
+     // this.subbookingArray = this.bookingArray.data.dynamic;
+      });  
+    });
+  };
+  add(i) {
+    if(i == 0){
+    this.bookingArray["data"] = {};
+    this.bookingArray["data"].dynamic = [];
+    this.bookingArray["RA_REFERENCE"] = this.booking_Id;
+    this.bookingArray["data"].RA_REFERENCE = this.booking_Id;
+    this.bookingArray["data"].dynamic[0] = this.arrdata;
+    // alert(this.subbookingArray.length)
+    console.log(this.bookingArray);
+    }
+    else{
+      this.addSubArray(i);
+    }
   }
-  // This function is triggered whenever
-  // a form field is sorted or repositioned
-  // sortField(i: any, event: any){
-  //   let tempField = this.subFormArray[event];
-  //   this.subFormArray.splice(event,1);
-  //   this.subFormArray.splice(i,0,tempField);
-  //   this.selectField(i);
-  // }
-  booking_Id = '';
-  dataCur : any = {};
-  constructor(private toastrService: ToastrService,private formBuilder: FormBuilder, public http: HttpClient, public api: Api, public router: Router, private auth: AuthService, public route: ActivatedRoute) { }
-  // booking_Id = 'RED6127143';
-  bookingArray : any = {};
-  subbookingArray : any = {};
-  cData = "";
-
   ngOnInit() {
 
     // this.orderForm = this.formBuilder.group({
@@ -120,21 +131,7 @@ export class BookingMasterComponent implements OnInit {
     //       this.router.navigate(['/bookingmaster/local/' + this.booking_Id]);
     //   });
     // });
-    this.api.getAllCurrency().subscribe(datacurreny=>{
-      console.log(datacurreny);
-      this.dataCur = datacurreny;
-    });
-    this.route.paramMap.subscribe(params => {
-      this.booking_Id = params.get('id');
-      console.log(this.booking_Id);
-      console.log(this.bookingArray);
-      this.api.getBookingData(this.booking_Id).subscribe(formData => {
-        console.log(JSON.stringify(formData));
-        this.bookingArray = formData;
-        this.booking_Id = this.bookingArray.data.RA_REFERENCE;
-        // this.subbookingArray = this.bookingArray.data.dynamic;
-      });  
-    });
+    
     
   }
 }
