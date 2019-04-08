@@ -80,19 +80,19 @@ export class BookingMasterComponent implements OnInit {
     this.addSubArray();
   }
   showSuccess() {
-      this.toastr.successToastr('This is success toast.', 'Success!');
+      this.toastr.successToastr('This is form is saved.', 'Saved!');
   }
 
-  showError() {
-      this.toastr.errorToastr('This is error toast.', 'Oops!');
-  }
+  // showError() {
+  //     this.toastr.errorToastr('You deleted a field.', '!');
+  // }
 
   showWarning() {
-      this.toastr.warningToastr('This is warning toast.', 'Alert!');
+      this.toastr.warningToastr('You deleted a field.', 'Deleted!');
   }
 
   showInfo() {
-      this.toastr.infoToastr('This is info toast.', 'Info');
+      this.toastr.infoToastr('New fields added.', 'Added!');
   }
 
   // showCustom() {
@@ -116,7 +116,7 @@ export class BookingMasterComponent implements OnInit {
       console.log(this.bookingArray);
       // debugger;
       this.router.navigate(['/bookingmaster/local/' + this.booking_Id]);
-      this.toastrService.Success("Saved!");
+      this.showSuccess();
     });
   }
   selectField(i: any) {
@@ -131,7 +131,7 @@ export class BookingMasterComponent implements OnInit {
    
     if (length>1) {
       this.bookingArray.data.dynamic.splice(i, 1);
-    this.toastrService.Warning("Deleted field!");
+    this.showWarning();
     }
     
   }
@@ -142,7 +142,7 @@ export class BookingMasterComponent implements OnInit {
     this.bookingArray["RA_REFERENCE"] = this.booking_Id;
     this.bookingArray["data"].RA_REFERENCE = this.booking_Id;
     this.bookingArray.data.dynamic.push(this.arrdata);
-    
+    // this.showSuccess(); 
   }
   currencyFunc() {
     this.api.getAllCurrency().subscribe(datacurreny=>{
@@ -169,7 +169,7 @@ export class BookingMasterComponent implements OnInit {
     this.bookingArray.data.dynamic.push({});
     //this.bookingArray.data.dynamic = this.subbookingArray;
     console.log(this.subbookingArray);
-
+    this.showInfo();
     // this.toastrService.Success("Added new fields!");
   }
   ngOnInit() {
