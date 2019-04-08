@@ -15,6 +15,8 @@ import { FooterComponent } from './footer/footer.component';
 import { ToastrService } from './toastr-service.service';
 import { from } from 'rxjs';
 
+import { ToastrModule } from 'ng6-toastr-notifications';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +31,8 @@ import { from } from 'rxjs';
     BrowserAnimationsModule,
     AppRoutingModule,
     CommonModule,
-    FormsModule
+    FormsModule,
+    ToastrModule.forRoot()
   ],
   providers: [Api, AuthService, ToastrService],
   bootstrap: [AppComponent]
