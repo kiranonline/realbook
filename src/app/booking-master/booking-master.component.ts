@@ -19,7 +19,6 @@ import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 })
 export class BookingMasterComponent implements OnInit {
 
-  msgs : Message[] = [];
   orderForm: FormGroup;
   submitted = false;
   items : FormArray;

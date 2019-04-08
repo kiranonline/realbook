@@ -42,7 +42,7 @@
 
                     <label for="">Invoice Date</label>
                     <div class="input-group mb-4">
-                  <input type="text" id="INVOICE_DATE" [(ngModel)]="bookingArray.data.INVOICE_DATE" class="form-control" placeholder="">
+                  <input type="text" id="INVOICE_DATE" [(ngModel)]="bookingArray.data.INVOICE_DATE" class="form-control" placeholder="" data-provide="datepicker">
                   <div class="input-group-append">
                       <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
                   </div></div>
@@ -55,7 +55,7 @@
 
                     <label for="">Payment Deadline</label>
                     <div class="input-group mb-4">
-                  <input type="text" id="PAYMENT_DEADLINE" [(ngModel)]="bookingArray.data.PAYMENT_DEADLINE" class="form-control" placeholder="">
+                  <input type="text" id="PAYMENT_DEADLINE" [(ngModel)]="bookingArray.data.PAYMENT_DEADLINE" class="form-control" placeholder="" data-provide="datepicker">
                   <div class="input-group-append">
                       <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
                   </div></div>
@@ -105,9 +105,11 @@
                 </div>
                 <div class="col-4">
                       <div class="form-group">
-                          <label for="">Supplier Payment Deadline</label>
-                          <input type="text" [(ngModel)]="bookingArray.data.SUPPLIER_PAYMENT_DEADLINE" class="form-control">
-                      </div>
+                            <label>Foreign Currency</label>
+                            <select class="form-control" id="FOREIGN_CURRENCY" [(ngModel)]="bookingArray.data.FOREIGN_CURRENCY">
+                                    <option *ngFor="let cData of dataCur.currency">{{cData}}</option>
+                            </select>
+                    </div>
                   </div>
                   <div class="col-4">
                       <div class="form-group">
@@ -119,9 +121,11 @@
             <div class="row">
                     <div class="col-4">
                         <div class="form-group">
-                            <label for="">Component Wise Currency</label>
-                            <input type="number" min="0" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.COMPONENTS_WISE_CURRENCY" class="form-control">
-                        </div>
+                            <label>Component Wise Currency</label>
+                            <select class="form-control" id="COMPONENT_WISE_CURRENCY" [(ngModel)]="bookingArray.data.COMPONENT_WISE_CURRENCY">
+                                    <option *ngFor="let cData of dataCur.currency">{{cData}}</option>
+                            </select>
+                    </div>
                     </div>
                     <div class="col-4">
                           <div class="form-group">
@@ -367,7 +371,7 @@
 
                                                     <label for="">CheckIn Date</label>
                                                     <div class="input-group mb-6">
-                                                <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].CHECK_IN_DATE" class="form-control">
+                                                <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].CHECK_IN_DATE" class="form-control" data-provide="datepicker">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
                                                 </div></div>
@@ -378,7 +382,7 @@
 
                                                     <label for="">CheckOut Date</label>
                                                     <div class="input-group mb-6">
-                                                <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].CHECK_OUT_DATE" class="form-control">
+                                                <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].CHECK_OUT_DATE" class="form-control" data-provide="datepicker">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
                                                 </div></div>
