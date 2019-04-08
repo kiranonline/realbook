@@ -115,13 +115,18 @@ export class BookingMasterComponent implements OnInit {
   booking() {
     this.booking_Id = this.bookingArray.data.RA_REFERENCE;
     console.log(JSON.stringify(this.bookingArray));
-    this.validation();
-    this.api.editBookingData(this.booking_Id, this.bookingArray).subscribe(data => {
-      console.log(this.bookingArray);
-      // debugger;
-      this.router.navigate(['/bookingmaster/local/' + this.booking_Id]);
-      this.showSuccess();
-    });
+    if(this.bookingArray.data.RA_REFERENCE == null){
+      this.toastr.warningToastr('RA REFERENCE is empty.', 'Required!');
+      return;
+    }
+    else {
+      this.api.editBookingData(this.booking_Id, this.bookingArray).subscribe(data => {
+        console.log(this.bookingArray);
+        // debugger;
+        this.router.navigate(['/bookingmaster/local/' + this.booking_Id]);
+        this.showSuccess();
+      });
+    }
   }
   selectField(i: any) {
     // alert(i);
@@ -184,6 +189,8 @@ export class BookingMasterComponent implements OnInit {
     //       this.router.navigate(['/bookingmaster/local/' + this.booking_Id]);
     //   });
     // });
+  }
+  ngOnChanges() {
   }
   validation() {
     if(this.bookingArray.data.FIRSTNAME == undefined) {
