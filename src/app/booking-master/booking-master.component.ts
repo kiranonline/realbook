@@ -19,6 +19,7 @@ import { audit } from 'rxjs/operators';
 export class BookingMasterComponent implements OnInit {
 
   orderForm: FormGroup;
+  submitted = false;
   items : FormArray;
   bookingArray : any = {};
   subbookingArray : any = [];
@@ -53,7 +54,7 @@ export class BookingMasterComponent implements OnInit {
   constructor(private toastrService: ToastrService,private formBuilder: FormBuilder, public http: HttpClient, public api: Api, public router: Router, private auth: AuthService, public route: ActivatedRoute) { 
     this.currencyFunc();
     this.fetchData();
-    this.add(0);
+    this.addSubArray();
   }
   // booking_Id = 'RED6127143';
   booking() {
@@ -78,12 +79,13 @@ export class BookingMasterComponent implements OnInit {
     this.toastrService.Warning("Deleted field!");
   }
 
-  addSubArray(i) {
+  addSubArray() {
+    this.bookingArray["data"] = {};
+    this.bookingArray["data"].dynamic = [];
+    this.bookingArray["RA_REFERENCE"] = this.booking_Id;
+    this.bookingArray["data"].RA_REFERENCE = this.booking_Id;
     this.bookingArray.data.dynamic.push(this.arrdata);
-    //this.bookingArray.data.dynamic = this.subbookingArray;
-    console.log(this.subbookingArray);
-
-    // this.toastrService.Success("Added new fields!");
+    
   }
   currencyFunc() {
     this.api.getAllCurrency().subscribe(datacurreny=>{
@@ -105,19 +107,13 @@ export class BookingMasterComponent implements OnInit {
       });  
     });
   };
-  add(i) {
-    if(i == 0){
-    this.bookingArray["data"] = {};
-    this.bookingArray["data"].dynamic = [];
-    this.bookingArray["RA_REFERENCE"] = this.booking_Id;
-    this.bookingArray["data"].RA_REFERENCE = this.booking_Id;
-    this.bookingArray["data"].dynamic[0] = this.arrdata;
-    // alert(this.subbookingArray.length)
-    console.log(this.bookingArray);
-    }
-    else{
-      this.addSubArray(i);
-    }
+  add() {
+    
+    this.bookingArray.data.dynamic.push(this.arrdata);
+    //this.bookingArray.data.dynamic = this.subbookingArray;
+    console.log(this.subbookingArray);
+
+    // this.toastrService.Success("Added new fields!");
   }
   ngOnInit() {
 
@@ -131,7 +127,20 @@ export class BookingMasterComponent implements OnInit {
     //       this.router.navigate(['/bookingmaster/local/' + this.booking_Id]);
     //   });
     // });
-    
-    
+
+    // this.orderForm = this.formBuilder.group({
+    //   firstName: ['', Validators.required]
+    // });
   }
+  get f() { return this.orderForm.controls; }
+  onSubmit() {
+    this.submitted = true;
+
+    // stop here if form is invalid
+    if (this.orderForm.invalid) {
+        return;
+    }
+    alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.orderForm.value))
+  }
+
 }

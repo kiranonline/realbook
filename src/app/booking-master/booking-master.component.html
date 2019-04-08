@@ -1,12 +1,12 @@
 <app-header></app-header>
 <main>
-  <div class="container-fluid"><!-- *ngFor="let bookingArray of bookingArray.json_maste.Booking"-->
-
+  <div class="container-fluid">
         <div class="row">
+            <!-- <form [FormGroup]="orderForm" (ngSubmit)="onSubmit()"> -->
                 <div class="col-4">
                     <div class="form-group">
                         <label for="">First Name</label>
-                        <input type="text" required [(ngModel)]="bookingArray.data.FIRSTNAME" class="form-control" placeholder="">
+                        <input type="text" [(ngModel)]="bookingArray.data.FIRSTNAME" class="form-control" placeholder="">
                     </div>
                 </div>
                 <div class="col-4">
@@ -23,7 +23,7 @@
                         <input type="text" id="INVOICE_NUMBER" [(ngModel)]="bookingArray.data.INVOICE_NUMBER" class="form-control" placeholder="">
                     </div>
                 </div>
-            </div>
+        </div>
       <div class="row">
           <div class="col-4">
               <div class="form-group">
@@ -237,7 +237,7 @@
                             class="ion ion-ios-more text-dark"></i></button>
                     <button type="button" (click)="deleteItem(i);" class="btn btn-light"><i
                             class="ion ion-ios-trash text-danger"></i></button>
-                    <button type="button" (click)="add(i)" class="btn btn-light mr-2"><i
+                    <button type="button" (click)="add()" class="btn btn-light mr-2"><i
                             class="ion ion-md-add text-primary"></i></button>
                 </div>
             </div>
@@ -292,10 +292,11 @@
               </div>
           </div>
           <div class="col-1 text-right">
-              <button type="submit" (click)="booking()" class="btn btn-primary w-100">Save</button>
+              <button type="submit" (click)="onSubmit()" class="btn btn-primary w-100">Save</button>
           </div>
       </div>
   </div>
+
   <!-- Modal -->
   <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog"
       aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

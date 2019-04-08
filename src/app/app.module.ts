@@ -29,7 +29,7 @@ import { from } from 'rxjs';
     BrowserAnimationsModule,
     AppRoutingModule,
     CommonModule,
-    FormsModule,
+    FormsModule
   ],
   providers: [Api, AuthService, ToastrService],
   bootstrap: [AppComponent]
