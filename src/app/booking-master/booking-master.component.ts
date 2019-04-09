@@ -79,7 +79,6 @@ export class BookingMasterComponent implements OnInit {
     this.currencyFunc();
     this.fetchData();
     this.addSubArray();
-    this.validation();
   }
   showSuccess() {
       this.toastr.successToastr('This is form is saved.', 'Saved!');
@@ -118,10 +117,11 @@ export class BookingMasterComponent implements OnInit {
       this.toastr.warningToastr('RA REFERENCE is empty.', 'Required!');
       return;
     }
-    else {
+    else if(this.bookingArray.data.RA_REFERENCE != null){
       this.api.editBookingData(this.booking_Id, this.bookingArray).subscribe(data => {
         console.log(this.bookingArray);
         // debugger;
+        this.validation();
         this.router.navigate(['/bookingmaster/local/' + this.booking_Id]);
         this.showSuccess();
       });

@@ -20,7 +20,7 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label for="">Invoice Number</label>
-                        <input type="number" min="0" id="INVOICE_NUMBER" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.INVOICE_NUMBER" class="form-control" placeholder="">
+                        <input type="text" [(ngModel)]="bookingArray.data.INVOICE_NUMBER" class="form-control" placeholder="">
                     </div>
                 </div>
         </div>
@@ -28,7 +28,7 @@
           <div class="col-4">
               <div class="form-group">
                   <label for="">Exchange Rate</label>
-                  <input type="number" min="0" id="EXCHANGE_RATE" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.EXCHANGE_RATE" class="form-control" placeholder="">
+                  <input type="number" min="0" step="any" id="EXCHANGE_RATE" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.EXCHANGE_RATE" class="form-control" placeholder="">
               </div>
           </div>
           <div class="col-4">
@@ -100,7 +100,7 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label for="">Selling Cost</label>
-                        <input type="number" min="0" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.SELLING_COST" class="form-control">
+                        <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.SELLING_COST" class="form-control">
                     </div>
                 </div>
                 <div class="col-4">
@@ -114,7 +114,7 @@
                   <div class="col-4">
                       <div class="form-group">
                           <label for="">Component Wise Discount Comission</label>
-                          <input type="number" min="0" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.COMPONENTS_WISE_DISCOUNT_COMISSION" class="form-control">
+                          <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.COMPONENTS_WISE_DISCOUNT_COMISSION" class="form-control">
                       </div>
                   </div>
             </div>
@@ -136,7 +136,7 @@
                       <div class="col-4">
                           <div class="form-group">
                               <label for="">Tax Calculation</label>
-                              <input type="number" min="0" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.TAX_CALCULATION" class="form-control">
+                              <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.TAX_CALCULATION" class="form-control">
                           </div>
                       </div>
                 </div>
@@ -251,31 +251,31 @@
             <div class="form-group row">
                     <label for="" class="ml-auto col-auto col-form-label">Over All Discount</label>
                     <div class="col-2">
-                        <input type="number" min="0" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.OVER_ALL_DISCOUNT" id="OVER_ALL_DISCOUNT" class="form-control" placeholder="" name="OVER_ALL_DISCOUNT" #name="ngModel">
+                        <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.OVER_ALL_DISCOUNT" id="OVER_ALL_DISCOUNT" class="form-control" placeholder="" name="OVER_ALL_DISCOUNT" #name="ngModel">
                     </div>
                 </div>
                 <div class="form-group row">
                         <label for="" class="ml-auto col-auto col-form-label">Over All Profit</label>
                         <div class="col-2">
-                            <input type="number" min="0" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.OVER_ALL_PROFIT" id="OVER_ALL_PROFIT" class="form-control" placeholder="" name="OVER_ALL_PROFIT" #name="ngModel">
+                            <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.OVER_ALL_PROFIT" id="OVER_ALL_PROFIT" class="form-control" placeholder="" name="OVER_ALL_PROFIT" #name="ngModel">
                         </div>
                     </div>
                     <div class="form-group row">
                             <label for="" class="ml-auto col-auto col-form-label">Over ALL Loss</label>
                             <div class="col-2">
-                                <input type="number" min="0" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.OVER_ALL_LOSS" id="OVER_ALL_LOSS" class="form-control" placeholder="" name="OVER_ALL_LOSS" #name="ngModel">
+                                <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.OVER_ALL_LOSS" id="OVER_ALL_LOSS" class="form-control" placeholder="" name="OVER_ALL_LOSS" #name="ngModel">
                             </div>
                         </div>
               <div class="form-group row">
                   <label for="" class="ml-auto col-auto col-form-label">Total In Amounts</label>
                   <div class="col-2">
-                      <input type="number" min="0" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.TOTAL_IN_AMOUNTS" id="TOTAL_IN_AMOUNTS" class="form-control" placeholder="" name="TOTAL_IN_AMOUNTS" #name="ngModel">
+                      <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.TOTAL_IN_AMOUNTS" id="TOTAL_IN_AMOUNTS" class="form-control" placeholder="" name="TOTAL_IN_AMOUNTS" #name="ngModel">
                   </div>
               </div>
               <div class="form-group row">
                   <label for="" class="ml-auto col-auto col-form-label">Total Tax Calculation</label>
                   <div class="col-2">
-                      <input type="number" min="0" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.TOTAL_TAX_CALCULATION" id="TOTAL_TAX_CALCULATION" class="form-control" placeholder="" name="TOTAL_TAX_CALCULATION" #name="ngModel">
+                      <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.TOTAL_TAX_CALCULATION" id="TOTAL_TAX_CALCULATION" class="form-control" placeholder="" name="TOTAL_TAX_CALCULATION" #name="ngModel">
                   </div>
               </div>
           </div>
@@ -328,7 +328,7 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label for="">Components Wise Selling Cost</label>
-                                        <input type="number" min="0" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.dynamic[index].COMPONENTS_WISE_SELLING_COST" class="form-control">
+                                        <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.dynamic[index].COMPONENTS_WISE_SELLING_COST" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -344,7 +344,7 @@
                                   <div class="col-6">
                                       <div class="form-group">
                                           <label for="">Components Wise Markup</label>
-                                          <input type="number" min="0" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.dynamic[index].COMPONENTS_WISE_MARKUP" class="form-control">
+                                          <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.dynamic[index].COMPONENTS_WISE_MARKUP" class="form-control">
                                       </div>
                                   </div>
                               </div>
@@ -352,7 +352,7 @@
                                       <div class="col-6">
                                           <div class="form-group">
                                               <label for="">Component Wise Net Cost</label>
-                                              <input type="number" min="0" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.dynamic[index].COMPONENTS_WISE_NET_COST" class="form-control">
+                                              <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.dynamic[index].COMPONENTS_WISE_NET_COST" class="form-control">
                                           </div>
                                       </div>
                                       <div class="col-6">
@@ -393,13 +393,13 @@
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <label for="">No of Nights</label>
-                                                <input type="number" min="0" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.dynamic[index].NO_OF_NIGHTS" class="form-control">
+                                                <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.dynamic[index].NO_OF_NIGHTS" class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <label for="">No of Rooms</label>
-                                                <input type="number" min="0" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.dynamic[index].NO_OF_ROOMS" class="form-control">
+                                                <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.dynamic[index].NO_OF_ROOMS" class="form-control">
                                             </div>
                                         </div>
                                     </div>
@@ -423,13 +423,13 @@
                                             <div class="col-6">
                                                 <div class="form-group">
                                                     <label for="">TOUR TRANSFER COMPONENTS WISE SELLING COST</label>
-                                                    <input type="number" min="0" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.dynamic[index].TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST" class="form-control">
+                                                    <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.dynamic[index].TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-6">
                                                 <div class="form-group">
                                                     <label for="">TOUR TRANSFER COMPONENTS WISE NET COST</label>
-                                                    <input type="number" min="0" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.dynamic[index].TOUR_TRANSFER_COMPONENTS_WISE_NET_COST" class="form-control">
+                                                    <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.dynamic[index].TOUR_TRANSFER_COMPONENTS_WISE_NET_COST" class="form-control">
                                                 </div>
                                             </div>
                                         </div>
