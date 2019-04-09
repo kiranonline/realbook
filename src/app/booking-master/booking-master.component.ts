@@ -81,7 +81,7 @@ export class BookingMasterComponent implements OnInit {
     this.addSubArray();
   }
   showSuccess() {
-      this.toastr.successToastr('This is form is saved.', 'Saved!');
+      this.toastr.successToastr('This form is saved.', 'Saved!');
   }
 
   showError() {
@@ -122,8 +122,6 @@ export class BookingMasterComponent implements OnInit {
         console.log(this.bookingArray);
         // debugger;
         this.validation();
-        this.router.navigate(['/bookingmaster/local/' + this.booking_Id]);
-        this.showSuccess();
       });
     }
   }
@@ -193,59 +191,63 @@ export class BookingMasterComponent implements OnInit {
   }
   validation() {
     if(this.bookingArray.data.FIRSTNAME == undefined) {
-      return this.toastr.warningToastr('First Name is empty.', 'Required!');
+      this.toastr.warningToastr('First Name is empty.', 'Required!');
     }
     else if(this.bookingArray.data.INVOICE_CURRENCY == undefined) {
-      return this.toastr.warningToastr('Invoice Currency is empty.', 'Required!');
+      this.toastr.warningToastr('Invoice Currency is empty.', 'Required!');
     }
     else if(this.bookingArray.data.INVOICE_NUMBER == undefined) {
-      return this.toastr.warningToastr('Invoice Number is empty.', 'Required!');
+      this.toastr.warningToastr('Invoice Number is empty.', 'Required!');
     }
     else if(this.bookingArray.data.EXCHANGE_RATE == undefined) {
-      return this.toastr.warningToastr('Exchange Rate is empty.', 'Required!');
+      this.toastr.warningToastr('Exchange Rate is empty.', 'Required!');
     }
     else if(this.bookingArray.data.RA_FILE_HANDLER == undefined) {
-      return this.toastr.warningToastr('Ra File Handler is empty.', 'Required!');
+      this.toastr.warningToastr('Ra File Handler is empty.', 'Required!');
     }
     else if(this.bookingArray.data.INVOICE_DATE == undefined) {
-      return this.toastr.warningToastr('Invoice Date is empty.', 'Required!');
+      this.toastr.warningToastr('Invoice Date is empty.', 'Required!');
     }
     else if(this.bookingArray.data.PAYMENT_DEADLINE == undefined) {
-      return this.toastr.warningToastr('Payment Deadline is empty.', 'Required!');
+      this.toastr.warningToastr('Payment Deadline is empty.', 'Required!');
     }
     else if(this.bookingArray.data.RA_REFERENCE == undefined) {
-      return this.toastr.warningToastr('Ra Reference is empty.', 'Required!');
+      this.toastr.warningToastr('Ra Reference is empty.', 'Required!');
     }
     else if(this.bookingArray.data.RA_AGENT_CODE == undefined) {
-      return this.toastr.warningToastr('Ra Agent Code is empty.', 'Required!');
+      this.toastr.warningToastr('Ra Agent Code is empty.', 'Required!');
     }
     else if(this.bookingArray.data.RA_STAND_ALONE == undefined) {
-      return this.toastr.warningToastr('Stand Alone is empty.', 'Required!');
+      this.toastr.warningToastr('Stand Alone is empty.', 'Required!');
     }
     else if(this.bookingArray.data.FOREIGN_CURRENCY == undefined) {
-      return this.toastr.warningToastr('Foreign Currency is empty.', 'Required!');
+      this.toastr.warningToastr('Foreign Currency is empty.', 'Required!');
     }
     else if(this.bookingArray.data.SBU == undefined) {
-      return this.toastr.warningToastr('SBU is empty.', 'Required!');
+      this.toastr.warningToastr('SBU is empty.', 'Required!');
     }
     else if(this.bookingArray.data.SELLING_COST == undefined) {
-      return this.toastr.warningToastr('Selling Cost is empty.', 'Required!');
+      this.toastr.warningToastr('Selling Cost is empty.', 'Required!');
     }
 
     else if(this.bookingArray.data.SUPPLIER_PAYMENT_DEADLINE == undefined) {
-      return this.toastr.warningToastr('Supplier payment deadline is empty.', 'Required!');
+      this.toastr.warningToastr('Supplier payment deadline is empty.', 'Required!');
     }
     else if(this.bookingArray.data.COMPONENTS_WISE_DISCOUNT_COMISSION == undefined) {
-      return this.toastr.warningToastr('Component wise discount commission is empty.', 'Required!');
+      this.toastr.warningToastr('Component wise discount commission is empty.', 'Required!');
     }
     else if(this.bookingArray.data.COMPONENTS_WISE_CURRENCY == undefined) {
-      return this.toastr.warningToastr('Component wise currency is empty.', 'Required!');
+      this.toastr.warningToastr('Component wise currency is empty.', 'Required!');
     }
     else if(this.bookingArray.data.SERVICE_COUNTRY == undefined) {
-      return this.toastr.warningToastr('Service country is empty.', 'Required!');
+      this.toastr.warningToastr('Service country is empty.', 'Required!');
     }
     else if(this.bookingArray.data.TAX_CALCULATION == undefined) {
-      return this.toastr.warningToastr('Tax Calculation is empty.', 'Required!');
+      this.toastr.warningToastr('Tax Calculation is empty.', 'Required!');
+    }
+    else {
+      this.showSuccess();
+      this.router.navigate(['/bookingmaster/local/' + this.booking_Id]);
     }
   }
 
