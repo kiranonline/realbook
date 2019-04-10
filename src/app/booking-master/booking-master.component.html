@@ -55,7 +55,7 @@
 
                     <label for="">Payment Deadline</label>
                     <div class="input-group mb-4">
-                  <input type="text" id="PAYMENT_DEADLINE" [(ngModel)]="bookingArray.data.PAYMENT_DEADLINE" class="form-control" placeholder="" data-provide="datepicker">
+                  <input type="date" id="PAYMENT_DEADLINE" [(ngModel)]="bookingArray.data.PAYMENT_DEADLINE" class="form-control" placeholder="">
                   <div class="input-group-append">
                       <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
                   </div></div>
@@ -372,7 +372,7 @@
 
                                                     <label for="">CheckIn Date</label>
                                                     <div class="input-group mb-6">
-                                                <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].CHECK_IN_DATE" class="form-control" data-provide="datepicker">
+                                                <input type="date" [(ngModel)]="bookingArray.data.dynamic[index].CHECK_IN_DATE" class="form-control">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
                                                 </div></div>
@@ -383,7 +383,7 @@
 
                                                     <label for="">CheckOut Date</label>
                                                     <div class="input-group mb-6">
-                                                <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].CHECK_OUT_DATE" class="form-control" data-provide="datepicker">
+                                                <input type="date" [(ngModel)]="bookingArray.data.dynamic[index].CHECK_OUT_DATE" class="form-control">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
                                                 </div></div>

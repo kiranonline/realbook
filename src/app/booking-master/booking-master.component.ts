@@ -170,7 +170,6 @@ export class BookingMasterComponent implements OnInit {
     //this.bookingArray.data.dynamic = this.subbookingArray;
     console.log(this.subbookingArray);
     this.showInfo();
-    // this.toastrService.Success("Added new fields!");
   }
   ngOnInit() {
     //   this.bookingArray.valueChanges.pipe().subscribe(formData => {
@@ -182,6 +181,64 @@ export class BookingMasterComponent implements OnInit {
     // });
   }
   ngOnChanges() {
+  }
+  validatesubs(){
+    this.bookingArray.data.dynamic.forEach(i => {
+    // alert("data" + JSON.stringify(i));
+    if(i.SERVICE_CATEGORY == undefined) {
+      this.toastr.warningToastr('Service Category is empty.', 'Required!');
+    }
+    else if(i.PRODUCT_NAME == undefined) {
+      this.toastr.warningToastr('Product Name is empty.', 'Required!');
+    }
+    else if(i.PER_SERVICE_SUPPLIER_CODE == undefined) {
+      this.toastr.warningToastr('Per Service Supplier Code is empty.', 'Required!');
+    }
+    else if(i.COMPONENTS_WISE_SELLING_COST == undefined) {
+      this.toastr.warningToastr('Component Wise Selling Cost is empty.', 'Required!');
+    }
+    else if(i.COMPONENTS_WISE_SELLING_COST_CURRENCY == undefined) {
+      this.toastr.warningToastr('Component Wise Selling Cost Currency is empty.', 'Required!');
+    }
+    else if(i.COMPONENTS_WISE_NET_COST == undefined) {
+      this.toastr.warningToastr('Component Wise Net Cost is empty.', 'Required!');
+    }
+    else if(i.COMPONENTS_WISE_MARKUP == undefined) {
+      this.toastr.warningToastr('Component Wise Markup is empty.', 'Required!');
+    }
+    //Hotel
+    else if(i.SERVICE_CATEGORY == 'Hotel'){
+        if(i.CHECK_IN_DATE == undefined) {
+          this.toastr.warningToastr('Checkin Date is empty.', 'Required!');
+        }
+        else if(i.CHECK_OUT_DATE == undefined) {
+          this.toastr.warningToastr('Checkout Date is empty.', 'Required!');
+        }
+        else if(i.NO_OF_NIGHTS == undefined) {
+          this.toastr.warningToastr('No. of nights is empty.', 'Required!');
+        }
+        else if(i.NO_OF_ROOMS == undefined) {
+          this.toastr.warningToastr('No. of Rooms is empty.', 'Required!');
+        }
+      }
+    //Tour
+      else if(i.SERVICE_CATEGORY == 'Tour'){
+      if(i.TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST == undefined) {
+        this.toastr.warningToastr('Tour Transfer Component Wise Selling Cost is empty.', 'Required!');
+        }
+      else if(i.TOUR_TRANSFER_COMPONENTS_WISE_NET_COST == undefined) {
+        this.toastr.warningToastr('Tour Transfer Component Wise Selling Cost is empty.', 'Required!');
+        }
+      }
+      else {
+        this.api.editBookingData(this.booking_Id, this.bookingArray).subscribe(data => {
+          console.log(this.bookingArray);
+          this.router.navigate(['/bookingmaster/local/' + this.booking_Id]);
+          this.showSuccess();
+        });
+
+      }
+    });
   }
   validation() {
     if(this.bookingArray.data.RA_REFERENCE == undefined) {
@@ -217,56 +274,8 @@ export class BookingMasterComponent implements OnInit {
     else if(this.bookingArray.data.OVER_ALL_PROFIT == undefined) {
       this.toastr.warningToastr('Overall profit is empty.', 'Required!');
     }
-
-    //dynamic
-    // else if(this.bookingArray.data.dynamic.SERVICE_CATEGORY == undefined) {
-    //   this.toastr.warningToastr('Service Category is empty.', 'Required!');
-    // }
-    // else if(this.bookingArray.data.dynamic.PRODUCT_NAME == undefined) {
-    //   this.toastr.warningToastr('Product Name is empty.', 'Required!');
-    // }
-    // else if(this.bookingArray.data.dynamic.PER_SERVICE_SUPPLIER_CODE == undefined) {
-    //   this.toastr.warningToastr('Per Service Supplier Code is empty.', 'Required!');
-    // }
-    // else if(this.bookingArray.data.COMPONENTS_WISE_SELLING_COST == undefined) {
-    //   this.toastr.warningToastr('Component Wise Selling Cost is empty.', 'Required!');
-    // }
-    // else if(this.bookingArray.data.COMPONENTS_WISE_SELLING_COST_CURRENCY == undefined) {
-    //   this.toastr.warningToastr('Component Wise Selling Cost Currency is empty.', 'Required!');
-    // }
-    // else if(this.bookingArray.data.COMPONENTS_WISE_NET_COST == undefined) {
-    //   this.toastr.warningToastr('Component Wise Net Cost is empty.', 'Required!');
-    // }
-    // else if(this.bookingArray.data.COMPONENTS_WISE_MARKUP == undefined) {
-    //   this.toastr.warningToastr('Component Wise Markup is empty.', 'Required!');
-    // }
-    //Hotel
-    // else if(this.bookingArray.data.dynamic[this.index].CHECK_IN_DATE == undefined) {
-    //   this.toastr.warningToastr('Checkin Date is empty.', 'Required!');
-    // }
-    // else if(this.bookingArray.data.dynamic[this.index].CHECK_OUT_DATE == undefined) {
-    //   this.toastr.warningToastr('Checkout Date is empty.', 'Required!');
-    // }
-    // else if(this.bookingArray.data.dynamic[this.index].NO_OF_NIGHTS == undefined) {
-    //   this.toastr.warningToastr('No. of nights is empty.', 'Required!');
-    // }
-    // else if(this.bookingArray.data.dynamic[this.index].NO_OF_ROOMS == undefined) {
-    //   this.toastr.warningToastr('No. of Rooms is empty.', 'Required!');
-    // }
-    //Tour
-    // else if(this.bookingArray.data.dynamic[this.index].TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST == undefined) {
-    //   this.toastr.warningToastr('Tour Transfer Component Wise Selling Cost is empty.', 'Required!');
-    // }
-    // else if(this.bookingArray.data.dynamic[this.index].TOUR_TRANSFER_COMPONENTS_WISE_NET_COST == undefined) {
-    //   this.toastr.warningToastr('Tour Transfer Component Wise Selling Cost is empty.', 'Required!');
-    // }
-    
     else {
-      this.api.editBookingData(this.booking_Id, this.bookingArray).subscribe(data => {
-        console.log(this.bookingArray);
-        this.router.navigate(['/bookingmaster/local/' + this.booking_Id]);
-        this.showSuccess();
-      });
+      this.validatesubs();
     }
   }
 
