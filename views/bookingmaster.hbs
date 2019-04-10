@@ -32,7 +32,7 @@
         }
         .back-button:hover{
             color: #fff;
-        }
+        }text-center
         td.details-control {
             background: url('https://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
             cursor: pointer;
@@ -94,6 +94,7 @@
                                 <th scope="col">FETCHED ON</th>
                                 <th scope="col">OPERATED ON</th>
                                 <th scope="col text-center"><i class="fas fa-sync-alt sz"></i></th>
+                                <th scope="col">EDIT</th>
                             </tr>
                         </thead>
                         <tbody class="table-fixed">
@@ -142,7 +143,12 @@
                                     <td >{{this.FETCHED_ON}}</td>
                                    <td></td>
                                    <td></td>
-
+                                    
+                                   {{#if this.ismanual}}
+                                        <td class="text-center"><a href="http://localhost:4200/bookingmaster/local/{{this.RA_REFERENCE}}" class=" btn btn-primary"><i class="fas fa-pencil-alt"></i></a></td>
+                                    {{else}}
+                                        <td></td>
+                                    {{/if}}
 
 
 
@@ -157,6 +163,7 @@
             </div>
         </div>
 
+        <a class="plus-sign" href="http://localhost:4200/bookingmaster/local/"><i class="fas fa-plus"></i></a>
 
 
         <!-- Optional JavaScript -->
@@ -173,6 +180,7 @@
 
 
             $(document).ready(function () {
+                console.log("{{localUrl}}");
                 var table = $('#myTable').DataTable({
                     "order": [[1, 'asc']],
                     rowCallback: function ( row, data, index ) {

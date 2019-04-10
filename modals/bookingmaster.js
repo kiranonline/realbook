@@ -212,6 +212,14 @@ const bookingmaster = sequelize.define('bookingmaster',{
     TOUR_TRANSFER_COMPONENTS_WISE_NET_COST:{
         allowNull: true,
         type:Sequelize.STRING
+    },
+
+
+
+    ismanual : {
+        type:Sequelize.INTEGER(1),
+        allowNull : false,
+        defaultValue : 0
     }
     
 },{

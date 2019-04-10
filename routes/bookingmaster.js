@@ -7,7 +7,7 @@ var createError = require('http-errors');
 var request = require('request');
 var fileupload = require('../modals/fileUpload').fileupload;
 let helpers = require("../services/function2");
-
+var config = require('config');
 
 
 
@@ -108,7 +108,8 @@ router.post('/push',(req,res,next)=>{
 router.get("/",(req,res,next)=>{
     sequelize.query(`CALL Adansa.ra_booking_master_diaplay("","summary");`).then((data)=>{
         console.log(data);
-        res.render('bookingmaster',{layout:false,data:data});
+        console.log(config.get('localBooking.baseUrl'));
+        res.render('bookingmaster',{layout:false,data:data,localUrl:config.get('localBooking.baseUrl')});
     }).catch((err2)=>{
         console.log(`Error procedure: ${err2}`);
         res.send(err2);
@@ -216,12 +217,14 @@ router.get('/local/:RA_REFERENCE',(req,res,next)=>{
             }
         });
         
+        
     }).catch((err)=>{
         res.json({
             success : false,
             msg : err
         })
     })
+    
 });
 
 
@@ -234,6 +237,7 @@ router.get('/local/:RA_REFERENCE',(req,res,next)=>{
 router.post('/local/:RA_REFERENCE',(req,res,next)=>{
     var RA_REFERENCE = req.params.RA_REFERENCE;
     var data = req.body.data;
+    data.ismanual=1;
     var dynamic = data.dynamic;
     delete data['dynamic'];
     var tosave=[];
