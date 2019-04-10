@@ -196,18 +196,18 @@ export class BookingMasterComponent implements OnInit {
     else if(this.bookingArray.data.RA_FILE_HANDLER == undefined) {
       this.toastr.warningToastr('Ra File Handler is empty.', 'Required!');
     }
-    // else if(this.bookingArray.data.INVOICE_DATE == undefined) {
-    //   this.toastr.warningToastr('Invoice Date is empty.', 'Required!');
-    // }
+    else if(this.bookingArray.data.INVOICE_DATE == undefined) {
+      this.toastr.warningToastr('Invoice Date is empty.', 'Required!');
+    }
     else if(this.bookingArray.data.RA_AGENT_CODE == undefined) {
       this.toastr.warningToastr('Ra Agent Code is empty.', 'Required!');
     }
     else if(this.bookingArray.data.FOREIGN_CURRENCY == undefined) {
       this.toastr.warningToastr('Foreign Currency is empty.', 'Required!');
     }
-    // else if(this.bookingArray.data.COMPONENTS_WISE_CURRENCY == undefined) {
-    //   this.toastr.warningToastr('Component wise currency is empty.', 'Required!');
-    // }
+    else if(this.bookingArray.data.COMPONENTS_WISE_CURRENCY == undefined) {
+      this.toastr.warningToastr('Components wise currency is empty.', 'Required!');
+    }
     else if(this.bookingArray.data.SERVICE_COUNTRY == undefined) {
       this.toastr.warningToastr('Service country is empty.', 'Required!');
     }
