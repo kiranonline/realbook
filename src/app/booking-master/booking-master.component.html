@@ -82,13 +82,19 @@
                 </div>
             </div>
             <div class="col-4">
+                <div class="form-group">
+                    <label for="">Tax Calculation</label>
+                    <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.TAX_CALCULATION" class="form-control">
+                </div>
+            </div>
+            <!-- <div class="col-4">
                     <div class="form-group">
                             <label>Foreign Currency</label>
                             <select class="form-control" id="FOREIGN_CURRENCY" [(ngModel)]="bookingArray.data.FOREIGN_CURRENCY">
                                     <option *ngFor="let cData of dataCur.currency">{{cData}}</option>
                             </select>
                     </div>
-              </div>
+              </div> -->
               <div class="col-4">
                   <div class="form-group">
                       <label for="">SBU</label>
@@ -133,12 +139,7 @@
                               <input type="text" [(ngModel)]="bookingArray.data.SERVICE_COUNTRY" class="form-control">
                           </div>
                       </div>
-                      <div class="col-4">
-                          <div class="form-group">
-                              <label for="">Tax Calculation</label>
-                              <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.TAX_CALCULATION" class="form-control">
-                          </div>
-                      </div>
+                      
                 </div>
       <!-- <div class="row mb-5">
           <div class="col-4">
