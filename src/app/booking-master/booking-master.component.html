@@ -365,7 +365,7 @@
                                          
                                       </div>
                                   </div>
-                                  <div class="row">
+                                  <div class="row" *ngIf="bookingArray.data.dynamic[index].SERVICE_CATEGORY == 'Hotel'">
                                         <div class="col-6">
                                             <div class="form-group">
 
@@ -389,7 +389,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" *ngIf="bookingArray.data.dynamic[index].SERVICE_CATEGORY == 'Hotel'">
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <label for="">No of Nights</label>
@@ -418,7 +418,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <div class="row" *ngIf="bookingArray.data.dynamic[index].SERVICE_CATEGORY == 'Tour'">
                             
                                             <div class="col-6">
                                                 <div class="form-group">
