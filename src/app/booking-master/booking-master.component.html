@@ -13,6 +13,7 @@
                     <div class="form-group">
                         <label>Invoice Currency</label>
                         <select id="INVOICE_CURRENCY" class="form-control" [(ngModel)]="bookingArray.data.INVOICE_CURRENCY">
+                                <option>Select Currency...</option>
                                 <option *ngFor="let cData of dataCur.currency">{{cData}}</option>
                         </select>
                     </div>
@@ -113,7 +114,8 @@
                       <div class="form-group">
                             <label>Foreign Currency</label>
                             <select class="form-control" id="FOREIGN_CURRENCY" [(ngModel)]="bookingArray.data.FOREIGN_CURRENCY">
-                                    <option *ngFor="let cData of dataCur.currency">{{cData}}</option>
+                                <option>Select Currency...</option>
+                                <option *ngFor="let cData of dataCur.currency">{{cData}}</option>
                             </select>
                     </div>
                   </div>
@@ -129,6 +131,7 @@
                         <div class="form-group">
                             <label>Component Wise Currency</label>
                             <select class="form-control" id="COMPONENTS_WISE_CURRENCY" [(ngModel)]="bookingArray.data.COMPONENTS_WISE_CURRENCY">
+                                    <option>Select Currency...</option>
                                     <option *ngFor="let cData of dataCur.currency">{{cData}}</option>
                             </select>
                     </div>
@@ -212,9 +215,16 @@
           </div> -->
           <div class="col-2">
                 <div class="form-group">
-               
-                    <input type="text" [(ngModel)]="subbookingArray.SERVICE_CATEGORY" class="form-control mb-4"><!--id="SERVICE_CATEGORY" placeholder="" name="SERVICE_CATEGORY" #SERVICE_CATEGORY="ngModel" id="SERVICE_CATEGORY"-->
+                    <select id="SERVICE_CATEGORY" class="form-control" [(ngModel)]="subbookingArray.SERVICE_CATEGORY">
+                            <option>Select Category...</option>
+                            <option>Hotel</option>
+                            <option>Tour</option>
+                    </select>
                 </div>
+                <!-- <div class="form-group">
+               
+                    <input type="text" [(ngModel)]="subbookingArray.SERVICE_CATEGORY" class="form-control mb-4">
+                </div> -->
             </div>
         <div class="col-2">
                 <div class="form-group">
@@ -338,7 +348,8 @@
                                             <div class="form-group">
                                                     <label>Components Wise Selling Cost Currency</label>
                                                     <select class="form-control" [(ngModel)]="bookingArray.data.dynamic[index].COMPONENTS_WISE_SELLING_COST_CURRENCY">
-                                                            <option *ngFor="let cData of dataCur.currency">{{cData}}</option>
+                                                        <option>Select Currency...</option>    
+                                                        <option *ngFor="let cData of dataCur.currency">{{cData}}</option>
                                                     </select>
                                                 </div>
                                         </div>
@@ -360,7 +371,8 @@
                                             <div class="form-group">
                                                     <label>Components Wise Net Cost Currency</label>
                                                     <select class="form-control" [(ngModel)]="bookingArray.data.dynamic[index].COMPONENTS_WISE_NET_COST_CURRENCY">
-                                                            <option *ngFor="let cData of dataCur.currency">{{cData}}</option>
+                                                        <option>Select Currency...</option>    
+                                                        <option *ngFor="let cData of dataCur.currency">{{cData}}</option>
                                                     </select>
                                                 </div>
                                          
