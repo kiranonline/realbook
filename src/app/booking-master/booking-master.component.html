@@ -431,10 +431,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" *ngIf="bookingArray.data.dynamic[index].SERVICE_CATEGORY == 'Hotel'">
                             
                                             <div class="col-6">
-                                                <div class="form-group" *ngIf="bookingArray.data.dynamic[index].SERVICE_CATEGORY == 'Hotel'">
+                                                <div class="form-group">
                                                     <label for="">Room Type</label>
                                                     <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].ROOM_TYPE" class="form-control">
                                                 </div>
