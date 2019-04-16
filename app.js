@@ -100,7 +100,7 @@ app.use('/suppliermaster',suppliermaster);
 app.use('/api',api);
 
 app.get('/local/booking/*',(req,res,next)=>{
-  res.sendFile(path.join(__dirname, './public', 'index.html'));
+  res.sendFile(path.join(__dirname, './public', 'index1.html'));
 })
 
 // catch 404 and forward to error handler
