@@ -10,12 +10,13 @@ export class Api {
     public bookingData = [];
     constructor(public auth: AuthService, public http: HttpClient) {
         // console.log(this.auth.getAccessToken());
-        // let headers = new HttpHeaders({
-        //     'Content-Type': 'application/json',
+        let headers = new HttpHeaders({
+            'Access-Control-Allow-Origin':'*',
+            'Content-Type': 'application/json'
         //     'Authorization': 'Bearer ' + this.auth.getAccessToken()
 
-        // });
-        // this.head = { headers : headers };
+        });
+        this.head = { headers : headers };
         // this.headers.append('Content-Type', 'application/json');
         this.apiUrl = 'http://localhost:5000';
         // this.apiUrl = 'https://redappletravel.realbooks.in';

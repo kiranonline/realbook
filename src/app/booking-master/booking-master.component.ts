@@ -112,7 +112,7 @@ export class BookingMasterComponent implements OnInit {
   // booking_Id = 'RED6127143';
   booking() {
     this.booking_Id = this.bookingArray.data.RA_REFERENCE;
-    console.log(JSON.stringify(this.bookingArray));
+    // console.log(JSON.stringify(this.bookingArray));
     if(this.bookingArray.data.RA_REFERENCE != null){
       this.validation();
     }
@@ -207,30 +207,27 @@ export class BookingMasterComponent implements OnInit {
       this.toastr.warningToastr('Component Wise Markup is empty.', 'Required!');
     }
     //Hotel
-    else if(i.SERVICE_CATEGORY == 'Hotel'){
-        if(i.CHECK_IN_DATE == undefined) {
-          this.toastr.warningToastr('Checkin Date is empty.', 'Required!');
-        }
-        else if(i.CHECK_OUT_DATE == undefined) {
-          this.toastr.warningToastr('Checkout Date is empty.', 'Required!');
-        }
-        else if(i.NO_OF_NIGHTS == undefined) {
-          this.toastr.warningToastr('No. of nights is empty.', 'Required!');
-        }
-        else if(i.NO_OF_ROOMS == undefined) {
-          this.toastr.warningToastr('No. of Rooms is empty.', 'Required!');
-        }
-      }
+    else if(i.CHECK_IN_DATE == undefined && i.SERVICE_CATEGORY == 'Hotel') {
+      this.toastr.warningToastr('Checkin Date is empty.', 'Required!');
+    }
+    else if(i.CHECK_OUT_DATE == undefined && i.SERVICE_CATEGORY == 'Hotel') {
+      this.toastr.warningToastr('Checkout Date is empty.', 'Required!');
+    }
+    else if(i.NO_OF_NIGHTS == undefined && i.SERVICE_CATEGORY == 'Hotel') {
+      this.toastr.warningToastr('No. of nights is empty.', 'Required!');
+    }
+    else if(i.NO_OF_ROOMS == undefined && i.SERVICE_CATEGORY == 'Hotel') {
+      this.toastr.warningToastr('No. of Rooms is empty.', 'Required!');
+    }
     //Tour
-      else if(i.SERVICE_CATEGORY == 'Tour'){
-      if(i.TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST == undefined) {
-        this.toastr.warningToastr('Tour Transfer Component Wise Selling Cost is empty.', 'Required!');
-        }
-      else if(i.TOUR_TRANSFER_COMPONENTS_WISE_NET_COST == undefined) {
-        this.toastr.warningToastr('Tour Transfer Component Wise Selling Cost is empty.', 'Required!');
-        }
+    else if(i.TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST == undefined && i.SERVICE_CATEGORY == 'Tour') {
+      this.toastr.warningToastr('Tour Transfer Component Wise Selling Cost is empty.', 'Required!');
+      }
+    else if(i.TOUR_TRANSFER_COMPONENTS_WISE_NET_COST == undefined && i.SERVICE_CATEGORY == 'Tour') {
+      this.toastr.warningToastr('Tour Transfer Component Wise Selling Cost is empty.', 'Required!');
       }
       else {
+        
         this.api.editBookingData(this.booking_Id, this.bookingArray).subscribe(data => {
           console.log(this.bookingArray);
           this.router.navigate(['/bookingmaster/local/' + this.booking_Id]);
