@@ -33,8 +33,15 @@
         .back-button:hover{
             color: #fff;
         }
-        .modal-lg{
-            width:98% !important;
+        td.details-control {
+            background: url('https://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
+            cursor: pointer;
+        }
+        tr.shown td.details-control {
+            background: url('https://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
+        }
+        .hhh{
+            display: none;
         }
     </style>
     <body>
@@ -42,10 +49,11 @@
         <div class="table-wrapper">
             <h4 class="hdng">Booking Master</h4>
             <div class="table-responsive-sm">
-                    <table class="table table-hover table-sm table-bordered" id="myTable">
+                    <table class="table table-hover table-sm table-striped table-bordered" id="myTable">
                         <thead>
                             <tr>
                                 <th scope="col">NO.</th>
+                                <th scope="col"></th>
                                 <th scope="col">RA REFERENCE</th>
                                 <th scope="col">INVOICE DATE</th>
                                 <th scope="col">INVOICE NUMBER</th>
@@ -92,7 +100,8 @@
                             {{#each data}}
                                 <tr id="row{{index_modivied @index}}">
                
-                                    <td class="details-control">{{index_modivied @index}}</td>
+                                    <td >{{index_modivied @index}}</td>
+                                    <td class="details-control"></td>
                                     <td >{{this.RA_REFERENCE}}</td>
                                     <td >{{this.INVOICE_DATE}}</td>
                                     <td >{{this.INVOICE_NUMBER}}</td>
@@ -140,82 +149,16 @@
                                         <td></td>
                                     {{/if}}
 
+
+
+
+
+
+
                                 </tr>
                             {{/each}}
                         </tbody>
                     </table>
-            </div>
-        </div>
-
-
-
-
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="rno"></h4>
-                </div>
-                <div class="modal-body">
-                    <div class="inner-table-holder" id="inner-data">
-                        <div class="table-responsive">
-                            <table class="table table-hover table-sm table-bordered" id="myTable-inner">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">RA REFERENCE</th>
-                                        <th scope="col">INVOICE DATE</th>
-                                        <th scope="col">INVOICE NUMBER</th>
-                                        <th scope="col">LEAD PASSENGER</th>
-                                        <th scope="col">RA AGENT CODE</th>
-                                        <th scope="col">PAYMENT DEADLINE</th>
-                                        <th scope="col">CURRENCY</th>
-                                        <th scope="col" class="text-right">TOTAL AMOUNT</th>
-                                        <th scope="col">SUB</th>
-                                        <th scope="col">CHECK IN DATE</th>
-                                        <th scope="col">CHECK OUT DATE</th>
-                                        <th scope="col">EXCHANGE RATE</th>
-                                        <th scope="col">RA FILE HANDLER</th>
-                                        <th scope="col">NO OF NIGHTS</th>
-                                        <th scope="col">NO OF ROOMS</th>
-                                        <th scope="col">BOOKING NOTES</th>
-                                        <th scope="col">PAYMENT SLABS</th>
-                                        <th scope="col">PRODUCT NAME</th>
-                                        <th scope="col">ROOM CATEGORY</th>
-                                        <th scope="col">SERVICE CATEGORY</th>
-                                        <th scope="col">SERVICE CITY</th>
-                                        <th scope="col">SERVICE COUNTRY</th>
-                                        <th scope="col">STAND ALONE</th>
-                                        <th scope="col">TAX CALCULATION</th>
-                                        <th scope="col">TOTAL TAX CALCULATION</th>
-                                        <th scope="col">FOREIGN CURRENCY</th>
-                                        <th scope="col">SUPPLIER PAYMENT DEADLINE</th>
-                                        <th scope="col">COMPONENTS WISE NET COST</th>
-                                        <th scope="col">COMPONENTS WISE MARKUP</th>
-                                        <th scope="col">COMPONENTS WISE SELLING COST</th>
-                                        <th scope="col">COMPONENTS WISE DISCOUNT COMISSION</th>
-                                        <th scope="col">OVER ALL DISCOUNT</th>
-                                        <th scope="col">OVER ALL PROFIT</th>
-                                        <th scope="col">OVER ALL LOSS</th>
-                                        <th scope="col">COMPONENTS WISE CURRENCY</th>
-                                        <th scope="col">PER SERVICE WISE SUPPLIER CODE</th>
-                                        <th scope="col">FETCHED ON</th>
-                                        <th scope="col">OPERATED ON</th>
-                                        <th scope="col text-center"><i class="fas fa-sync-alt sz"></i></th>
-                                    </tr>
-                                </thead>
-                                <tbody class="table-fixed">
-                                    
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
             </div>
         </div>
 
@@ -251,23 +194,36 @@
                     var rowid = tr.attr('id');
                     console.log(rowid);
                     var row = table.row( tr );
-                    var d = row.data();
-                    console.log(d[1]);
-                    $.ajax({
-                        type: "POST",
-                        url: "/bookingmaster/"+d[1],
-                        data: {
-                            id:d[1]
-                        },
-                        crossDomain:true,
-                        success: function (data) {
-                            console.log(data);
-                            $("#rno").html("RA Reference : "+d[1])
-                            $("#myModal").modal();                                
-                            $('#myTable-inner').DataTable({
-                                destroy: true,
-                                data: data,
-                                columns:[
+                    //console.log(row); 
+                    if ( row.child.isShown() ) {
+                        // This row is already open - close it
+                        row.child.hide();
+                        tr.removeClass('shown');
+                    }
+                    else {
+                        // Open this row
+                        var d = row.data();
+                        console.log(d[2]);
+                        $.ajax({
+                            type: "POST",
+                            url: "/bookingmaster/"+d[2],
+                            data: {
+                                id:d[2]
+                            },
+                            crossDomain:true,
+                            success: function (data) {
+                                console.log(data);
+                                row.child( '<div class="inner-table"><table class="table table-hover table-sm table-striped table-bordered" id = "child_details'+rowid+'"><thead class="hhh"><tr><th>No</th><th></th><th>RA REFERENCE</th><th>INVOICE DATE</th><th>INVOICE NUMBER</th><th>LEAD PASSENGER</th><th>RA AGENT CODE</th><th>PAYMENT DEADLINE</th><th>CURRENCY</th>'+
+                                            '<th>TOTAL AMOUNT</th><th>SUB</th><th>CHECK IN DATE</th><th>CHECK OUT DATE</th><th>EXCHANGE RATE</th><th>RA FILE HANDLER</th><th>NO OF NIGHTS</th><th>NO OF ROOMS</th><th>BOOKING NOTES</th><th>PAYMENT SLABS</th><th>PRODUCT NAME</th><th>ROOM CATEGORY</th><th>SERVICE CATEGORY</th><th>SERVICE CITY</th><th>SERVICE COUNTRY</th><th>STAND ALONE</th><th>TAX CALCULATION</th>'+
+                                            '<th>TOTAL TAX CALCULATION</th><th>FOREIGN CURRENCY</th><th>SUPPLIER PAYMENT DEADLINE</th><th>COMPONENTS WISE NET COST</th><th>COMPONENTS WISE MARKUP</th><th>COMPONENTS WISE SELLING COST</th><th>COMPONENTS WISE DISCOUNT COMISSION</th><th>OVER ALL DISCOUNT</th><th>OVER ALL PROFIT</th><th>OVER ALL LOSS</th><th>COMPONENTS WISE CURRENCY</th><th>PER SERVICE WISE SUPPLIER CODE</th><th>FETCHED ON</th><th>OPERATED ON</th><th><i class="fas fa-sync-alt sz"></i></th>'+
+                                            '</tr></thead><tbody class="child-body"></tbody></table></div>').show();
+                                
+                                $('#child_details'+rowid).DataTable({
+                                    destroy: true,
+                                    data: data,
+                                    columns:[
+                                        { "data" : null,"defaultContent": "" },
+                                        { "data" : null,"defaultContent": "" },
                                         { "data" : "RA_REFERENCE" },
                                         { "data" : "INVOICE_DATE" },
                                         { "data" : "INVOICE_NUMBER" },
@@ -308,14 +264,19 @@
                                         { "data" : null,"defaultContent": "" },
                                         { "data" : null,"defaultContent": "" }
                                         
-                                ],
-                            });
-                        },
-                        error: function (xhr, status, error) {
-                            swal("Error", "Error detching details", "error");
-                        }
-                    });
+                                    ],
+                                    "searching": false,
+                                    "paging":   false,
+                                    "ordering": false
+                                });
+                                tr.addClass('shown');
+                            },
+                            error: function (xhr, status, error) {
+                                swal("Error", "Error detching details", "error");
+                            }
+                        });
                         
+                    }
                 });
 
 
