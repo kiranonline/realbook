@@ -273,7 +273,7 @@
                 $("#tax_group_h").html('<label for="tax_group">Tax group</label><select class="form-control form-control-sm" name="tax_group" id="tax_group" onchange="gettaxname(self)">{{#each tax_group}}<option value="{{this.id}}">{{this.name}}</option>{{/each}}</select>');
                 $("#tax_name_h").html('<label for="tax_name">Tax name</label><select class="form-control form-control-sm" name="tax_name" id="tax_name"></select>');
                 $("#rate_h").html('<label for="rate">Rate</label><input class="form-control form-control-sm" id="rate" name="rate" value="{{rate}}" placeholder="rate" >');
-                $("#country_h").html('<label for="country">Country</label><select class="form-control form-control-sm" name="c_v_name" id="country"></select>');
+                $("#country_h").html('<label for="country">customer or vendor name</label><select class="form-control form-control-sm" name="c_v_name" id="country"></select>');
                 $("#tax-link").show();
                 if(nature=="tax"){
                     gettaxname($('#tax_group option:selected').val());
