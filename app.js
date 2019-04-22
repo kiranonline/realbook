@@ -23,6 +23,7 @@ var doc = require('./routes/doc');
 var vprofitsharing = require('./routes/vprofitsharing');
 var customermaster = require('./routes/customermaster');
 var suppliermaster = require('./routes/suppliermaster');
+var invoicerule = require("./routes/invoiceRule");
 var api = require("./routes/api");
 
 //app
@@ -97,6 +98,7 @@ app.use('/post',post);
 app.use('/vprofitsharing',vprofitsharing);
 app.use('/customermaster',customermaster);
 app.use('/suppliermaster',suppliermaster);
+app.use('/invoicerule',invoicerule);
 app.use('/api',api);
 
 app.get('/local/booking/*',(req,res,next)=>{
