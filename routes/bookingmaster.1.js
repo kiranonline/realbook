@@ -145,75 +145,77 @@ router.get('/local/:RA_REFERENCE',(req,res,next)=>{
     var RA_REFERENCE = req.params.RA_REFERENCE;
     var p1 = model1.bookingmaster.findAll({
         where:{
-            RA_REFERENCE : RA_REFERENCE,
-            ismanual : 1
-        }            
-        
+            RA_REFERENCE : RA_REFERENCE
+        }
     });
 
     Promise.all([p1]).then((results)=>{
-        if(results[0].length!=0){
-            var data = results[0];
-            var data_const={};
-            var data_dynamic=[];
-            data.forEach((d,i)=>{
-                d=d.dataValues;
-                if(i==0){
-                    data_const.FIRSTNAME=d.FIRSTNAME,
-                    data_const.INVOICE_CURRENCY=d.INVOICE_CURRENCY,
-                    data_const.INVOICE_NUMBER=d.INVOICE_NUMBER,
-                    data_const.EXCHANGE_RATE=d.EXCHANGE_RATE,
-                    data_const.INVOICE_DATE=d.INVOICE_DATE,
-                    data_const.PAYMENT_DEADLINE=d.PAYMENT_DEADLINE,
-                    data_const.RA_REFERENCE=d. RA_REFERENCE,
-                    data_const.STAND_ALONE=d.STAND_ALONE,
-                    data_const.SBU=d.SBU,
-                    data_const.TOTAL_TAX_CALCULATION=d.TOTAL_TAX_CALCULATION,
-                    data_const.TOTAL_IN_AMOUNTS=d.TOTAL_IN_AMOUNTS,
-                    data_const.RA_AGENT_CODE=d.RA_AGENT_CODE,
-                    data_const.SELLINGCOST=d.SELLINGCOST,
-                    data_const.BOOKING_NOTES=d.BOOKING_NOTES,
-                    data_const.OVER_ALL_DISCOUNT=d.OVER_ALL_DISCOUNT,
-                    data_const.OVER_ALL_PROFIT=d.OVER_ALL_PROFIT,
-                    data_const.OVER_ALL_LOSS=d.OVER_ALL_LOSS,
-                    data_const.LEAD_PASSENGER=d.LEAD_PASSENGER
-                }
-                delete d['FIRSTNAME'];
-                delete d['INVOICE_CURRENCY'];
-                delete d['INVOICE_NUMBER'];
-                delete d['EXCHANGE_RATE'];
-                delete d['INVOICE_DATE'];
-                delete d['PAYMENT_DEADLINE'];
-                delete d['RA_REFERENCE'];
-                delete d['STAND_ALONE'];
-                delete d['SBU'];
-                delete d['TOTAL_TAX_CALCULATION'];
-                delete d['TOTAL_IN_AMOUNTS'];
-                delete d['RA_AGENT_CODE'];
-                delete d['SELLINGCOST'];
-                delete d['BOOKING_NOTES'];
-                delete d['OVER_ALL_DISCOUNT'];
-                delete d['OVER_ALL_PROFIT'];
-                delete d['OVER_ALL_LOSS'];
-                delete d['LEAD_PASSENGER'];
-                data_dynamic.push(d);
-                if(data_dynamic.length==data.length){
-                    data_const.dynamic=data_dynamic;
-                    res.json({
-                        success: true,
-                        msg: "data sent successfully.",
-                        RA_REFERENCE : RA_REFERENCE,
-                        data : data_const
-                    })
-                }
-            });
-        }else{
-            res.json({
-                success:false,
-                msg:'This is not a manual bookingmaster form'
-            })
-        }
-        
+        var data = results[0];
+        var data_const={};
+        var data_dynamic=[];
+        data.forEach((d,i)=>{
+            d=d.dataValues;
+            if(i==0){
+                data_const.FIRSTNAME=d.FIRSTNAME,
+                data_const.INVOICE_CURRENCY=d.INVOICE_CURRENCY,
+                data_const.INVOICE_NUMBER=d.INVOICE_NUMBER,
+                data_const.EXCHANGE_RATE=d.EXCHANGE_RATE,
+                data_const.RA_FILE_HANDLER=d.RA_FILE_HANDLER,
+                data_const.INVOICE_DATE=d.INVOICE_DATE,
+                data_const.PAYMENT_DEADLINE=d.PAYMENT_DEADLINE,
+                data_const.RA_REFERENCE=d. RA_REFERENCE,
+                data_const.SERVICE_COUNTRY=d.SERVICE_COUNTRY,
+                data_const.STAND_ALONE=d.STAND_ALONE,
+                data_const.TAX_CALCULATION=d.TAX_CALCULATION,
+                data_const.SBU=d.SBU,
+                data_const.TOTAL_TAX_CALCULATION=d.TOTAL_TAX_CALCULATION,
+                data_const.TOTAL_IN_AMOUNTS=d.TOTAL_IN_AMOUNTS,
+                data_const.RA_AGENT_CODE=d.RA_AGENT_CODE,
+                data_const.FOREIGN_CURRENCY=d.FOREIGN_CURRENCY,
+                data_const.SELLINGCOST=d.SELLINGCOST,
+                data_const.SUPPLIER_PAYMENT_DEADLINE=d.SUPPLIER_PAYMENT_DEADLINE,
+                data_const.BOOKING_NOTES=d.BOOKING_NOTES,
+                data_const.COMPONENTS_WISE_DISCOUNT_COMISSION=d.COMPONENTS_WISE_DISCOUNT_COMISSION,
+                data_const.OVER_ALL_DISCOUNT=d.OVER_ALL_DISCOUNT,
+                data_const.OVER_ALL_PROFIT=d.OVER_ALL_PROFIT,
+                data_const.OVER_ALL_LOSS=d.OVER_ALL_LOSS,
+                data_const.COMPONENTS_WISE_CURRENCY=d.COMPONENTS_WISE_CURRENCY
+            }
+            delete d['FIRSTNAME'];
+            delete d['INVOICE_CURRENCY'];
+            delete d['INVOICE_NUMBER'];
+            delete d['EXCHANGE_RATE'];
+            delete d['RA_FILE_HANDLER'];
+            delete d['INVOICE_DATE'];
+            delete d['PAYMENT_DEADLINE'];
+            delete d['RA_REFERENCE'];
+            delete d['SERVICE_COUNTRY'];
+            delete d['STAND_ALONE'];
+            delete d['TAX_CALCULATION'];
+            delete d['SBU'];
+            delete d['TOTAL_TAX_CALCULATION'];
+            delete d['TOTAL_IN_AMOUNTS'];
+            delete d['RA_AGENT_CODE'];
+            delete d['FOREIGN_CURRENCY'];
+            delete d['SELLINGCOST'];
+            delete d['SUPPLIER_PAYMENT_DEADLINE'];
+            delete d['BOOKING_NOTES'];
+            delete d['COMPONENTS_WISE_DISCOUNT_COMISSION'];
+            delete d['OVER_ALL_DISCOUNT'];
+            delete d['OVER_ALL_PROFIT'];
+            delete d['OVER_ALL_LOSS'];
+            delete d['COMPONENTS_WISE_CURRENCY'];
+            data_dynamic.push(d);
+            if(data_dynamic.length==data.length){
+                data_const.dynamic=data_dynamic;
+                res.json({
+                    success: true,
+                    msg: "data sent successfully.",
+                    RA_REFERENCE : RA_REFERENCE,
+                    data : data_const
+                })
+            }
+        });
         
         
     }).catch((err)=>{

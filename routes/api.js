@@ -28,6 +28,16 @@ router.get('/currency/getall',(req,res,next)=>{
 
 
 
+router.get('/supplier/getall',(req,res,next)=>{
+    sequelize.query(`SELECT supplier_id,supplier_display_name  FROM suppliermaster`).then((data)=>{
+        res.json({
+            supplier : data[0]
+        });
+    }).catch((ero)=>{
+        res.status(500);
+    })
+})
+
 
 
 module.exports=router;
