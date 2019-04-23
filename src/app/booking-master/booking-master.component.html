@@ -201,7 +201,7 @@
               <div class="form-group">
                   <select class="form-control" [(ngModel)]="subbookingArray.PER_SERVICE_WISE_SUPPLIER_NAME">
                         <option>Select Supplier...</option>    
-                        <option *ngFor="let sData of suppliers.supplier">{{sData}}</option>
+                        <option *ngFor="let sData of suppliers.supplier.supplier_display_name">{{sData}}</option>
                     </select>
               </div>
           </div>
