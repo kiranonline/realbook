@@ -41,6 +41,7 @@ export class BookingMasterComponent implements OnInit {
     "PAYMENT_SLABS": null,//2
     "PRODUCT_NAME": null,//1
     "ROOM_CATEGORY": null,//2
+    "SERVICE_COUNTRY" : null,//1
     "SERVICE_CATEGORY": null,//1
     "SERVICE_CITY": null,//2
     "TAX_CALCULATION": null,//2
@@ -70,6 +71,7 @@ export class BookingMasterComponent implements OnInit {
     "PAYMENT_SLABS": null,
     "PRODUCT_NAME": null,
     "ROOM_CATEGORY": null,
+    "SERVICE_COUNTRY" : null,
     "SERVICE_CATEGORY": null,
     "SERVICE_CITY": null,
     "TAX_CALCULATION": null,
