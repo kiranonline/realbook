@@ -18,8 +18,8 @@ export class Api {
         });
         this.head = { headers : headers };
         // this.headers.append('Content-Type', 'application/json');
-        // this.apiUrl = 'http://localhost:5000';
-        this.apiUrl = 'https://redappletravel.realbooks.in';
+        this.apiUrl = 'http://localhost:5000';
+        // this.apiUrl = 'https://redappletravel.realbooks.in';
         // var headers_object = new HttpHeaders().set("Authorization", "Bearer " + t);
     }
      
@@ -35,5 +35,10 @@ export class Api {
     public getAllCurrency() {
         console.log(this.apiUrl);
         return this.http.get(this.apiUrl + '/api/currency/getall');
+    }
+
+    public getAllSupplier() {
+        console.log(this.apiUrl);
+        return this.http.get(this.apiUrl + '/api/supplier/getall');
     }
 }

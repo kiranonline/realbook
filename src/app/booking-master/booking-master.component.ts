@@ -22,40 +22,49 @@ export class BookingMasterComponent implements OnInit {
   index = 0;
   booking_Id = '';
   dataCur : any = {};
+  suppliers : any = {};
   orderForm: FormGroup;
   submitted = false;
   items : FormArray;
   bookingArray : any = {};
   subbookingArray : any = [];
   cData = "";
+  sData = "";
   arrdata = {
-    "CHECK_IN_DATE": null,
-    "CHECK_OUT_DATE": null,
-    "PER_SERVICE_WISE_SUPPLIER_NAME": null,
-    "LEAD_PASSENGER": null,
-    "NO_OF_NIGHTS": null,
-    "NO_OF_ROOMS": null,
-    "PAYMENT_SLABS": null,
-    "PRODUCT_NAME": null,
-    "ROOM_CATEGORY": null,
-    "SERVICE_CATEGORY": null,
-    "SERVICE_CITY": null,
-    "COMPONENTS_WISE_NET_COST": null,
-    "COMPONENTS_WISE_MARKUP": null,
-    "COMPONENTS_WISE_SELLING_COST": null,
-    "PER_SERVICE_SUPPLIER_CODE": null,
-    "COMPONENTS_WISE_SELLING_COST_CURRENCY": null,
-    "COMPONENTS_WISE_NET_COST_CURRENCY": null,
-    "ARRIVALDATE": null,
-    "CITY": null,
-    "TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST": null,
-    "TOUR_TRANSFER_COMPONENTS_WISE_NET_COST": null
+    "CHECK_IN_DATE": null,//2
+    "CHECK_OUT_DATE": null,//2
+    "RA_FILE_HANDLER" : null,//2
+    "PER_SERVICE_WISE_SUPPLIER_NAME": null,//1
+    //"LEAD_PASSENGER": null,
+    "NO_OF_NIGHTS": null,//2
+    "NO_OF_ROOMS": null,//2
+    "PAYMENT_SLABS": null,//2
+    "PRODUCT_NAME": null,//1
+    "ROOM_CATEGORY": null,//2
+    "SERVICE_CATEGORY": null,//1
+    "SERVICE_CITY": null,//2
+    "TAX_CALCULATION": null,//2
+    "FOREIGN_CURRENCY":null,//2
+    "SUPPLIER_PAYMENT_DEADLINE": null,//2
+    "COMPONENTS_WISE_NET_COST": null,//2
+    "COMPONENTS_WISE_MARKUP": null,//2
+    "COMPONENTS_WISE_SELLING_COST": null,//1
+    "COMPONENTS_WISE_DISCOUNT_COMMISSION": null,//2
+    "COMPONENTS_WISE_CURRENCY" : null,//2
+    "PER_SERVICE_SUPPLIER_CODE": null,//1
+    "COMPONENTS_WISE_SELLING_COST_CURRENCY": null,//2
+    "COMPONENTS_WISE_NET_COST_CURRENCY": null,//2
+    "ARRIVALDATE": null,//2
+    "CITY": null,//2
+    "TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST": null,//2
+    "TOUR_TRANSFER_COMPONENTS_WISE_NET_COST": null//2
   };
   ardata = {
     "CHECK_IN_DATE": null,
     "CHECK_OUT_DATE": null,
+    "RA_FILE_HANDLER" : null,
     "PER_SERVICE_WISE_SUPPLIER_NAME": null,
-    "LEAD_PASSENGER": null,
+    //"LEAD_PASSENGER": null,
     "NO_OF_NIGHTS": null,
     "NO_OF_ROOMS": null,
     "PAYMENT_SLABS": null,
@@ -63,9 +72,14 @@ export class BookingMasterComponent implements OnInit {
     "ROOM_CATEGORY": null,
     "SERVICE_CATEGORY": null,
     "SERVICE_CITY": null,
+    "TAX_CALCULATION": null,
+    "FOREIGN_CURRENCY":null,
+    "SUPPLIER_PAYMENT_DEADLINE": null,
     "COMPONENTS_WISE_NET_COST": null,
     "COMPONENTS_WISE_MARKUP": null,
     "COMPONENTS_WISE_SELLING_COST": null,
+    "COMPONENTS_WISE_DISCOUNT_COMMISSION": null,
+    "COMPONENTS_WISE_CURRENCY" : null,
     "PER_SERVICE_SUPPLIER_CODE": null,
     "COMPONENTS_WISE_SELLING_COST_CURRENCY": null,
     "COMPONENTS_WISE_NET_COST_CURRENCY": null,
@@ -143,6 +157,13 @@ export class BookingMasterComponent implements OnInit {
     this.bookingArray["data"].RA_REFERENCE = this.booking_Id;
     this.bookingArray.data.dynamic.push(this.arrdata);
     // this.showSuccess(); 
+  }
+
+  supplier() {
+    this.api.getAllSupplier().subscribe(sup => {
+      console.log(sup);
+      this.suppliers = sup;
+    });
   }
   currencyFunc() {
     this.api.getAllCurrency().subscribe(datacurreny=>{
@@ -230,7 +251,7 @@ export class BookingMasterComponent implements OnInit {
         
         this.api.editBookingData(this.booking_Id, this.bookingArray).subscribe(data => {
           console.log(this.bookingArray);
-          this.router.navigate(['/bookingmaster/local/' + this.booking_Id]);
+          this.router.navigate(['/local/booking/' + this.booking_Id]);
           this.showSuccess();
         });
 

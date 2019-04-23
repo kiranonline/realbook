@@ -4,8 +4,8 @@ import { BookingMasterComponent } from './booking-master/booking-master.componen
 
 const routes: Routes = [
   // { path: '', redirectTo: '/bookingmaster/local', pathMatch: 'full' },
-  { path: 'bookingmaster/:local/:id', component: BookingMasterComponent },
-  { path: 'bookingmaster/:local', component: BookingMasterComponent }
+  { path: 'local/:booking/:id', component: BookingMasterComponent },
+  { path: 'local/:booking', component: BookingMasterComponent }
 ];
 
 @NgModule({
