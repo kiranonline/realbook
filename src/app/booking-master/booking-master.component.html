@@ -3,7 +3,29 @@
   <div class="container-fluid">
         <div class="row">
             <!-- <form [FormGroup]="orderForm" (ngSubmit)="onSubmit()"> -->
-                <div class="col-4">
+                    <div class="col-4">
+                            <div class="form-group">
+                                <label for="">RA Reference</label>
+                                <input type="text" id="RA_REFERENCE" [(ngModel)]="bookingArray.data.RA_REFERENCE" class="form-control" placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="">RA Agent Code</label>
+                                <input type="text" [(ngModel)]="bookingArray.data.RA_AGENT_CODE" class="form-control" id="RA_AGENT_CODE" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                                <div class="form-group">
+                                    <label for="">Invoice Number</label>
+                                    <input type="text" [(ngModel)]="bookingArray.data.INVOICE_NUMBER" class="form-control" placeholder="">
+                                </div>
+                            </div>
+                
+                
+        </div>
+      <div class="row">
+            <div class="col-4">
                     <div class="form-group">
                         <label for="">First Name</label>
                         <input type="text" [(ngModel)]="bookingArray.data.FIRSTNAME" class="form-control" placeholder="">
@@ -19,70 +41,48 @@
                     </div>
                 </div>
                 <div class="col-4">
+                        <div class="form-group">
+          
+                              <label for="">Invoice Date</label>
+                              <div class="input-group mb-4">
+                            <input type="date" id="INVOICE_DATE" [(ngModel)]="bookingArray.data.INVOICE_DATE" class="form-control" placeholder="">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
+                            </div></div>
+                        </div>
+                    </div>
+         
+      </div>
+      <div class="row">
+            <div class="col-4">
                     <div class="form-group">
-                        <label for="">Invoice Number</label>
-                        <input type="text" [(ngModel)]="bookingArray.data.INVOICE_NUMBER" class="form-control" placeholder="">
+                        <label for="">Exchange Rate</label>
+                        <input type="number" min="0" step="any" id="EXCHANGE_RATE" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.EXCHANGE_RATE" class="form-control" placeholder="">
                     </div>
                 </div>
-        </div>
-      <div class="row">
-          <div class="col-4">
-              <div class="form-group">
-                  <label for="">Exchange Rate</label>
-                  <input type="number" min="0" step="any" id="EXCHANGE_RATE" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.EXCHANGE_RATE" class="form-control" placeholder="">
-              </div>
-          </div>
+                <div class="col-4">
+                        <div class="form-group">
           
-          <div class="col-4">
-              <div class="form-group">
-
-                    <label for="">Invoice Date</label>
-                    <div class="input-group mb-4">
-                  <input type="date" id="INVOICE_DATE" [(ngModel)]="bookingArray.data.INVOICE_DATE" class="form-control" placeholder="">
-                  <div class="input-group-append">
-                      <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
-                  </div></div>
-              </div>
-          </div>
-          <div class="col-4">
-                <div class="form-group">
-                    <label for="">Selling Cost</label>
-                    <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.SELLINGCOST" class="form-control">
-                </div>
-            </div>
+                              <label for="">Payment Deadline</label>
+                              <div class="input-group mb-4">
+                            <input type="date" id="PAYMENT_DEADLINE" [(ngModel)]="bookingArray.data.PAYMENT_DEADLINE" class="form-control" placeholder="">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
+                            </div></div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                            <div class="form-group">
+                                <label for="">Stand Alone</label>
+                                <input type="text" [(ngModel)]="bookingArray.data.STAND_ALONE" class="form-control" id="STAND_ALONE" placeholder="">
+                            </div>
+                        </div>
+                
+          
+          
       </div>
       <div class="row">
-          <div class="col-4">
-              <div class="form-group">
-
-                    <label for="">Payment Deadline</label>
-                    <div class="input-group mb-4">
-                  <input type="date" id="PAYMENT_DEADLINE" [(ngModel)]="bookingArray.data.PAYMENT_DEADLINE" class="form-control" placeholder="">
-                  <div class="input-group-append">
-                      <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
-                  </div></div>
-              </div>
-          </div>
-          <div class="col-4">
-                <div class="form-group">
-                    <label for="">RA Reference</label>
-                    <input type="text" id="RA_REFERENCE" [(ngModel)]="bookingArray.data.RA_REFERENCE" class="form-control" placeholder="" required>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="form-group">
-                    <label for="">RA Agent Code</label>
-                    <input type="text" [(ngModel)]="bookingArray.data.RA_AGENT_CODE" class="form-control" id="RA_AGENT_CODE" placeholder="">
-                </div>
-            </div>
-      </div>
-      <div class="row">
-            <div class="col-4">
-                <div class="form-group">
-                    <label for="">Stand Alone</label>
-                    <input type="text" [(ngModel)]="bookingArray.data.STAND_ALONE" class="form-control" id="STAND_ALONE" placeholder="">
-                </div>
-            </div>
+            
             
             <!-- <div class="col-4">
                     <div class="form-group">
@@ -104,6 +104,7 @@
                         <input type="text" [(ngModel)]="bookingArray.data.LEAD_PASSENGER" class="form-control">
                     </div>
                 </div>
+                
         </div>
       <!-- <div class="row mb-5">
           <div class="col-4">
@@ -201,7 +202,7 @@
               <div class="form-group">
                   <select class="form-control" [(ngModel)]="subbookingArray.PER_SERVICE_WISE_SUPPLIER_NAME">
                         <option>Select Supplier...</option>    
-                        <option *ngFor="let sData of suppliers.supplier.supplier_display_name">{{sData}}</option>
+                        <option *ngFor="let sData of suppliers.supplier">{{sData.supplier_display_name}}</option>
                     </select>
               </div>
           </div>
@@ -234,33 +235,39 @@
       <div class="row">
           <div class="col-10">
             <div class="form-group row">
+                <label for="" class="ml-auto col-auto col-form-label">Selling Cost</label>
+                <div class="col-2">
+                    <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.SELLINGCOST" class="form-control">
+                </div>
+            </div>
+            <div class="form-group row">
                     <label for="" class="ml-auto col-auto col-form-label">Over All Discount</label>
                     <div class="col-2">
-                        <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.OVER_ALL_DISCOUNT" id="OVER_ALL_DISCOUNT" class="form-control" placeholder="" name="OVER_ALL_DISCOUNT" #name="ngModel">
+                        <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.OVER_ALL_DISCOUNT" class="form-control" placeholder="">
                     </div>
                 </div>
                 <div class="form-group row">
                         <label for="" class="ml-auto col-auto col-form-label">Over All Profit</label>
                         <div class="col-2">
-                            <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.OVER_ALL_PROFIT" id="OVER_ALL_PROFIT" class="form-control" placeholder="" name="OVER_ALL_PROFIT" #name="ngModel">
+                            <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.OVER_ALL_PROFIT" class="form-control" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
                             <label for="" class="ml-auto col-auto col-form-label">Over ALL Loss</label>
                             <div class="col-2">
-                                <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.OVER_ALL_LOSS" id="OVER_ALL_LOSS" class="form-control" placeholder="" name="OVER_ALL_LOSS" #name="ngModel">
+                                <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.OVER_ALL_LOSS" class="form-control" placeholder="">
                             </div>
                         </div>
               <div class="form-group row">
                   <label for="" class="ml-auto col-auto col-form-label">Total In Amounts</label>
                   <div class="col-2">
-                      <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.TOTAL_IN_AMOUNTS" id="TOTAL_IN_AMOUNTS" class="form-control" placeholder="" name="TOTAL_IN_AMOUNTS" #name="ngModel">
+                      <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.TOTAL_IN_AMOUNTS" id="TOTAL_IN_AMOUNTS" class="form-control" placeholder="">
                   </div>
               </div>
               <div class="form-group row">
                   <label for="" class="ml-auto col-auto col-form-label">Total Tax Calculation</label>
                   <div class="col-2">
-                      <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.TOTAL_TAX_CALCULATION" id="TOTAL_TAX_CALCULATION" class="form-control" placeholder="" name="TOTAL_TAX_CALCULATION" #name="ngModel">
+                      <input type="number" min="0" step="any" onkeypress="return event.charCode != 45" [(ngModel)]="bookingArray.data.TOTAL_TAX_CALCULATION" id="TOTAL_TAX_CALCULATION" class="form-control" placeholder="">
                   </div>
               </div>
           </div>
@@ -320,13 +327,23 @@
                             <div class="row">
                                     <div class="col-6">
                                             <div class="form-group">
+                                                    <label>Foreign Currency</label>
+                                                    <select class="form-control" [(ngModel)]="bookingArray.data.dynamic[index].FOREIGN_CURRENCY">
+                                                        <option>Select Currency...</option>    
+                                                        <option *ngFor="let cData of dataCur.currency">{{cData}}</option>
+                                                    </select>
+                                                </div>
+                                         
+                                      </div>
+                                    <!-- <div class="col-6">
+                                            <div class="form-group">
                                                     <label>Components Wise Selling Cost Currency</label>
                                                     <select class="form-control" [(ngModel)]="bookingArray.data.dynamic[index].COMPONENTS_WISE_SELLING_COST_CURRENCY">
                                                         <option>Select Currency...</option>    
                                                         <option *ngFor="let cData of dataCur.currency">{{cData}}</option>
                                                     </select>
                                                 </div>
-                                        </div>
+                                        </div> -->
                                   <div class="col-6">
                                       <div class="form-group">
                                           <label for="">Components Wise Markup</label>
@@ -458,33 +475,20 @@
                                                         </div>
                                         </div>
                                         <div class="row">
-                                                <div class="col-6">
-                                                        <div class="form-group">
-                                                                <label>Foreign Currency</label>
-                                                                <select class="form-control" [(ngModel)]="bookingArray.data.dynamic[index].FOREIGN_CURRENCY">
-                                                                    <option>Select Currency...</option>    
-                                                                    <option *ngFor="let cData of dataCur.currency">{{cData}}</option>
-                                                                </select>
-                                                            </div>
-                                                     
-                                                  </div>
+                                                
                                             <div class="col-6">
-                                            <div class="form-group">
+                                                <div class="form-group">
 
-                                                <label for="">Arrival Date</label>
-                                                <div class="input-group mb-6">
-                                            <input type="date" [(ngModel)]="bookingArray.data.dynamic[index].ARRIVALDATE" class="form-control">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
-                                            </div>
-                                            </div>
-                                            </div>
+                                                    <label for="">Arrival Date</label>
+                                                    <div class="input-group mb-6">
+                                                <input type="date" [(ngModel)]="bookingArray.data.dynamic[index].ARRIVALDATE" class="form-control">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2"><i class="ion ion-md-calendar"></i></span>
+                                                </div>
+                                                </div>
+                                                </div>
                                         </div>
-                                        </div>
-                                        <div class="row" *ngIf="bookingArray.data.dynamic[index].SERVICE_CATEGORY == 'Hotel'">
-                                            
-                                            
-                                            <div class="col-6">
+                                        <div class="col-6"  *ngIf="bookingArray.data.dynamic[index].SERVICE_CATEGORY == 'Hotel'">
                                                 <div class="form-group">
                                                     <label for="">Room Category</label>
                                                     <input type="text" [(ngModel)]="bookingArray.data.dynamic[index].ROOM_CATEGORY" class="form-control">

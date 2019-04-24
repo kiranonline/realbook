@@ -53,12 +53,13 @@ export class BookingMasterComponent implements OnInit {
     "COMPONENTS_WISE_DISCOUNT_COMMISSION": null,//2
     "COMPONENTS_WISE_CURRENCY" : null,//2
     "PER_SERVICE_SUPPLIER_CODE": null,//1
-    "COMPONENTS_WISE_SELLING_COST_CURRENCY": null,//2
+    // "COMPONENTS_WISE_SELLING_COST_CURRENCY": null,
     "COMPONENTS_WISE_NET_COST_CURRENCY": null,//2
     "ARRIVALDATE": null,//2
     "CITY": null,//2
     "TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST": null,//2
-    "TOUR_TRANSFER_COMPONENTS_WISE_NET_COST": null//2
+    "TOUR_TRANSFER_COMPONENTS_WISE_NET_COST": null,//2
+    "ismanual": 1
   };
   ardata = {
     "CHECK_IN_DATE": null,
@@ -83,16 +84,18 @@ export class BookingMasterComponent implements OnInit {
     "COMPONENTS_WISE_DISCOUNT_COMMISSION": null,
     "COMPONENTS_WISE_CURRENCY" : null,
     "PER_SERVICE_SUPPLIER_CODE": null,
-    "COMPONENTS_WISE_SELLING_COST_CURRENCY": null,
+    // "COMPONENTS_WISE_SELLING_COST_CURRENCY": null,
     "COMPONENTS_WISE_NET_COST_CURRENCY": null,
     "ARRIVALDATE": null,
     "CITY": null,
     "TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST": null,
-    "TOUR_TRANSFER_COMPONENTS_WISE_NET_COST": null
+    "TOUR_TRANSFER_COMPONENTS_WISE_NET_COST": null,
+    "ismanual": 1
   };
 
   constructor(public toastr: ToastrManager, private toastrService: ToastrService,private formBuilder: FormBuilder, public http: HttpClient, public api: Api, public router: Router, private auth: AuthService, public route: ActivatedRoute) { 
     this.currencyFunc();
+    this.supplier();
     this.fetchData();
     this.addSubArray();
   }
@@ -163,8 +166,8 @@ export class BookingMasterComponent implements OnInit {
 
   supplier() {
     this.api.getAllSupplier().subscribe(sup => {
-      console.log(sup);
       this.suppliers = sup;
+      console.log(this.suppliers);
     });
   }
   currencyFunc() {
@@ -227,14 +230,22 @@ export class BookingMasterComponent implements OnInit {
     else if(i.COMPONENTS_WISE_SELLING_COST == undefined) {
       this.toastr.warningToastr('Component Wise Selling Cost is empty.', 'Required!');
     }
-    else if(i.COMPONENTS_WISE_SELLING_COST_CURRENCY == undefined) {
-      this.toastr.warningToastr('Component Wise Selling Cost Currency is empty.', 'Required!');
-    }
+    // else if(i.COMPONENTS_WISE_SELLING_COST_CURRENCY == undefined) {
+    //   this.toastr.warningToastr('Component Wise Selling Cost Currency is empty.', 'Required!');
+    // }
     else if(i.COMPONENTS_WISE_NET_COST == undefined) {
       this.toastr.warningToastr('Component Wise Net Cost is empty.', 'Required!');
     }
     else if(i.COMPONENTS_WISE_MARKUP == undefined) {
       this.toastr.warningToastr('Component Wise Markup is empty.', 'Required!');
+    }
+
+    else if(i.COMPONENTS_WISE_CURRENCY == undefined) {
+      this.toastr.warningToastr('Components wise currency is empty.', 'Required!');
+    }
+
+    else if(i.SERVICE_COUNTRY == undefined) {
+      this.toastr.warningToastr('Service country is empty.', 'Required!');
     }
     //Hotel
     else if(i.CHECK_IN_DATE == undefined && i.SERVICE_CATEGORY == 'Hotel') {
@@ -257,7 +268,6 @@ export class BookingMasterComponent implements OnInit {
       this.toastr.warningToastr('Tour Transfer Component Wise Selling Cost is empty.', 'Required!');
       }
       else {
-        
         this.api.editBookingData(this.booking_Id, this.bookingArray).subscribe(data => {
           console.log(this.bookingArray);
           this.router.navigate(['/local/booking/' + this.booking_Id]);
@@ -283,13 +293,6 @@ export class BookingMasterComponent implements OnInit {
     }
     else if(this.bookingArray.data.RA_AGENT_CODE == undefined) {
       this.toastr.warningToastr('Ra Agent Code is empty.', 'Required!');
-    }
-    
-    else if(this.bookingArray.data.COMPONENTS_WISE_CURRENCY == undefined) {
-      this.toastr.warningToastr('Components wise currency is empty.', 'Required!');
-    }
-    else if(this.bookingArray.data.SERVICE_COUNTRY == undefined) {
-      this.toastr.warningToastr('Service country is empty.', 'Required!');
     }
     else if(this.bookingArray.data.TOTAL_IN_AMOUNTS == undefined) {
       this.toastr.warningToastr('Total in amounts is empty.', 'Required!');

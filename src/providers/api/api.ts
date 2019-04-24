@@ -28,17 +28,17 @@ export class Api {
     }
     
     public getBookingData(bookingid) {
-        console.log(this.apiUrl);
+        // console.log(this.apiUrl);
         return this.http.get(this.apiUrl + '/bookingmaster/local/' + bookingid);
     }
 
     public getAllCurrency() {
-        console.log(this.apiUrl);
+        // console.log(this.apiUrl);
         return this.http.get(this.apiUrl + '/api/currency/getall');
     }
 
     public getAllSupplier() {
-        console.log(this.apiUrl);
+        // console.log(this.apiUrl);
         return this.http.get(this.apiUrl + '/api/supplier/getall');
     }
 }
