@@ -211,62 +211,62 @@ export class BookingMasterComponent implements OnInit {
   validatesubs(){
     this.bookingArray.data.dynamic.forEach(i => {
     // alert("data" + JSON.stringify(i));
-    if(i.SERVICE_CATEGORY == undefined) {
+    if(i.SERVICE_CATEGORY == undefined) {//
       this.toastr.warningToastr('Service Category is empty.', 'Required!');
     }
-    else if(i.PRODUCT_NAME == undefined) {
+    else if(i.PRODUCT_NAME == undefined) {//
       this.toastr.warningToastr('Product Name is empty.', 'Required!');
     }
-    else if(i.RA_FILE_HANDLER == undefined) {
-      this.toastr.warningToastr('Ra File Handler is empty.', 'Required!');
-    }
-    else if(i.FOREIGN_CURRENCY == undefined) {
-      this.toastr.warningToastr('Foreign Currency is empty.', 'Required!');
-    }
+    // else if(i.RA_FILE_HANDLER == undefined) {
+    //   this.toastr.warningToastr('Ra File Handler is empty.', 'Required!');
+    // }
+    // else if(i.FOREIGN_CURRENCY == undefined) {
+    //   this.toastr.warningToastr('Foreign Currency is empty.', 'Required!');
+    // }
 
-    else if(i.PER_SERVICE_SUPPLIER_CODE == undefined) {
+    else if(i.PER_SERVICE_SUPPLIER_CODE == undefined) {//
       this.toastr.warningToastr('Per Service Supplier Code is empty.', 'Required!');
     }
-    else if(i.COMPONENTS_WISE_SELLING_COST == undefined) {
+    else if(i.COMPONENTS_WISE_SELLING_COST == undefined) {//
       this.toastr.warningToastr('Component Wise Selling Cost is empty.', 'Required!');
     }
-    // else if(i.COMPONENTS_WISE_SELLING_COST_CURRENCY == undefined) {
-    //   this.toastr.warningToastr('Component Wise Selling Cost Currency is empty.', 'Required!');
+    else if(i.PER_SERVICE_WISE_SUPPLIER_NAME == undefined) {//
+      this.toastr.warningToastr('Per Service Wise Supplier Name is empty.', 'Required!');
+    }
+    // else if(i.COMPONENTS_WISE_NET_COST == undefined) {
+    //   this.toastr.warningToastr('Component Wise Net Cost is empty.', 'Required!');
     // }
-    else if(i.COMPONENTS_WISE_NET_COST == undefined) {
-      this.toastr.warningToastr('Component Wise Net Cost is empty.', 'Required!');
-    }
-    else if(i.COMPONENTS_WISE_MARKUP == undefined) {
-      this.toastr.warningToastr('Component Wise Markup is empty.', 'Required!');
-    }
+    // else if(i.COMPONENTS_WISE_MARKUP == undefined) {
+    //   this.toastr.warningToastr('Component Wise Markup is empty.', 'Required!');
+    // }
 
-    else if(i.COMPONENTS_WISE_CURRENCY == undefined) {
-      this.toastr.warningToastr('Components wise currency is empty.', 'Required!');
-    }
+    // else if(i.COMPONENTS_WISE_CURRENCY == undefined) {
+    //   this.toastr.warningToastr('Components wise currency is empty.', 'Required!');
+    // }
 
-    else if(i.SERVICE_COUNTRY == undefined) {
+    else if(i.SERVICE_COUNTRY == undefined) {//
       this.toastr.warningToastr('Service country is empty.', 'Required!');
     }
-    //Hotel
-    else if(i.CHECK_IN_DATE == undefined && i.SERVICE_CATEGORY == 'Hotel') {
-      this.toastr.warningToastr('Checkin Date is empty.', 'Required!');
-    }
-    else if(i.CHECK_OUT_DATE == undefined && i.SERVICE_CATEGORY == 'Hotel') {
-      this.toastr.warningToastr('Checkout Date is empty.', 'Required!');
-    }
-    else if(i.NO_OF_NIGHTS == undefined && i.SERVICE_CATEGORY == 'Hotel') {
-      this.toastr.warningToastr('No. of nights is empty.', 'Required!');
-    }
-    else if(i.NO_OF_ROOMS == undefined && i.SERVICE_CATEGORY == 'Hotel') {
-      this.toastr.warningToastr('No. of Rooms is empty.', 'Required!');
-    }
-    //Tour
-    else if(i.TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST == undefined && i.SERVICE_CATEGORY == 'Tour') {
-      this.toastr.warningToastr('Tour Transfer Component Wise Selling Cost is empty.', 'Required!');
-      }
-    else if(i.TOUR_TRANSFER_COMPONENTS_WISE_NET_COST == undefined && i.SERVICE_CATEGORY == 'Tour') {
-      this.toastr.warningToastr('Tour Transfer Component Wise Selling Cost is empty.', 'Required!');
-      }
+    // //Hotel
+    // else if(i.CHECK_IN_DATE == undefined && i.SERVICE_CATEGORY == 'Hotel') {
+    //   this.toastr.warningToastr('Checkin Date is empty.', 'Required!');
+    // }
+    // else if(i.CHECK_OUT_DATE == undefined && i.SERVICE_CATEGORY == 'Hotel') {
+    //   this.toastr.warningToastr('Checkout Date is empty.', 'Required!');
+    // }
+    // else if(i.NO_OF_NIGHTS == undefined && i.SERVICE_CATEGORY == 'Hotel') {
+    //   this.toastr.warningToastr('No. of nights is empty.', 'Required!');
+    // }
+    // else if(i.NO_OF_ROOMS == undefined && i.SERVICE_CATEGORY == 'Hotel') {
+    //   this.toastr.warningToastr('No. of Rooms is empty.', 'Required!');
+    // }
+    // //Tour
+    // else if(i.TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST == undefined && i.SERVICE_CATEGORY == 'Tour') {
+    //   this.toastr.warningToastr('Tour Transfer Component Wise Selling Cost is empty.', 'Required!');
+    //   }
+    // else if(i.TOUR_TRANSFER_COMPONENTS_WISE_NET_COST == undefined && i.SERVICE_CATEGORY == 'Tour') {
+    //   this.toastr.warningToastr('Tour Transfer Component Wise Selling Cost is empty.', 'Required!');
+    //   }
       else {
         this.api.editBookingData(this.booking_Id, this.bookingArray).subscribe(data => {
           console.log(this.bookingArray);
@@ -278,28 +278,28 @@ export class BookingMasterComponent implements OnInit {
     });
   }
   validation() {
-    if(this.bookingArray.data.RA_REFERENCE == undefined) {
+    if(this.bookingArray.data.RA_REFERENCE == undefined) {//
       this.toastr.warningToastr('Ra Reference is empty.', 'Required!');
     }
-    else if(this.bookingArray.data.INVOICE_CURRENCY == undefined) {
+    else if(this.bookingArray.data.INVOICE_CURRENCY == undefined) {//
       this.toastr.warningToastr('Invoice Currency is empty.', 'Required!');
     }
-    else if(this.bookingArray.data.EXCHANGE_RATE == undefined) {
-      this.toastr.warningToastr('Exchange Rate is empty.', 'Required!');
-    }
+    // else if(this.bookingArray.data.EXCHANGE_RATE == undefined) {
+    //   this.toastr.warningToastr('Exchange Rate is empty.', 'Required!');
+    // }
     
-    else if(this.bookingArray.data.INVOICE_DATE == undefined) {
-      this.toastr.warningToastr('Invoice Date is empty.', 'Required!');
-    }
-    else if(this.bookingArray.data.RA_AGENT_CODE == undefined) {
+    // else if(this.bookingArray.data.INVOICE_DATE == undefined) {
+    //   this.toastr.warningToastr('Invoice Date is empty.', 'Required!');
+    // }
+    else if(this.bookingArray.data.RA_AGENT_CODE == undefined) {//
       this.toastr.warningToastr('Ra Agent Code is empty.', 'Required!');
     }
-    else if(this.bookingArray.data.TOTAL_IN_AMOUNTS == undefined) {
-      this.toastr.warningToastr('Total in amounts is empty.', 'Required!');
-    }
-    else if(this.bookingArray.data.OVER_ALL_PROFIT == undefined) {
-      this.toastr.warningToastr('Overall profit is empty.', 'Required!');
-    }
+    // else if(this.bookingArray.data.TOTAL_IN_AMOUNTS == undefined) {
+    //   this.toastr.warningToastr('Total in amounts is empty.', 'Required!');
+    // }
+    // else if(this.bookingArray.data.OVER_ALL_PROFIT == undefined) {
+    //   this.toastr.warningToastr('Overall profit is empty.', 'Required!');
+    // }
     else {
       this.validatesubs();
     }
