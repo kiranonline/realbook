@@ -30,6 +30,9 @@ export class BookingMasterComponent implements OnInit {
   subbookingArray : any = [];
   cData = "";
   sData = "";
+  sellingcost = null;
+  tax = null;
+  discount = null;
   arrdata = {
     "CHECK_IN_DATE": null,//2
     "CHECK_OUT_DATE": null,//2
@@ -208,10 +211,50 @@ export class BookingMasterComponent implements OnInit {
   }
   ngOnChanges() {
   }
+  taxCal() {
+    this.bookingArray.data.dynamic.forEach(tax => {
+      if (tax.TAX_CALCULATION) {
+        var temp = parseFloat(tax.TAX_CALCULATION);
+        this.tax = this.tax + temp;
+      }
+      console.log("tax : " + this.tax);
+    });
+  }
+  discountCal() {
+    this.bookingArray.data.dynamic.forEach(disc => {
+      if (disc.COMPONENTS_WISE_DISCOUNT_COMMISSION) {
+        var temp = parseFloat(disc.COMPONENTS_WISE_DISCOUNT_COMMISSION);
+        this.discount = this.discount + temp;
+      }
+      console.log("discount : " + this.discount);
+    });
+  }
+  sellCal() {
+    this.bookingArray.data.dynamic.forEach(sell => {
+      if (sell.COMPONENTS_WISE_SELLING_COST){
+        var temp = parseFloat(sell.COMPONENTS_WISE_SELLING_COST);
+        this.sellingcost = this.sellingcost + temp;
+      }
+      console.log("sell cost : " + this.sellingcost);
+    });
+  }
   validatesubs(){
     this.bookingArray.data.dynamic.forEach(i => {
     // alert("data" + JSON.stringify(i));
-    if(i.SERVICE_CATEGORY == undefined) {//
+    if (this.sellingcost != this.bookingArray.data.SELLINGCOST) {
+      console.log(this.sellingcost + ' <-Sell Total-> ' + this.bookingArray.data.SELLINGCOST);
+      this.sellingcost = null;
+      this.toastr.warningToastr('Total Selling Cost is wrong', 'Wrong Calculation!');
+    }
+    else if(this.tax != parseFloat(this.bookingArray.data.TOTAL_TAX_CALCULATION)) {
+      this.tax = null;
+      this.toastr.warningToastr('Total Tax Calculation is wrong', 'Wrong Calculation!');
+    }
+    else if (this.discount != parseFloat(this.bookingArray.data.OVER_ALL_DISCOUNT)) {
+      this.discount = null;
+      this.toastr.warningToastr('Total Discount is wrong', 'Wrong Calculation');
+    }
+    else if(i.SERVICE_CATEGORY == undefined) {//
       this.toastr.warningToastr('Service Category is empty.', 'Required!');
     }
     else if(i.PRODUCT_NAME == undefined) {//
@@ -284,6 +327,9 @@ export class BookingMasterComponent implements OnInit {
     else if(this.bookingArray.data.INVOICE_CURRENCY == undefined) {//
       this.toastr.warningToastr('Invoice Currency is empty.', 'Required!');
     }
+    else if(this.bookingArray.data.OVER_ALL_PROFIT == this.bookingArray.data.OVER_ALL_LOSS) {
+      this.toastr.warningToastr('Overall profit and overall loss cannot be same', 'Same Fields!')
+    }
     // else if(this.bookingArray.data.EXCHANGE_RATE == undefined) {
     //   this.toastr.warningToastr('Exchange Rate is empty.', 'Required!');
     // }
@@ -301,6 +347,9 @@ export class BookingMasterComponent implements OnInit {
     //   this.toastr.warningToastr('Overall profit is empty.', 'Required!');
     // }
     else {
+      this.sellCal();
+      this.taxCal();
+      this.discountCal();
       this.validatesubs();
     }
   }
