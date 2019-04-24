@@ -219,7 +219,7 @@ export class BookingMasterComponent implements OnInit {
       }
       console.log("tax : " + this.tax);
     });
-    if(this.tax != parseFloat(this.bookingArray.data.TOTAL_TAX_CALCULATION)) {
+    if(this.tax != this.bookingArray.data.TOTAL_TAX_CALCULATION) {
       this.tax = null;
       this.toastr.warningToastr('Total Tax Calculation is wrong', 'Wrong Calculation!');
       return;
@@ -233,7 +233,7 @@ export class BookingMasterComponent implements OnInit {
       }
       console.log("discount : " + this.discount);
     });
-    if (this.discount != parseFloat(this.bookingArray.data.OVER_ALL_DISCOUNT)) {
+    if (this.discount != this.bookingArray.data.OVER_ALL_DISCOUNT) {
       this.discount = null;
       this.toastr.warningToastr('Total Discount is wrong', 'Wrong Calculation');
       return;
