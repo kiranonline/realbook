@@ -219,6 +219,11 @@ export class BookingMasterComponent implements OnInit {
       }
       console.log("tax : " + this.tax);
     });
+    if(this.tax != parseFloat(this.bookingArray.data.TOTAL_TAX_CALCULATION)) {
+      this.tax = null;
+      this.toastr.warningToastr('Total Tax Calculation is wrong', 'Wrong Calculation!');
+      return;
+    }
   }
   discountCal() {
     this.bookingArray.data.dynamic.forEach(disc => {
@@ -228,6 +233,11 @@ export class BookingMasterComponent implements OnInit {
       }
       console.log("discount : " + this.discount);
     });
+    if (this.discount != parseFloat(this.bookingArray.data.OVER_ALL_DISCOUNT)) {
+      this.discount = null;
+      this.toastr.warningToastr('Total Discount is wrong', 'Wrong Calculation');
+      return;
+    }
   }
   sellCal() {
     this.bookingArray.data.dynamic.forEach(sell => {
@@ -237,24 +247,17 @@ export class BookingMasterComponent implements OnInit {
       }
       console.log("sell cost : " + this.sellingcost);
     });
-  }
-  validatesubs(){
-    this.bookingArray.data.dynamic.forEach(i => {
-    // alert("data" + JSON.stringify(i));
     if (this.sellingcost != this.bookingArray.data.SELLINGCOST) {
       console.log(this.sellingcost + ' <-Sell Total-> ' + this.bookingArray.data.SELLINGCOST);
       this.sellingcost = null;
       this.toastr.warningToastr('Total Selling Cost is wrong', 'Wrong Calculation!');
+      return;
     }
-    else if(this.tax != parseFloat(this.bookingArray.data.TOTAL_TAX_CALCULATION)) {
-      this.tax = null;
-      this.toastr.warningToastr('Total Tax Calculation is wrong', 'Wrong Calculation!');
-    }
-    else if (this.discount != parseFloat(this.bookingArray.data.OVER_ALL_DISCOUNT)) {
-      this.discount = null;
-      this.toastr.warningToastr('Total Discount is wrong', 'Wrong Calculation');
-    }
-    else if(i.SERVICE_CATEGORY == undefined) {//
+  }
+  validatesubs(){
+    this.bookingArray.data.dynamic.forEach(i => {
+    // alert("data" + JSON.stringify(i));
+    if(i.SERVICE_CATEGORY == undefined) {//
       this.toastr.warningToastr('Service Category is empty.', 'Required!');
     }
     else if(i.PRODUCT_NAME == undefined) {//
