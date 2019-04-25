@@ -20,7 +20,7 @@ import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 export class BookingMasterComponent implements OnInit {
 
   index = 0;
-  booking_Id = '';
+  booking_Id = null;
   dataCur : any = {};
   suppliers : any = {};
   orderForm: FormGroup;
@@ -28,11 +28,31 @@ export class BookingMasterComponent implements OnInit {
   items : FormArray;
   bookingArray : any = {};
   subbookingArray : any = [];
-  cData = "";
-  sData = "";
+  cData = null;
+  sData = null;
   sellingcost = null;
   tax = null;
   discount = null;
+  mdata = {
+    "FIRSTNAME" : null,
+    "INVOICE_CURRENCY" : null,
+    "INVOICE_NUMBER" : null,
+    "EXCHANGE_RATE" : null,
+    "INVOICE_DATE" : null,
+    "PAYMENT_DEADLINE" : null,
+    "RA_REFERENCE" : null,
+    "STAND_ALONE" : null,
+    "TOTAL_TAX_CALCULATION" : null,
+    "TOTAL_IN_AMOUNTS" : null,
+    "RA_AGENT_CODE" : null,
+    "SELLINGCOST" : null,
+    "BOOKING_NOTES" : null,
+    "OVER_ALL_DISCOUNT" : null,
+    "OVER_ALL_PROFIT" : null,
+    "OVER_ALL_LOSS" : null,
+    "LEAD_PASSENGER" : null
+  };
+
   arrdata = {
     "CHECK_IN_DATE": null,//2
     "CHECK_OUT_DATE": null,//2
@@ -62,37 +82,6 @@ export class BookingMasterComponent implements OnInit {
     "CITY": null,//2
     "TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST": null,//2
     "TOUR_TRANSFER_COMPONENTS_WISE_NET_COST": null,//2
-    "ismanual": 1
-  };
-  ardata = {
-    "CHECK_IN_DATE": null,
-    "CHECK_OUT_DATE": null,
-    "RA_FILE_HANDLER" : null,
-    "PER_SERVICE_WISE_SUPPLIER_NAME": null,
-    //"LEAD_PASSENGER": null,
-    "NO_OF_NIGHTS": null,
-    "NO_OF_ROOMS": null,
-    "PAYMENT_SLABS": null,
-    "PRODUCT_NAME": null,
-    "ROOM_CATEGORY": null,
-    "SERVICE_COUNTRY" : null,
-    "SERVICE_CATEGORY": null,
-    "SERVICE_CITY": null,
-    "TAX_CALCULATION": null,
-    "FOREIGN_CURRENCY":null,
-    "SUPPLIER_PAYMENT_DEADLINE": null,
-    "COMPONENTS_WISE_NET_COST": null,
-    "COMPONENTS_WISE_MARKUP": null,
-    "COMPONENTS_WISE_SELLING_COST": null,
-    "COMPONENTS_WISE_DISCOUNT_COMMISSION": null,
-    "COMPONENTS_WISE_CURRENCY" : null,
-    "PER_SERVICE_SUPPLIER_CODE": null,
-    // "COMPONENTS_WISE_SELLING_COST_CURRENCY": null,
-    "COMPONENTS_WISE_NET_COST_CURRENCY": null,
-    "ARRIVALDATE": null,
-    "CITY": null,
-    "TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST": null,
-    "TOUR_TRANSFER_COMPONENTS_WISE_NET_COST": null,
     "ismanual": 1
   };
 
@@ -138,11 +127,12 @@ export class BookingMasterComponent implements OnInit {
   booking() {
     this.booking_Id = this.bookingArray.data.RA_REFERENCE;
     // console.log(JSON.stringify(this.bookingArray));
-    if(this.bookingArray.data.RA_REFERENCE != null){
-      this.validation();
-    }
-    else if(this.bookingArray.data.RA_REFERENCE == null)
-    this.toastr.errorToastr('RA REFERENCE is empty', 'Can not save form!');
+    this.validation();
+    // if(this.bookingArray.data.RA_REFERENCE != null){
+      
+    // }
+    // else if(this.bookingArray.data.RA_REFERENCE == null)
+    // this.toastr.errorToastr('RA REFERENCE is empty', 'Can not save form!');
   }
   selectField(i: any) {
     // alert(i);
@@ -166,7 +156,9 @@ export class BookingMasterComponent implements OnInit {
     this.bookingArray["data"].dynamic = [];
     this.bookingArray["RA_REFERENCE"] = this.booking_Id;
     this.bookingArray["data"].RA_REFERENCE = this.booking_Id;
+    this.bookingArray.data = {... this.bookingArray.data, ...this.mdata};
     this.bookingArray.data.dynamic.push(this.arrdata);
+    console.log(this.bookingArray);
     // this.showSuccess(); 
   }
 
@@ -195,7 +187,7 @@ export class BookingMasterComponent implements OnInit {
       // this.subbookingArray = this.bookingArray.data.dynamic;
       });  
     });
-  };
+  }
   add() {
     
     this.bookingArray.data.dynamic.push({});
@@ -253,7 +245,7 @@ export class BookingMasterComponent implements OnInit {
     this.taxCal();
     this.discountCal();
     this.sellCal();
-    console.log(`aaaa ${this.discount} and ${this.bookingArray.data.OVER_ALL_DISCOUNT}`)
+    // console.log(`aaaa ${this.discount} and ${this.bookingArray.data.OVER_ALL_DISCOUNT}`)
     if (this.sellingcost != this.bookingArray.data.SELLINGCOST) {
       console.log(this.sellingcost + ' <-Sell Total-> ' + this.bookingArray.data.SELLINGCOST);
       // this.sellingcost = null;

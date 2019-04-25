@@ -1,6 +1,6 @@
 <app-header></app-header>
 <main>
-  <div class="container-fluid">
+  <div class="container-fluid" *ngIf="bookingArray != null">
         <div class="row">
             <!-- <form [FormGroup]="orderForm" (ngSubmit)="onSubmit()"> -->
                     <div class="col-4">
@@ -182,7 +182,7 @@
           </div> -->
           <div class="col-2">
                 <div class="form-group">
-                    <select id="SERVICE_CATEGORY" class="form-control" [(ngModel)]="subbookingArray.SERVICE_CATEGORY">
+                    <select class="form-control" [(ngModel)]="subbookingArray.SERVICE_CATEGORY">
                             <option>Select Category...</option>
                             <option>Hotel</option>
                             <option>Tour</option>
@@ -295,7 +295,7 @@
 
   <!-- Modal -->
   <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      aria-labelledby="exampleModalCenterTitle" aria-hidden="true" *ngIf="bookingArray.data.dynamic != null">
       <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
           <div class="modal-content">
               <!-- <div class="modal-header">
