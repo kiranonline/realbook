@@ -101,6 +101,9 @@ export class BookingMasterComponent implements OnInit {
     this.supplier();
     this.fetchData();
     this.addSubArray();
+
+    //need to move this 3 function to somewhere
+    
   }
   showSuccess() {
       this.toastr.successToastr('This form is saved.', 'Saved!');
@@ -170,23 +173,23 @@ export class BookingMasterComponent implements OnInit {
   supplier() {
     this.api.getAllSupplier().subscribe(sup => {
       this.suppliers = sup;
-      console.log(this.suppliers);
+      // console.log(this.suppliers);
     });
   }
   currencyFunc() {
     this.api.getAllCurrency().subscribe(datacurreny=>{
     
-    console.log(datacurreny);
+    // console.log(datacurreny);
     this.dataCur = datacurreny;
     });
   };
   fetchData() {
   this.route.paramMap.subscribe(params => {
     this.booking_Id = params.get('id');
-    console.log(this.booking_Id);
-    console.log(this.bookingArray);
+    // console.log(this.booking_Id);
+    // console.log(this.bookingArray);
     this.api.getBookingData(this.booking_Id).subscribe(formData => {
-      console.log(JSON.stringify(formData));
+      // console.log(JSON.stringify(formData));
       this.bookingArray = formData;
       // this.booking_Id = this.bookingArray.RA_REFERENCE;
       // this.subbookingArray = this.bookingArray.data.dynamic;
@@ -197,7 +200,7 @@ export class BookingMasterComponent implements OnInit {
     
     this.bookingArray.data.dynamic.push({});
     //this.bookingArray.data.dynamic = this.subbookingArray;
-    console.log(this.subbookingArray);
+    // console.log(this.subbookingArray);
     this.showInfo();
   }
   ngOnInit() {
@@ -219,11 +222,7 @@ export class BookingMasterComponent implements OnInit {
       }
       console.log("tax : " + this.tax);
     });
-    if(this.tax != this.bookingArray.data.TOTAL_TAX_CALCULATION) {
-      this.tax = null;
-      this.toastr.warningToastr('Total Tax Calculation is wrong', 'Wrong Calculation!');
-      return;
-    }
+    
   }
   discountCal() {
     this.bookingArray.data.dynamic.forEach(disc => {
@@ -233,13 +232,10 @@ export class BookingMasterComponent implements OnInit {
       }
       console.log("discount : " + this.discount);
     });
-    if (this.discount != this.bookingArray.data.OVER_ALL_DISCOUNT) {
-      this.discount = null;
-      this.toastr.warningToastr('Total Discount is wrong', 'Wrong Calculation');
-      return;
-    }
+    
   }
   sellCal() {
+    // console.log(this.bookingArray.data.dynamic);
     this.bookingArray.data.dynamic.forEach(sell => {
       if (sell.COMPONENTS_WISE_SELLING_COST){
         var temp = parseFloat(sell.COMPONENTS_WISE_SELLING_COST);
@@ -247,12 +243,31 @@ export class BookingMasterComponent implements OnInit {
       }
       console.log("sell cost : " + this.sellingcost);
     });
+  }
+
+  validateCAl() {
+    this.tax = null;
+    this.discount = null;
+    this.sellingcost = null;
+    this.taxCal();
+    this.discountCal();
+    this.sellCal();
     if (this.sellingcost != this.bookingArray.data.SELLINGCOST) {
       console.log(this.sellingcost + ' <-Sell Total-> ' + this.bookingArray.data.SELLINGCOST);
-      this.sellingcost = null;
+      // this.sellingcost = null;
       this.toastr.warningToastr('Total Selling Cost is wrong', 'Wrong Calculation!');
-      return;
     }
+    else if (this.discount != this.bookingArray.data.OVER_ALL_DISCOUNT) {
+      // this.discount = null;
+      this.toastr.warningToastr('Total Discount is wrong', 'Wrong Calculation');
+    }
+
+    else if(this.tax != this.bookingArray.data.TOTAL_TAX_CALCULATION) {
+      // this.tax = null;
+      this.toastr.warningToastr('Total Tax Calculation is wrong', 'Wrong Calculation!');
+    }
+
+    else this.validatesubs();
   }
   validatesubs(){
     this.bookingArray.data.dynamic.forEach(i => {
@@ -315,7 +330,7 @@ export class BookingMasterComponent implements OnInit {
     //   }
       else {
         this.api.editBookingData(this.booking_Id, this.bookingArray).subscribe(data => {
-          console.log(this.bookingArray);
+          // console.log(this.bookingArray);
           this.router.navigate(['/local/booking/' + this.booking_Id]);
           this.showSuccess();
         });
@@ -350,10 +365,7 @@ export class BookingMasterComponent implements OnInit {
     //   this.toastr.warningToastr('Overall profit is empty.', 'Required!');
     // }
     else {
-      this.sellCal();
-      this.taxCal();
-      this.discountCal();
-      this.validatesubs();
+      this.validateCAl();
     }
   }
 
