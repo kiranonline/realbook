@@ -225,9 +225,10 @@ export class BookingMasterComponent implements OnInit {
     
   }
   discountCal() {
+    console.log("i am called")
     this.bookingArray.data.dynamic.forEach(disc => {
-      if (disc.COMPONENTS_WISE_DISCOUNT_COMMISSION) {
-        var temp = parseFloat(disc.COMPONENTS_WISE_DISCOUNT_COMMISSION);
+      if (disc.COMPONENTS_WISE_DISCOUNT_COMISSION) {
+        var temp = parseFloat(disc.COMPONENTS_WISE_DISCOUNT_COMISSION);
         this.discount = this.discount + temp;
       }
       console.log("discount : " + this.discount);
@@ -252,6 +253,7 @@ export class BookingMasterComponent implements OnInit {
     this.taxCal();
     this.discountCal();
     this.sellCal();
+    console.log(`aaaa ${this.discount} and ${this.bookingArray.data.OVER_ALL_DISCOUNT}`)
     if (this.sellingcost != this.bookingArray.data.SELLINGCOST) {
       console.log(this.sellingcost + ' <-Sell Total-> ' + this.bookingArray.data.SELLINGCOST);
       // this.sellingcost = null;
@@ -259,6 +261,7 @@ export class BookingMasterComponent implements OnInit {
     }
     else if (this.discount != this.bookingArray.data.OVER_ALL_DISCOUNT) {
       // this.discount = null;
+      console.log(`aaaa ${this.discount} and ${this.bookingArray.data.OVER_ALL_DISCOUNT}`)
       this.toastr.warningToastr('Total Discount is wrong', 'Wrong Calculation');
     }
 
@@ -339,10 +342,11 @@ export class BookingMasterComponent implements OnInit {
     });
   }
   validation() {
-    if(this.bookingArray.data.RA_REFERENCE == undefined) {//
+    console.log("I am inn");
+    if(!this.bookingArray.data.RA_REFERENCE) {//
       this.toastr.warningToastr('Ra Reference is empty.', 'Required!');
     }
-    else if(this.bookingArray.data.INVOICE_CURRENCY == undefined) {//
+    else if(!this.bookingArray.data.INVOICE_CURRENCY) {//
       this.toastr.warningToastr('Invoice Currency is empty.', 'Required!');
     }
     else if(this.bookingArray.data.OVER_ALL_PROFIT == this.bookingArray.data.OVER_ALL_LOSS) {
@@ -355,8 +359,11 @@ export class BookingMasterComponent implements OnInit {
     // else if(this.bookingArray.data.INVOICE_DATE == undefined) {
     //   this.toastr.warningToastr('Invoice Date is empty.', 'Required!');
     // }
-    else if(this.bookingArray.data.RA_AGENT_CODE == undefined) {//
+    else if(!this.bookingArray.data.RA_AGENT_CODE) {//
       this.toastr.warningToastr('Ra Agent Code is empty.', 'Required!');
+    }
+    else if(!(this.bookingArray.data.OVER_ALL_PROFIT && this.bookingArray.data.OVER_ALL_LOSS)) {//
+      this.toastr.warningToastr('can not have profit and loss at the same time', 'Wrong!!');
     }
     // else if(this.bookingArray.data.TOTAL_IN_AMOUNTS == undefined) {
     //   this.toastr.warningToastr('Total in amounts is empty.', 'Required!');
