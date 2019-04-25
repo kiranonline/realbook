@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "~7.2.0",
     "@angular/router": "~7.2.0",
     "angular-toastr": "^2.1.1",
+    "angular2-multiselect-dropdown": "^4.2.1",
     "core-js": "^2.5.4",
     "ng6-toastr-notifications": "^1.0.4",
     "rxjs": "~6.3.3",

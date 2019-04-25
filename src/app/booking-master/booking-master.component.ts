@@ -1,5 +1,5 @@
 import { Component, OnInit, Injectable } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators, FormControl, FormArray, FormsModule } from "@angular/forms";
 import { Api } from "../../providers/api/api";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs';
@@ -33,6 +33,7 @@ export class BookingMasterComponent implements OnInit {
   sellingcost = null;
   tax = null;
   discount = null;
+  dropdownSettings = {};
   arrdata = {
     "CHECK_IN_DATE": null,//2
     "CHECK_OUT_DATE": null,//2
@@ -173,6 +174,7 @@ export class BookingMasterComponent implements OnInit {
   supplier() {
     this.api.getAllSupplier().subscribe(sup => {
       this.suppliers = sup;
+      this.dropdownSetting();
       // console.log(this.suppliers);
     });
   }
@@ -214,6 +216,18 @@ export class BookingMasterComponent implements OnInit {
   }
   ngOnChanges() {
   }
+
+  dropdownSetting() {
+    this.dropdownSettings = {
+      singleSelection : true,
+      text : "Select Supplier Name",
+      selectAllText : 'Select All',
+      unSelectAllText : 'Unselect All',
+      enableSearchFilter : true,
+      classes : "myclass custom-class"
+    };
+  }
+
   taxCal() {
     this.bookingArray.data.dynamic.forEach(tax => {
       if (tax.TAX_CALCULATION) {
@@ -226,8 +240,8 @@ export class BookingMasterComponent implements OnInit {
   }
   discountCal() {
     this.bookingArray.data.dynamic.forEach(disc => {
-      if (disc.COMPONENTS_WISE_DISCOUNT_COMMISSION) {
-        var temp = parseFloat(disc.COMPONENTS_WISE_DISCOUNT_COMMISSION);
+      if (disc.COMPONENTS_WISE_DISCOUNT_COMISSION) {
+        var temp = parseFloat(disc.COMPONENTS_WISE_DISCOUNT_COMISSION);
         this.discount = this.discount + temp;
       }
       console.log("discount : " + this.discount);
@@ -364,6 +378,9 @@ export class BookingMasterComponent implements OnInit {
     // else if(this.bookingArray.data.OVER_ALL_PROFIT == undefined) {
     //   this.toastr.warningToastr('Overall profit is empty.', 'Required!');
     // }
+    else if (this.bookingArray.data.OVER_ALL_PROFIT == this.bookingArray.data.OVER_ALL_LOSS) {
+      this.toastr.warningToastr('Overall profit cannot be equal to Overall loss', 'Incorrect Inputs!')
+    }
     else {
       this.validateCAl();
     }
