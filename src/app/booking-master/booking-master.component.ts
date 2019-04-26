@@ -34,6 +34,7 @@ export class BookingMasterComponent implements OnInit {
   sellingcost = null;
   tax = null;
   discount = null;
+  serviceSup = null;
   mdata = {
     "FIRSTNAME" : null,
     "INVOICE_CURRENCY" : null,
@@ -100,6 +101,7 @@ export class BookingMasterComponent implements OnInit {
   booking() {
     console.log(JSON.stringify(this.bookingArray));
     this.booking_Id = this.bookingArray.data.RA_REFERENCE;
+    this.serviceSupplier();
     this.validation();
     // if(this.bookingArray.data.RA_REFERENCE != null){
       
@@ -173,6 +175,14 @@ export class BookingMasterComponent implements OnInit {
       this.suppliers = sup;
     });
   }
+  serviceSupplier() {
+    this.suppliers.supplier.forEach(res => {
+      if(res == this.bookingArray.data.PER_SERVICE_WISE_SUPPLIER_NAME){
+        this.bookingArray.data.PER_SERVICE_SUPPLIER_CODE = res.supplier_id;
+      }
+    });
+  }
+
   currencyFunc() {
     this.api.getAllCurrency().subscribe(datacurreny=>{
     
@@ -309,9 +319,9 @@ export class BookingMasterComponent implements OnInit {
     else if(!this.bookingArray.data.RA_AGENT_CODE) {//
       this.toastr.warningToastr('Ra Agent Code is empty.', 'Required!');
     }
-    /*else if(!((this.bookingArray.data.OVER_ALL_PROFIT!=0) && (this.bookingArray.data.OVER_ALL_LOSS!=0) && this.bookingArray.data.OVER_ALL_PROFIT && this.bookingArray.data.OVER_ALL_LOSS)) {//
-      this.toastr.warningToastr('can not have profit and loss at the same time', 'Wrong!!');
-    }*/
+    else if((this.bookingArray.data.OVER_ALL_LOSS && this.bookingArray.data.OVER_ALL_PROFIT) && ((this.bookingArray.data.OVER_ALL_LOSS && this.bookingArray.data.OVER_ALL_PROFIT) != undefined)) {//
+      this.toastr.warningToastr('Can not have profit and loss at the same time', 'Wrong!!');
+    }
     
     else {
       this.validateCAl();
