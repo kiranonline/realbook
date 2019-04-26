@@ -202,7 +202,7 @@
               <div class="form-group">
                   <!-- <select [data]="sdata.supplier_display_name" [cssImport]=true></select> -->
                   <ng-multiselect-dropdown 
-                    [placeholder]="'Select Supplier'"
+                    [placeholder]="selectedItems[i].display"
                     [data]="suppliers"
                     [settings]="dropdownSettings"
                     [(ngModel)]="selectedItems[i]"
