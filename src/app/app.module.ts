@@ -15,6 +15,7 @@ import { FooterComponent } from './footer/footer.component';
 import { ToastrService } from './toastr-service.service';
 import { from } from 'rxjs';
 // import { Select2Module } from 'ng2-select2';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ToastrModule } from 'ng6-toastr-notifications';
 
 @NgModule({
@@ -33,6 +34,7 @@ import { ToastrModule } from 'ng6-toastr-notifications';
     CommonModule,
     FormsModule,
     ToastrModule.forRoot(),
+    NgMultiSelectDropDownModule.forRoot()
     // Select2Module
   ],
   providers: [Api, AuthService, ToastrService],

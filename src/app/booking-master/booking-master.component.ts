@@ -12,6 +12,7 @@ import { ToastrService } from '../toastr-service.service';
 import { audit } from 'rxjs/operators';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 // import { Select2OptionData } from 'ng2-select2';
 @Component({
   selector: 'app-booking-master',
@@ -24,6 +25,7 @@ export class BookingMasterComponent implements OnInit {
   booking_Id = null;
   dataCur : any = {};
   suppliers : any = {};
+  supname : any = [];
   orderForm: FormGroup;
   submitted = false;
   items : FormArray;
@@ -35,6 +37,7 @@ export class BookingMasterComponent implements OnInit {
   tax = null;
   discount = null;
   serviceSup = null;
+  dropdownSettings = {};
   mdata = {
     "FIRSTNAME" : null,
     "INVOICE_CURRENCY" : null,
@@ -96,6 +99,21 @@ export class BookingMasterComponent implements OnInit {
     this.supplier();
     this.currencyFunc();
     this.fetchData();
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    };
+  }
+  onItemSelect(item: any) {
+    console.log(item);
+  }
+  onSelectAll(items: any) {
+    console.log(items);
   }
 
   booking() {
@@ -173,6 +191,11 @@ export class BookingMasterComponent implements OnInit {
     this.api.getAllSupplier().subscribe(sup => {
       console.log(sup);
       this.suppliers = sup;
+      console.log(this.suppliers);
+      this.suppliers.supplier.forEach(res => {
+        this.supname.push(res.supplier_name);
+      });
+      console.log(this.supname);
     });
   }
   serviceSupplier() {

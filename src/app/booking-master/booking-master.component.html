@@ -201,10 +201,19 @@
           <div class="col-2">
               <div class="form-group">
                   <!-- <select [data]="sdata.supplier_display_name" [cssImport]=true></select> -->
-                  <select class="form-control" [(ngModel)]="subbookingArray.PER_SERVICE_WISE_SUPPLIER_NAME">
+                  <ng-multiselect-dropdown
+                    [placeholder]="'Select Supplier'"
+                    [data]="supname"
+                    [(ngModel)]="subbookingArray.PER_SERVICE_WISE_SUPPLIER_NAME"
+                    [settings]="dropdownSettings"
+                    (onSelect)="onItemSelect($event)"
+                    (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  <!-- <select class="form-control" [(ngModel)]="subbookingArray.PER_SERVICE_WISE_SUPPLIER_NAME">
                         <option>Select Supplier...</option>    
                         <option *ngFor="let sData of suppliers.supplier">{{sData.supplier_display_name}}</option>
-                    </select>
+                    </select> -->
               </div>
           </div>
           <!-- <div class="col-2">
