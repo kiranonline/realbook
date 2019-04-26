@@ -12,6 +12,7 @@ import { ToastrService } from '../toastr-service.service';
 import { audit } from 'rxjs/operators';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+// import { Select2OptionData } from 'ng2-select2';
 @Component({
   selector: 'app-booking-master',
   templateUrl: './booking-master.component.html',
@@ -86,14 +87,27 @@ export class BookingMasterComponent implements OnInit {
   };
 
   constructor(public toastr: ToastrManager, private toastrService: ToastrService,private formBuilder: FormBuilder, public http: HttpClient, public api: Api, public router: Router, private auth: AuthService, public route: ActivatedRoute) { 
-    this.currencyFunc();
-    this.supplier();
-    this.fetchData();
     this.addSubArray();
-
-    //need to move this 3 function to somewhere
     
   }
+
+  ngOnInit() {
+    this.supplier();
+    this.currencyFunc();
+    this.fetchData();
+  }
+
+  booking() {
+    console.log(JSON.stringify(this.bookingArray));
+    this.booking_Id = this.bookingArray.data.RA_REFERENCE;
+    this.validation();
+    // if(this.bookingArray.data.RA_REFERENCE != null){
+      
+    // }
+    // else if(this.bookingArray.data.RA_REFERENCE == null)
+    // this.toastr.errorToastr('RA REFERENCE is empty', 'Can not save form!');
+  }
+
   showSuccess() {
       this.toastr.successToastr('This form is saved.', 'Saved!');
   }
@@ -124,16 +138,6 @@ export class BookingMasterComponent implements OnInit {
       });
   }
   // booking_Id = 'RED6127143';
-  booking() {
-    this.booking_Id = this.bookingArray.data.RA_REFERENCE;
-    // console.log(JSON.stringify(this.bookingArray));
-    this.validation();
-    // if(this.bookingArray.data.RA_REFERENCE != null){
-      
-    // }
-    // else if(this.bookingArray.data.RA_REFERENCE == null)
-    // this.toastr.errorToastr('RA REFERENCE is empty', 'Can not save form!');
-  }
   selectField(i: any) {
     // alert(i);
     this.index = i;
@@ -153,9 +157,9 @@ export class BookingMasterComponent implements OnInit {
 
   addSubArray() {
     this.bookingArray["data"] = {};
-    this.bookingArray["data"].dynamic = [];
-    this.bookingArray["RA_REFERENCE"] = this.booking_Id;
-    this.bookingArray["data"].RA_REFERENCE = this.booking_Id;
+    this.bookingArray.data.dynamic = [];
+    this.bookingArray.RA_REFERENCE = null;
+    // this.bookingArray.data.RA_REFERENCE = null;
     this.bookingArray.data = {... this.bookingArray.data, ...this.mdata};
     this.bookingArray.data.dynamic.push(this.arrdata);
     console.log(this.bookingArray);
@@ -164,14 +168,14 @@ export class BookingMasterComponent implements OnInit {
 
   supplier() {
     this.api.getAllSupplier().subscribe(sup => {
+      console.log(sup);
       this.suppliers = sup;
-      // console.log(this.suppliers);
     });
   }
   currencyFunc() {
     this.api.getAllCurrency().subscribe(datacurreny=>{
     
-    // console.log(datacurreny);
+    console.log(datacurreny);
     this.dataCur = datacurreny;
     });
   };
@@ -195,15 +199,7 @@ export class BookingMasterComponent implements OnInit {
     // console.log(this.subbookingArray);
     this.showInfo();
   }
-  ngOnInit() {
-    //   this.bookingArray.valueChanges.pipe().subscribe(formData => {
-    //     this.api.editBookingData(this.booking_Id, formData).subscribe(data => {
-    //       console.log(data);
-    //       this.toastrService.Success("Saved!");
-    //       this.router.navigate(['/bookingmaster/local/' + this.booking_Id]);
-    //   });
-    // });
-  }
+  
   ngOnChanges() {
   }
   taxCal() {
@@ -217,7 +213,6 @@ export class BookingMasterComponent implements OnInit {
     
   }
   discountCal() {
-    console.log("i am called")
     this.bookingArray.data.dynamic.forEach(disc => {
       if (disc.COMPONENTS_WISE_DISCOUNT_COMISSION) {
         var temp = parseFloat(disc.COMPONENTS_WISE_DISCOUNT_COMISSION);
@@ -253,7 +248,7 @@ export class BookingMasterComponent implements OnInit {
     }
     else if (this.discount != this.bookingArray.data.OVER_ALL_DISCOUNT) {
       // this.discount = null;
-      console.log(`aaaa ${this.discount} and ${this.bookingArray.data.OVER_ALL_DISCOUNT}`)
+      // console.log(`aaaa ${this.discount} and ${this.bookingArray.data.OVER_ALL_DISCOUNT}`)
       this.toastr.warningToastr('Total Discount is wrong', 'Wrong Calculation');
     }
 
@@ -273,12 +268,7 @@ export class BookingMasterComponent implements OnInit {
     else if(i.PRODUCT_NAME == undefined) {//
       this.toastr.warningToastr('Product Name is empty.', 'Required!');
     }
-    // else if(i.RA_FILE_HANDLER == undefined) {
-    //   this.toastr.warningToastr('Ra File Handler is empty.', 'Required!');
-    // }
-    // else if(i.FOREIGN_CURRENCY == undefined) {
-    //   this.toastr.warningToastr('Foreign Currency is empty.', 'Required!');
-    // }
+   
 
     else if(i.PER_SERVICE_SUPPLIER_CODE == undefined) {//
       this.toastr.warningToastr('Per Service Supplier Code is empty.', 'Required!');
@@ -289,40 +279,12 @@ export class BookingMasterComponent implements OnInit {
     else if(i.PER_SERVICE_WISE_SUPPLIER_NAME == undefined) {//
       this.toastr.warningToastr('Per Service Wise Supplier Name is empty.', 'Required!');
     }
-    // else if(i.COMPONENTS_WISE_NET_COST == undefined) {
-    //   this.toastr.warningToastr('Component Wise Net Cost is empty.', 'Required!');
-    // }
-    // else if(i.COMPONENTS_WISE_MARKUP == undefined) {
-    //   this.toastr.warningToastr('Component Wise Markup is empty.', 'Required!');
-    // }
-
-    // else if(i.COMPONENTS_WISE_CURRENCY == undefined) {
-    //   this.toastr.warningToastr('Components wise currency is empty.', 'Required!');
-    // }
+    
 
     else if(i.SERVICE_COUNTRY == undefined) {//
       this.toastr.warningToastr('Service country is empty.', 'Required!');
     }
-    // //Hotel
-    // else if(i.CHECK_IN_DATE == undefined && i.SERVICE_CATEGORY == 'Hotel') {
-    //   this.toastr.warningToastr('Checkin Date is empty.', 'Required!');
-    // }
-    // else if(i.CHECK_OUT_DATE == undefined && i.SERVICE_CATEGORY == 'Hotel') {
-    //   this.toastr.warningToastr('Checkout Date is empty.', 'Required!');
-    // }
-    // else if(i.NO_OF_NIGHTS == undefined && i.SERVICE_CATEGORY == 'Hotel') {
-    //   this.toastr.warningToastr('No. of nights is empty.', 'Required!');
-    // }
-    // else if(i.NO_OF_ROOMS == undefined && i.SERVICE_CATEGORY == 'Hotel') {
-    //   this.toastr.warningToastr('No. of Rooms is empty.', 'Required!');
-    // }
-    // //Tour
-    // else if(i.TOUR_TRANSFER_COMPONENTS_WISE_SELLING_COST == undefined && i.SERVICE_CATEGORY == 'Tour') {
-    //   this.toastr.warningToastr('Tour Transfer Component Wise Selling Cost is empty.', 'Required!');
-    //   }
-    // else if(i.TOUR_TRANSFER_COMPONENTS_WISE_NET_COST == undefined && i.SERVICE_CATEGORY == 'Tour') {
-    //   this.toastr.warningToastr('Tour Transfer Component Wise Selling Cost is empty.', 'Required!');
-    //   }
+    
       else {
         this.api.editBookingData(this.booking_Id, this.bookingArray).subscribe(data => {
           // console.log(this.bookingArray);
@@ -334,7 +296,7 @@ export class BookingMasterComponent implements OnInit {
     });
   }
   validation() {
-    console.log("I am inn");
+    console.log("I am in");
     if(!this.bookingArray.data.RA_REFERENCE) {//
       this.toastr.warningToastr('Ra Reference is empty.', 'Required!');
     }
@@ -344,25 +306,14 @@ export class BookingMasterComponent implements OnInit {
     else if(this.bookingArray.data.OVER_ALL_PROFIT == this.bookingArray.data.OVER_ALL_LOSS) {
       this.toastr.warningToastr('Overall profit and overall loss cannot be same', 'Same Fields!')
     }
-    // else if(this.bookingArray.data.EXCHANGE_RATE == undefined) {
-    //   this.toastr.warningToastr('Exchange Rate is empty.', 'Required!');
-    // }
-    
-    // else if(this.bookingArray.data.INVOICE_DATE == undefined) {
-    //   this.toastr.warningToastr('Invoice Date is empty.', 'Required!');
-    // }
+  
     else if(!this.bookingArray.data.RA_AGENT_CODE) {//
       this.toastr.warningToastr('Ra Agent Code is empty.', 'Required!');
     }
     else if(!(this.bookingArray.data.OVER_ALL_PROFIT && this.bookingArray.data.OVER_ALL_LOSS)) {//
       this.toastr.warningToastr('can not have profit and loss at the same time', 'Wrong!!');
     }
-    // else if(this.bookingArray.data.TOTAL_IN_AMOUNTS == undefined) {
-    //   this.toastr.warningToastr('Total in amounts is empty.', 'Required!');
-    // }
-    // else if(this.bookingArray.data.OVER_ALL_PROFIT == undefined) {
-    //   this.toastr.warningToastr('Overall profit is empty.', 'Required!');
-    // }
+    
     else {
       this.validateCAl();
     }

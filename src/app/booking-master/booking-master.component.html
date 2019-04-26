@@ -1,6 +1,6 @@
 <app-header></app-header>
 <main>
-  <div class="container-fluid" *ngIf="bookingArray != null">
+  <div class="container-fluid">
         <div class="row">
             <!-- <form [FormGroup]="orderForm" (ngSubmit)="onSubmit()"> -->
                     <div class="col-4">
@@ -200,6 +200,7 @@
             </div>
           <div class="col-2">
               <div class="form-group">
+                  <!-- <select [data]="sdata.supplier_display_name" [cssImport]=true></select> -->
                   <select class="form-control" [(ngModel)]="subbookingArray.PER_SERVICE_WISE_SUPPLIER_NAME">
                         <option>Select Supplier...</option>    
                         <option *ngFor="let sData of suppliers.supplier">{{sData.supplier_display_name}}</option>

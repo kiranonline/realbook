@@ -14,7 +14,7 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { ToastrService } from './toastr-service.service';
 import { from } from 'rxjs';
-
+// import { Select2Module } from 'ng2-select2';
 import { ToastrModule } from 'ng6-toastr-notifications';
 
 @NgModule({
@@ -32,7 +32,8 @@ import { ToastrModule } from 'ng6-toastr-notifications';
     AppRoutingModule,
     CommonModule,
     FormsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    // Select2Module
   ],
   providers: [Api, AuthService, ToastrService],
   bootstrap: [AppComponent]
