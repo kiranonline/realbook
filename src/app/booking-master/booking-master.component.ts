@@ -24,6 +24,7 @@ export class BookingMasterComponent implements OnInit {
   index = 0;
   booking_Id = null;
   dataCur : any = {};
+  dataSC : any = {};
   suppliers : any = [];
   supname : any = [];
   orderForm: FormGroup;
@@ -31,8 +32,9 @@ export class BookingMasterComponent implements OnInit {
   items : FormArray;
   bookingArray : any = {};
   subbookingArray : any = [];
-  //cData = null;
+  cData = null;
   sData = null;
+  sc = null;
   sellingcost = null;
   tax = null;
   discount = null;
@@ -98,6 +100,7 @@ export class BookingMasterComponent implements OnInit {
   ngOnInit() {
     this.supplier();
     this.currencyFunc();
+    this.serviceCountry();
     this.fetchData()
     
     
@@ -191,7 +194,7 @@ export class BookingMasterComponent implements OnInit {
   supplier() {
     this.api.getAllSupplier().subscribe(sup => {
       
-      this.suppliers = sup['supplier'].map((data,i)=>{
+      this.suppliers = sup['supplier'].map((data)=>{
         return({
           ...data,
           display:data.supplier_id+"-"+data.supplier_display_name
@@ -220,6 +223,13 @@ export class BookingMasterComponent implements OnInit {
     });
   }*/
 
+  serviceCountry() {
+    this.api.getServiceCountry().subscribe(req => {
+      console.log(req);
+      this.dataSC = req;
+    }); 
+  }
+
   currencyFunc() {
     this.api.getAllCurrency().subscribe(datacurreny=>{
     
@@ -234,7 +244,7 @@ export class BookingMasterComponent implements OnInit {
           this.api.getBookingData(this.booking_Id).subscribe(formData => {
             // console.log(JSON.stringify(formData));
             this.bookingArray = formData;
-            this.bookingArray.data.dynamic.forEach((d,j)=>{
+            this.bookingArray.data.dynamic.forEach((d)=>{
               console.log(d.PER_SERVICE_SUPPLIER_CODE);
               this.selectedItems.push({
                 supplier_id:d.PER_SERVICE_SUPPLIER_CODE,
@@ -304,9 +314,10 @@ export class BookingMasterComponent implements OnInit {
       // this.sellingcost = null;
       this.toastr.warningToastr('Total Selling Cost is wrong', 'Wrong Calculation!');
     }
-    else if (this.discount != this.bookingArray.data.OVER_ALL_DISCOUNT) {
+    else if ((this.discount != this.bookingArray.data.OVER_ALL_DISCOUNT) && ((this.discount ||  this.bookingArray.data.OVER_ALL_DISCOUNT) != 0)) {
       // this.discount = null;
       // console.log(`aaaa ${this.discount} and ${this.bookingArray.data.OVER_ALL_DISCOUNT}`)
+      // if((this.discount ||  this.bookingArray.data.OVER_ALL_DISCOUNT) != 0)
       this.toastr.warningToastr('Total Discount is wrong', 'Wrong Calculation');
     }
 
@@ -337,7 +348,9 @@ export class BookingMasterComponent implements OnInit {
     else if(i.PER_SERVICE_WISE_SUPPLIER_NAME == undefined) {//
       this.toastr.warningToastr('Per Service Wise Supplier Name is empty.', 'Required!');
     }
-    
+    else if(i.COMPONENTS_WISE_NET_COST_CURRENCY == undefined) {
+      this.toastr.warningToastr('Component Wise New Cost Currency is empty.', 'Required!')
+    }
 
     else if(i.SERVICE_COUNTRY == undefined) {//
       this.toastr.warningToastr('Service country is empty.', 'Required!');

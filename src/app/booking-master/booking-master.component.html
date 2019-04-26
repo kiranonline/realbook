@@ -201,11 +201,11 @@
           <div class="col-2">
               <div class="form-group">
                   <!-- <select [data]="sdata.supplier_display_name" [cssImport]=true></select> -->
-                  <ng-multiselect-dropdown
+                  <ng-multiselect-dropdown *ngFor="let selectItem of selectedItems"
                     [placeholder]="'Select Supplier'"
                     [data]="suppliers"
                     [settings]="dropdownSettings"
-                    [(ngModel)]="selectedItems[index]"
+                    [(ngModel)]="selectItem"
                     (onSelect)="onItemSelect($event,i)"
                     (onSelectAll)="onSelectAll($event)"
                     >
@@ -227,9 +227,13 @@
               </div>
           </div>
           <div class="col-2">
-              <div class="form-group">
-                  <input type="text" [(ngModel)]="subbookingArray.SERVICE_COUNTRY" class="form-control mb-4" id="" placeholder=""><!-- name="CITY" #CITY="ngModel" id="CITY"-->
-              </div>
+            <div class="form-group">
+                <!-- <label>Service Country</label> -->
+                <select class="form-control" [(ngModel)]="subbookingArray.SERVICE_COUNTRY">
+                    <option>Select Country...</option>    
+                    <option *ngFor="let sc of dataSC.suppliercountry">{{sc}}</option>
+                </select>
+            </div>
           </div>
           <div class="col-auto align-self-center mt-5">
                 <div class="form-action-group d-flex align-items-center justify-content-between mb-4">

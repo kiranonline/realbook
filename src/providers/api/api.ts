@@ -18,7 +18,7 @@ export class Api {
         });
         this.head = { headers : headers };
         // this.headers.append('Content-Type', 'application/json');
-        this.apiUrl = '';
+        this.apiUrl = 'http://localhost:5000';
         // this.apiUrl = 'https://redappletravel.realbooks.in';
         // var headers_object = new HttpHeaders().set("Authorization", "Bearer " + t);
     }
@@ -40,5 +40,9 @@ export class Api {
     public getAllSupplier() {
         // console.log(this.apiUrl);
         return this.http.get(this.apiUrl + '/api/supplier/getall');
+    }
+
+    public getServiceCountry() {
+        return this.http.get(this.apiUrl + '/api/service/country/getall');
     }
 }
