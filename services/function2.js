@@ -146,7 +146,7 @@ keyMap = {
     ServiceCity : 'SERVICE_CITY',
     ComponentWiseNetCost : 'COMPONENTS_WISE_NET_COST',
     ComponentWiseMarkup : 'COMPONENTS_WISE_MARKUP',
-    ComponentWiseSellingCost : 'COMPONENTS_WISE_SELLING_COS',
+    ComponentWiseSellingCost : 'COMPONENTS_WISE_SELLING_COST',
     ComponentWiseDiscountCommission : 'COMPONENTS_WISE_DISCOUNT_COMISSION',
     ComponentWiseCurrency : 'COMPONENTS_WISE_CURRENCY',
 
