@@ -245,15 +245,15 @@ router.post('/local/:RA_REFERENCE',(req,res,next)=>{
         if(tosave.length==dynamic.length){
             console.log(tosave)
             
-            var p1 = model1.bookingmaster.destroy({
+            
+            
+            model1.bookingmaster.destroy({
                 where:{
                     RA_REFERENCE : RA_REFERENCE
                 }
-            });
-            var p2 = model1.bookingmaster.bulkCreate(tosave);
-            p1.then(()=>{
+            }).then(()=>{
                 console.log("deleted");
-                p2.then(()=>{
+                model1.bookingmaster.bulkCreate(tosave).then(()=>{
                     console.log("created");
                     res.json({
                         success : true,
