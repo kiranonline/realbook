@@ -205,7 +205,7 @@
                     [placeholder]="'Select Supplier'"
                     [data]="suppliers"
                     [settings]="dropdownSettings"
-                    [(ngModel)]="selectedItems[i]"
+                    [(ngModel)]="selectedItems[index]"
                     (onSelect)="onItemSelect($event,i)"
                     (onSelectAll)="onSelectAll($event)"
                     >

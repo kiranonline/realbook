@@ -18,7 +18,7 @@ export class Api {
         });
         this.head = { headers : headers };
         // this.headers.append('Content-Type', 'application/json');
-        this.apiUrl = 'http://localhost:5000';
+        this.apiUrl = '';
         // this.apiUrl = 'https://redappletravel.realbooks.in';
         // var headers_object = new HttpHeaders().set("Authorization", "Bearer " + t);
     }

@@ -31,7 +31,7 @@ export class BookingMasterComponent implements OnInit {
   items : FormArray;
   bookingArray : any = {};
   subbookingArray : any = [];
-  cData = null;
+  //cData = null;
   sData = null;
   sellingcost = null;
   tax = null;
@@ -96,8 +96,9 @@ export class BookingMasterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.supplier(this.fetchData());
+    this.supplier();
     this.currencyFunc();
+    this.fetchData()
     
     
   }
@@ -187,7 +188,7 @@ export class BookingMasterComponent implements OnInit {
     // this.showSuccess(); 
   }
   
-  supplier(cb:any) {
+  supplier() {
     this.api.getAllSupplier().subscribe(sup => {
       
       this.suppliers = sup['supplier'].map((data,i)=>{
@@ -207,7 +208,7 @@ export class BookingMasterComponent implements OnInit {
         allowSearchFilter: true,
         closeDropDownOnSelection:true
       };
-      cb;
+    
     });
   }
  
@@ -239,7 +240,8 @@ export class BookingMasterComponent implements OnInit {
                 supplier_id:d.PER_SERVICE_SUPPLIER_CODE,
                 display:d.PER_SERVICE_SUPPLIER_CODE+"-"+d.PER_SERVICE_WISE_SUPPLIER_NAME
               })
-            })
+            });
+            this.selectedItems.shift()
             console.log(this.selectedItems);
             // this.booking_Id = this.bookingArray.RA_REFERENCE;
             // this.subbookingArray = this.bookingArray.data.dynamic;
