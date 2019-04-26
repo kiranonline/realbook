@@ -266,6 +266,9 @@ export class BookingMasterComponent implements OnInit {
   add() {
     
     this.bookingArray.data.dynamic.push({});
+    this.selectedItems.push({
+      display:'Select'
+    })
     //this.bookingArray.data.dynamic = this.subbookingArray;
     // console.log(this.subbookingArray);
     this.showInfo();
