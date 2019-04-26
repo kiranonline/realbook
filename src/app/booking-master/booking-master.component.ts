@@ -156,7 +156,8 @@ export class BookingMasterComponent implements OnInit {
   }
 
   addSubArray() {
-    this.bookingArray["data"] = {};
+    //this.bookingArray["data"] = {};
+    this.bookingArray.data = {};
     this.bookingArray.data.dynamic = [];
     this.bookingArray.RA_REFERENCE = null;
     // this.bookingArray.data.RA_REFERENCE = null;
@@ -180,16 +181,17 @@ export class BookingMasterComponent implements OnInit {
     });
   };
   fetchData() {
-  this.route.paramMap.subscribe(params => {
-    this.booking_Id = params.get('id');
-    // console.log(this.booking_Id);
-    // console.log(this.bookingArray);
-    this.api.getBookingData(this.booking_Id).subscribe(formData => {
-      // console.log(JSON.stringify(formData));
-      this.bookingArray = formData;
-      // this.booking_Id = this.bookingArray.RA_REFERENCE;
-      // this.subbookingArray = this.bookingArray.data.dynamic;
-      });  
+    this.route.paramMap.subscribe(params => {
+      this.booking_Id = params.get('id');
+        if(this.booking_Id){
+          this.api.getBookingData(this.booking_Id).subscribe(formData => {
+            // console.log(JSON.stringify(formData));
+            this.bookingArray = formData;
+            // this.booking_Id = this.bookingArray.RA_REFERENCE;
+            // this.subbookingArray = this.bookingArray.data.dynamic;
+          });
+        }
+        // console.log(this.bookingArray);
     });
   }
   add() {
@@ -303,16 +305,13 @@ export class BookingMasterComponent implements OnInit {
     else if(!this.bookingArray.data.INVOICE_CURRENCY) {//
       this.toastr.warningToastr('Invoice Currency is empty.', 'Required!');
     }
-    else if(this.bookingArray.data.OVER_ALL_PROFIT == this.bookingArray.data.OVER_ALL_LOSS) {
-      this.toastr.warningToastr('Overall profit and overall loss cannot be same', 'Same Fields!')
-    }
   
     else if(!this.bookingArray.data.RA_AGENT_CODE) {//
       this.toastr.warningToastr('Ra Agent Code is empty.', 'Required!');
     }
-    else if(!(this.bookingArray.data.OVER_ALL_PROFIT && this.bookingArray.data.OVER_ALL_LOSS)) {//
+    /*else if(!((this.bookingArray.data.OVER_ALL_PROFIT!=0) && (this.bookingArray.data.OVER_ALL_LOSS!=0) && this.bookingArray.data.OVER_ALL_PROFIT && this.bookingArray.data.OVER_ALL_LOSS)) {//
       this.toastr.warningToastr('can not have profit and loss at the same time', 'Wrong!!');
-    }
+    }*/
     
     else {
       this.validateCAl();
