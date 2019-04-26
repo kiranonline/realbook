@@ -110,8 +110,10 @@ export class BookingMasterComponent implements OnInit {
     this.suppliers.forEach((data,i)=>{
       if(data.supplier_id==item.supplier_id){
         this.bookingArray.data.dynamic[i].PER_SERVICE_WISE_SUPPLIER_NAME=data.supplier_display_name;
-        this.bookingArray.data.dynamic[i].PER_SERVICE_SUPPLIER_CODE=data.supplier_id;
+        this.bookingArray.data.dynamic[i].PER_SERVICE_WISE_SUPPLIER_CODE=data.supplier_id;
         console.log(this.bookingArray.data.dynamic[i].PER_SERVICE_WISE_SUPPLIER_CODE);
+
+        console.log(this.bookingArray.data.dynamic[i].PER_SERVICE_WISE_SUPPLIER_NAME);
       }
     })
     
@@ -247,8 +249,8 @@ export class BookingMasterComponent implements OnInit {
             this.bookingArray.data.dynamic.forEach((d)=>{
               console.log(d.PER_SERVICE_SUPPLIER_CODE);
               this.selectedItems.push({
-                supplier_id:d.PER_SERVICE_SUPPLIER_CODE,
-                display:d.PER_SERVICE_SUPPLIER_CODE+"-"+d.PER_SERVICE_WISE_SUPPLIER_NAME
+                supplier_id:d.PER_SERVICE_WISE_SUPPLIER_CODE,
+                display:d.PER_SERVICE_WISE_SUPPLIER_CODE+"-"+d.PER_SERVICE_WISE_SUPPLIER_NAME
               })
             });
             this.selectedItems.shift()
@@ -339,7 +341,7 @@ export class BookingMasterComponent implements OnInit {
     }
    
 
-    else if(i.PER_SERVICE_SUPPLIER_CODE == undefined) {//
+    else if(i.PER_SERVICE_WISE_SUPPLIER_CODE == undefined) {//
       this.toastr.warningToastr('Per Service Supplier Code is empty.', 'Required!');
     }
     else if(i.COMPONENTS_WISE_SELLING_COST == undefined) {//
