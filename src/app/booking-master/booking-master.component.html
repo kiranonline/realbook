@@ -201,11 +201,11 @@
           <div class="col-2">
               <div class="form-group">
                   <!-- <select [data]="sdata.supplier_display_name" [cssImport]=true></select> -->
-                  <ng-multiselect-dropdown *ngFor="let selectItem of selectedItems"
+                  <ng-multiselect-dropdown 
                     [placeholder]="'Select Supplier'"
                     [data]="suppliers"
                     [settings]="dropdownSettings"
-                    [(ngModel)]="selectItem"
+                    [(ngModel)]="selectedItems[i]"
                     (onSelect)="onItemSelect($event,i)"
                     (onSelectAll)="onSelectAll($event)"
                     >

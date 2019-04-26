@@ -111,7 +111,7 @@ export class BookingMasterComponent implements OnInit {
       if(data.supplier_id==item.supplier_id){
         this.bookingArray.data.dynamic[i].PER_SERVICE_WISE_SUPPLIER_NAME=data.supplier_display_name;
         this.bookingArray.data.dynamic[i].PER_SERVICE_SUPPLIER_CODE=data.supplier_id;
-        console.log(this.bookingArray.data.dynamic[i].PER_SERVICE_WISE_SUPPLIER_NAME);
+        console.log(this.bookingArray.data.dynamic[i].PER_SERVICE_WISE_SUPPLIER_CODE);
       }
     })
     
