@@ -40,4 +40,20 @@ router.get('/supplier/getall',(req,res,next)=>{
 
 
 
+
+
+router.get('/service/country/getall',(req,res,next)=>{
+    sequelize.query(`SELECT name FROM company_master WHERE is_supplier=1`).then((data)=>{
+        var c = data[0].map((d,i)=>{
+            return d.name
+        })
+        res.json({
+            suppliercountry : c
+        });
+    }).catch((ero)=>{
+        res.status(500);
+    })
+})
+
+
 module.exports=router;
