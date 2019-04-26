@@ -20,11 +20,11 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
   styleUrls: ['./booking-master.component.css']
 })
 export class BookingMasterComponent implements OnInit {
-
+  selectedItems : any = [];
   index = 0;
   booking_Id = null;
   dataCur : any = {};
-  suppliers : any = {};
+  suppliers : any = [];
   supname : any = [];
   orderForm: FormGroup;
   submitted = false;
@@ -96,21 +96,21 @@ export class BookingMasterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.supplier();
+    this.supplier(this.fetchData());
     this.currencyFunc();
-    this.fetchData();
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      allowSearchFilter: true
-    };
+    
+    
   }
-  onItemSelect(item: any) {
+  onItemSelect(item: any,i:any) {
     console.log(item);
+    this.suppliers.forEach((data,i)=>{
+      if(data.supplier_id==item.supplier_id){
+        this.bookingArray.data.dynamic[i].PER_SERVICE_WISE_SUPPLIER_NAME=data.supplier_display_name;
+        this.bookingArray.data.dynamic[i].PER_SERVICE_SUPPLIER_CODE=data.supplier_id;
+        console.log(this.bookingArray.data.dynamic[i].PER_SERVICE_WISE_SUPPLIER_NAME);
+      }
+    })
+    
   }
   onSelectAll(items: any) {
     console.log(items);
@@ -119,7 +119,7 @@ export class BookingMasterComponent implements OnInit {
   booking() {
     console.log(JSON.stringify(this.bookingArray));
     this.booking_Id = this.bookingArray.data.RA_REFERENCE;
-    this.serviceSupplier();
+    //this.serviceSupplier();
     this.validation();
     // if(this.bookingArray.data.RA_REFERENCE != null){
       
@@ -186,25 +186,38 @@ export class BookingMasterComponent implements OnInit {
     console.log(this.bookingArray);
     // this.showSuccess(); 
   }
-
-  supplier() {
+  
+  supplier(cb:any) {
     this.api.getAllSupplier().subscribe(sup => {
-      console.log(sup);
-      this.suppliers = sup;
+      
+      this.suppliers = sup['supplier'].map((data,i)=>{
+        return({
+          ...data,
+          display:data.supplier_id+"-"+data.supplier_display_name
+        })
+      })
       console.log(this.suppliers);
-      this.suppliers.supplier.forEach(res => {
-        this.supname.push(res.supplier_name);
-      });
-      console.log(this.supname);
+      this.dropdownSettings = {
+        singleSelection: true,
+        idField: 'supplier_id',
+        textField: 'display',
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        itemsShowLimit: 3,
+        allowSearchFilter: true,
+        closeDropDownOnSelection:true
+      };
+      cb;
     });
   }
-  serviceSupplier() {
+ 
+  /*serviceSupplier() {
     this.suppliers.supplier.forEach(res => {
       if(res == this.bookingArray.data.PER_SERVICE_WISE_SUPPLIER_NAME){
         this.bookingArray.data.PER_SERVICE_SUPPLIER_CODE = res.supplier_id;
       }
     });
-  }
+  }*/
 
   currencyFunc() {
     this.api.getAllCurrency().subscribe(datacurreny=>{
@@ -220,6 +233,14 @@ export class BookingMasterComponent implements OnInit {
           this.api.getBookingData(this.booking_Id).subscribe(formData => {
             // console.log(JSON.stringify(formData));
             this.bookingArray = formData;
+            this.bookingArray.data.dynamic.forEach((d,j)=>{
+              console.log(d.PER_SERVICE_SUPPLIER_CODE);
+              this.selectedItems.push({
+                supplier_id:d.PER_SERVICE_SUPPLIER_CODE,
+                display:d.PER_SERVICE_SUPPLIER_CODE+"-"+d.PER_SERVICE_WISE_SUPPLIER_NAME
+              })
+            })
+            console.log(this.selectedItems);
             // this.booking_Id = this.bookingArray.RA_REFERENCE;
             // this.subbookingArray = this.bookingArray.data.dynamic;
           });

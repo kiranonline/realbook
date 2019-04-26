@@ -203,10 +203,10 @@
                   <!-- <select [data]="sdata.supplier_display_name" [cssImport]=true></select> -->
                   <ng-multiselect-dropdown
                     [placeholder]="'Select Supplier'"
-                    [data]="supname"
-                    [(ngModel)]="subbookingArray.PER_SERVICE_WISE_SUPPLIER_NAME"
+                    [data]="suppliers"
                     [settings]="dropdownSettings"
-                    (onSelect)="onItemSelect($event)"
+                    [(ngModel)]="selectedItems[i]"
+                    (onSelect)="onItemSelect($event,i)"
                     (onSelectAll)="onSelectAll($event)"
                     >
                     </ng-multiselect-dropdown>
