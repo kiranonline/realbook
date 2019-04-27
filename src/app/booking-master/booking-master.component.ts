@@ -177,6 +177,7 @@ export class BookingMasterComponent implements OnInit {
    
     if (length>1) {
       this.bookingArray.data.dynamic.splice(i, 1);
+      this.selectedItems.splice(i, 1);
     this.showError();
     }
     
