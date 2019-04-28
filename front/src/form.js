@@ -43,8 +43,10 @@ class Form extends Component {
         }
         else{
         
-            this.setState({activeRowIndex:indx,activeInitial:{SERVICE_CITY:""}})
-            // console.log(this.state.activeInitial)
+            this.setState({activeRowIndex:indx,activeInitial:{SERVICE_CITY:"",TAX_CALCULATION:"",FOREIGN_CURRENCY:"",COMPONENTS_WISE_MARKUP:"",
+        COMPONENTS_WISE_DISCOUNT_COMISSION:"",COMPONENTS_WISE_NET_COST_CURRENCY:"",COMPONENTS_WISE_NET_COST:"",RA_FILE_HANDLER:"",PAYMENT_SLABS:"",
+    SUPPLIER_PAYMENT_DEADLINE:"",COMPONENTS_WISE_CURRENCY:"",ARRIVALDATE:""}})
+            console.log(this.state.activeInitial)
         }
         
     }
@@ -100,11 +102,17 @@ class Form extends Component {
 
     setSupplierName(dynamic,value,indx){
         // value=value[0];
-
-        dynamic[indx]['PER_SERVICE_WISE_SUPPLIER_NAME']=value.split(",")[1]
+        if(value!==undefined){
+               dynamic[indx]['PER_SERVICE_WISE_SUPPLIER_NAME']=value.split(",")[1]
         dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']=value.split(",")[0]
 
-        this.setState({dynamic});
+      
+        }
+        else{
+            dynamic[indx]['PER_SERVICE_WISE_SUPPLIER_NAME']=undefined;
+            dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']="";
+        }
+       this.setState({dynamic});
     }
 
     cloneField(dynamic){
@@ -227,7 +235,7 @@ class Form extends Component {
                         if(res.status===200){
                             if(res.data.success){
                                 // this.props.history.push("/local/booking/"+this.state.RA_REFERENCE);
-                                window.location.href="/local/booking/"+this.state.RA_REFERENCE
+                                window.location.href="/local/booking/n"+this.state.RA_REFERENCE
                             }
                         }
                     })
@@ -519,7 +527,7 @@ class Form extends Component {
                                         <div className="col-6">
                                             <div className="form-group">
                                                 <label htmlfor="">Tax Calculation</label>
-                                                <input type="text" defaultValue={activeInitial.TAX_CALCULATION} onChange={(e)=>{activeInitial.TAX_CALCULATION=e.target.value;this.setTotalTax(this.state.activeRowIndex,dynamic,formData,activeInitial)}} className="form-control" id="" placeholder="" />
+                                                <input type="text" value={activeInitial.TAX_CALCULATION} onChange={(e)=>{activeInitial.TAX_CALCULATION=e.target.value;this.setTotalTax(this.state.activeRowIndex,dynamic,formData,activeInitial)}} className="form-control" id="" placeholder="" />
                                             </div>
                                         </div>
                                     </div>
@@ -529,7 +537,7 @@ class Form extends Component {
                                             <div className="form-group">
                                                 <label htmlfor="">Foreign Currency</label>
                                                 <select className="form-control ng-pristine ng-valid ng-touched" 
-                                                    defaultValue={activeInitial.FOREIGN_CURRENCY} onChange={(e)=>{activeInitial.FOREIGN_CURRENCY=e.target.value}}
+                                                    value={activeInitial.FOREIGN_CURRENCY} onChange={(e)=>{this.setState({activeInitial:Object.assign({},activeInitial,{FOREIGN_CURRENCY:e.target.value})})}}
                                                 >
                                                     <option value="">Select a currency</option>
                                                     {
@@ -544,7 +552,7 @@ class Form extends Component {
                                         <div className="col-6">
                                             <div className="form-group">
                                                 <label htmlfor="">Components Wise Markup</label>
-                                                <input type="number" className="form-control" defaultValue={activeInitial.COMPONENTS_WISE_MARKUP} onChange={(e)=>{activeInitial.COMPONENTS_WISE_MARKUP=e.target.value}} id="" placeholder="" />
+                                                <input type="number" min="0" className="form-control" value={activeInitial.COMPONENTS_WISE_MARKUP} onChange={(e)=>{this.setState({activeInitial:Object.assign({},activeInitial,{COMPONENTS_WISE_MARKUP:e.target.value})})}} id="" placeholder="" />
                                             </div>
                                         </div>
                                     </div>
@@ -552,7 +560,7 @@ class Form extends Component {
                                         <div className="col-6">
                                             <div className="form-group">
                                                 <label htmlfor="">Component Wise Net Cost</label>
-                                                <input type="number" defaultValue={activeInitial.COMPONENTS_WISE_NET_COST} onChange={(e)=>{activeInitial.COMPONENTS_WISE_NET_COST=e.target.value}} className="form-control" id="" placeholder="" />
+                                                <input type="number" value={activeInitial.COMPONENTS_WISE_NET_COST} onChange={(e)=>{activeInitial.COMPONENTS_WISE_NET_COST=e.target.value}} className="form-control" id="" placeholder="" />
                                             </div>
                                         </div>
                                         <div className="col-6">
