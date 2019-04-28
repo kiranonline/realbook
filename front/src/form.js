@@ -54,12 +54,11 @@ class Form extends Component {
         this.getSupplier()
         this.getCountries()
         this.getCurrency()
-
+        document.title="BOOKING FORM | REAL BOOKS"
         // edit mode setup
         if(this.props.match.params.ra_reference!==undefined){
             this.getActiveBooking(this.props.match.params.ra_reference)
         }
-
          // dynamic form_setup
         let {dynamic,dynamic_formData}=this.state;
         dynamic.push(Object.assign({},dynamic_formData));
@@ -205,6 +204,7 @@ class Form extends Component {
 
             return;
         }
+        
         else{
             dynamic.map(item=>{
                 if(item.SERVICE_COUNTRY.length===0){
@@ -225,6 +225,34 @@ class Form extends Component {
                 }
                 else if(item.SERVICE_CATEGORY.length===0){
                     message.warning("Please select a service category!",0.9);
+                    return;
+                }
+                else if(item.PRODUCT_NAME.length===0){
+                    notification['warning']({
+                        message: 'Required field missing',
+                        description: "PRODUCT NAME can't be empty",
+                      });
+        
+        
+                    return;
+                }
+                else if(item.COMPONENTS_WISE_SELLING_COST.length===0){
+                    notification['warning']({
+                        message: 'Required field missing',
+                        description: "Component wise selling cost can't be empty",
+                      });
+        
+        
+                    return;
+                }
+            
+                else if(item.COMPONENTS_WISE_CURRENCY.length===0){
+                    notification['warning']({
+                        message: 'Required field missing',
+                        description: "Component wise currency can't be empty",
+                      });
+        
+        
                     return;
                 }
                 else{
@@ -375,7 +403,7 @@ class Form extends Component {
                 </div>
                 <div className="col-2">
                     <div className="form-group">
-                        <label htmlfor="">Product Name</label>
+                        <label htmlfor="">Product Name *</label>
                         <input type="text" className="form-control mb-4" id="" defaultValue={item.PRODUCT_NAME} onChange={(e)=>{dynamic[indx]['PRODUCT_NAME']=e.target.value}} placeholder="" />
                        
                         
@@ -406,7 +434,7 @@ class Form extends Component {
                 </div>
                 <div className="col-2">
                     <div className="form-group">
-                        <label htmlfor="">Components Wise Selling Cost</label>
+                        <label htmlfor="">Components Wise Selling  *</label>
                         
                         <input type="text" className="form-control mb-4" defaultValue={item.COMPONENTS_WISE_SELLING_COST} onChange={(e)=>{dynamic[indx]['COMPONENTS_WISE_SELLING_COST']=e.target.value;this.setSellingCost(indx,dynamic,formData)}} id="" placeholder="" />
                         
