@@ -219,20 +219,23 @@ class Form extends Component {
                     message.warning("Please select a service category!",0.9);
                     return;
                 }
+                else{
+                    formData.dynamic=dynamic;
+                    formData.RA_REFERENCE=this.state.RA_REFERENCE;
+            
+                    axios.post("http://localhost:5000/bookingmaster/local/"+this.state.RA_REFERENCE,{data:formData}).then(res=>{
+                        if(res.status===200){
+                            if(res.data.success){
+                                // this.props.history.push("/local/booking/"+this.state.RA_REFERENCE);
+                                window.location.href="/local/booking/"+this.state.RA_REFERENCE
+                            }
+                        }
+                    })
+                }
 
             })
         }
-        formData.dynamic=dynamic;
-        formData.RA_REFERENCE=this.state.RA_REFERENCE;
-
-        axios.post("http://localhost:5000/bookingmaster/local/"+this.state.RA_REFERENCE,{data:formData}).then(res=>{
-            if(res.status===200){
-                if(res.data.success){
-                    // this.props.history.push("/local/booking/"+this.state.RA_REFERENCE);
-                    window.location.href="/local/booking"+this.state.RA_REFERENCE
-                }
-            }
-        })
+        
     }
 
     setModalValues(name,value){
