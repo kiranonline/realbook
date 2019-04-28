@@ -392,9 +392,9 @@ class Form extends Component {
                                         value={item.PER_SERVICE_SUPPLIER_CODE!==""?[item.PER_SERVICE_SUPPLIER_CODE+item.PER_SERVICE_WISE_SUPPLIER_NAME]:[]}
                                         >
                                         {this.state.suppliers!==undefined?this.state.suppliers.map((item,indx)=>{
-                                            if(indx<10){
+                                            {/* if(indx<10){ */}
                                                 return <Option value={item.supplier_id+","+item.supplier_display_name}>{item.supplier_display_name}</Option>
-                                            }
+                                            {/* } */}
                                             }):null}
                                     
                                         </Select>
