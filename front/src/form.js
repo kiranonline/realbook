@@ -171,14 +171,14 @@ class Form extends Component {
 
             return;
         }
-        else if(formData.OVER_ALL_PROFIT===undefined){
+        /*else if(formData.OVER_ALL_PROFIT===undefined){
             notification['warning']({
                 message: 'Required field missing',
                 description: "Over All Profit can't be null!",
               });
 
             return;
-        }
+        }*/
         else if(formData.INVOICE_CURRENCY===undefined){
             notification['warning']({
                 message: 'Required field missing',
