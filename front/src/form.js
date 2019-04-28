@@ -24,6 +24,9 @@ class Form extends Component {
             activeRowIndex:-1,
             formData:{},
             dynamic:[],
+            totalTax:0,
+            totalDiscount:0,
+            totalCost:0,
             dynamic_formData:{
                 SERVICE_CATEGORY:"",
                 PRODUCT_NAME:"",
@@ -67,8 +70,11 @@ class Form extends Component {
 
     getActiveBooking(id){
         axios.get("http://localhost:5000/bookingmaster/local/"+id).then(res=>{
-            this.setState({formData:res.data.data,dynamic:res.data.data.dynamic,RA_REFERENCE:res.data.RA_REFERENCE})
-            console.log(this.state)
+            if(res.data.success){
+                this.setState({formData:res.data.data,dynamic:res.data.data.dynamic,RA_REFERENCE:res.data.RA_REFERENCE})
+            }
+            
+            // console.log(this.state)
         })
     }
 
@@ -135,7 +141,7 @@ class Form extends Component {
             cost=cost+parseInt(item.COMPONENTS_WISE_SELLING_COST);
         })
 
-        this.setState({formData:Object.assign({},formData,{SELLINGCOST:cost})});
+        this.setState({formData:Object.assign({},formData,{SELLINGCOST:cost}),totalCost:cost});
 
     }
 
@@ -146,7 +152,7 @@ class Form extends Component {
                     discount=discount+parseInt(item.COMPONENTS_WISE_DISCOUNT_COMISSION);
                 })
         
-                this.setState({formData:Object.assign({},formData,{OVER_ALL_DISCOUNT:discount})});
+                this.setState({formData:Object.assign({},formData,{OVER_ALL_DISCOUNT:discount}),totalDiscount:discount});
         
     }
 
@@ -157,7 +163,7 @@ class Form extends Component {
             tax=tax+parseInt(item.TAX_CALCULATION);
         })
 
-        this.setState({formData:Object.assign({},formData,{TOTAL_TAX_CALCULATION:tax})});
+        this.setState({formData:Object.assign({},formData,{TOTAL_TAX_CALCULATION:tax}),totalTax:tax});
 
 }
 
@@ -204,7 +210,30 @@ class Form extends Component {
 
             return;
         }
-        
+        else if(parseInt(formData.SELLINGCOST)!==this.state.totalCost){
+            notification['warning']({
+                message: 'Required field missing',
+                description: "Invalid selling cost",
+              });
+
+            return;
+        }
+        else if(parseInt(formData.OVER_ALL_DISCOUNT)!==this.state.totalDiscount){
+            notification['warning']({
+                message: 'Required field missing',
+                description: "Invalid overall discount",
+              });
+
+            return;
+        }
+        else if(parseInt(formData.TOTAL_TAX_CALCULATION)!==this.state.totalTax){
+            notification['warning']({
+                message: 'Required field missing',
+                description: "Invalid tax calculation",
+              });
+
+            return;
+        }
         else{
             dynamic.map(item=>{
                 if(item.SERVICE_COUNTRY.length===0){
@@ -246,7 +275,8 @@ class Form extends Component {
                     return;
                 }
             
-                else if(item.COMPONENTS_WISE_CURRENCY.length===0){
+                else if(item.COMPONENTS_WISE_CURRENCY===undefined || this.state.activeInitial.COMPONENTS_WISE_CURRENCY===undefined){
+                    console.log(item.COMPONENTS_WISE_CURRENCY,this.state.activeInitial.COMPONENTS_WISE_CURRENCY)
                     notification['warning']({
                         message: 'Required field missing',
                         description: "Component wise currency can't be empty",
@@ -256,14 +286,17 @@ class Form extends Component {
                     return;
                 }
                 else{
-                    formData.dynamic=dynamic;
+                    formData.dynamic=[...dynamic];
+                    formData.dynamic.map((item,indx)=>{
+                        formData.dynamic[indx]['is_manual']=1;
+                    })
                     formData.RA_REFERENCE=this.state.RA_REFERENCE;
             
                     axios.post("http://localhost:5000/bookingmaster/local/"+this.state.RA_REFERENCE,{data:formData}).then(res=>{
                         if(res.status===200){
                             if(res.data.success){
                                 // this.props.history.push("/local/booking/"+this.state.RA_REFERENCE);
-                                window.location.href="/local/booking/n"+this.state.RA_REFERENCE
+                                // window.location.href="/local/booking/n"+this.state.RA_REFERENCE
                             }
                         }
                     })
@@ -294,19 +327,19 @@ class Form extends Component {
             <div className="row">
                 <div className="col-4">
                     <div className="form-group">
-                        <label htmlfor="">RA Reference *</label>
+                        <label htmlFor="">RA Reference *</label>
                         <input type="text" className="form-control" defaultValue={this.state.RA_REFERENCE} onChange={(e)=>this.setState({RA_REFERENCE:e.target.value})} id="" placeholder="" />
                     </div>
                 </div>
                 <div className="col-4">
                     <div className="form-group">
-                        <label htmlfor="">RA Agent Code *</label>
+                        <label htmlFor="">RA Agent Code *</label>
                         <input type="text" className="form-control" defaultValue={formData.RA_AGENT_CODE} onChange={(e)=>{formData.RA_AGENT_CODE=e.target.value;}} id="" placeholder="" />
                     </div>
                 </div>
                 <div className="col-4">
                     <div className="form-group">
-                        <label htmlfor="">Invoice Number</label>
+                        <label htmlFor="">Invoice Number</label>
                         <input type="text" className="form-control" defaultValue={formData.INVOICE_NUMBER} onChange={(e)=>{formData.INVOICE_NUMBER=e.target.value;}} id="" placeholder="" />
                     </div>
                 </div>
@@ -314,13 +347,13 @@ class Form extends Component {
             <div className="row">
                 <div className="col-4">
                     <div className="form-group">
-                        <label htmlfor="">First Name</label>
+                        <label htmlFor="">First Name</label>
                         <input type="text" className="form-control" defaultValue={formData.FIRSTNAME} onChange={(e)=>{formData.FIRSTNAME=e.target.value;}} id="" placeholder="" />
                     </div>
                 </div>
                 <div className="col-4">
                     <div className="form-group">
-                        <label htmlfor="">Invoice Currency *</label>
+                        <label htmlFor="">Invoice Currency *</label>
                         <div className="input-group mb-3">
                         <select className="form-control ng-pristine ng-valid ng-touched" onChange={(e)=>{formData.INVOICE_CURRENCY=e.target.value;}} defaultValue="">
                                 <option value="">{this.props.match.params.ra_reference?formData.INVOICE_CURRENCY:"Select Currency..."}</option>
@@ -337,7 +370,7 @@ class Form extends Component {
                 </div>
                 <div className="col-4">
                     <div className="form-group">
-                        <label htmlfor="">Invoice Date</label>
+                        <label htmlFor="">Invoice Date</label>
                         <div className="input-group mb-3">
                             <DatePicker style={{width:'30em'}} defaultValue={moment(formData.INVOICE_DATE)} format="YYYY-MM-DD" onChange={(date,dateString)=>{formData.INVOICE_DATE=dateString;}} placeholder="yyyy-mm-dd" />
                             {/* <div className="input-group-append">
@@ -350,13 +383,13 @@ class Form extends Component {
             <div className="row">
                 <div className="col-4">
                     <div className="form-group">
-                        <label htmlfor="">Exchange Rate *</label>
+                        <label htmlFor="">Exchange Rate *</label>
                         <input type="text" className="form-control" defaultValue={formData.EXCHANGE_RATE} onChange={(e)=>{formData.EXCHANGE_RATE=e.target.value}} id="" placeholder="" />
                     </div>
                 </div>
                 <div className="col-4">
                     <div className="form-group">
-                        <label htmlfor="">Payment Deadline</label>
+                        <label htmlFor="">Payment Deadline</label>
                         <div className="input-group mb-3">
                             <DatePicker style={{width:'30em'}} defaultValue={moment(formData.PAYMENT_DEADLINE)}  onChange={(date,dateString)=>{formData.PAYMENT_DEADLINE=dateString}} />
                         </div>
@@ -364,7 +397,7 @@ class Form extends Component {
                 </div>
                 <div className="col-4">
                     <div className="form-group">
-                        <label htmlfor="">Stand Alone</label>
+                        <label htmlFor="">Stand Alone</label>
                         <input type="text" className="form-control" id="" defaultValue={formData.STAND_ALONE} onChange={(e)=>{formData.STAND_ALONE=e.target.value}} placeholder="" />
                     </div>
                 </div>
@@ -372,13 +405,13 @@ class Form extends Component {
             <div className="row mb-5">
                 <div className="col-4">
                     <div className="form-group">
-                        <label htmlfor="">SBU</label>
+                        <label htmlFor="">SBU</label>
                         <input type="text" className="form-control" defaultValue={formData.SBU} onChange={(e)=>{formData.SBU=e.target.value}} id="" placeholder="" />
                     </div>
                 </div>
                 <div className="col-4">
                     <div className="form-group">
-                        <label htmlfor="">Lead Passanger</label>
+                        <label htmlFor="">Lead Passanger</label>
                         <input type="text" className="form-control" defaultValue={formData.LEAD_PASSENGER} onChange={(e)=>{formData.LEAD_PASSENGER=e.target.value}} id="" placeholder="" />
                     </div>
                 </div>
@@ -388,7 +421,7 @@ class Form extends Component {
                return <div className="row align-items-end"  key={indx}>
                 <div className="col-2">
                     <div className="form-group">
-                        <label htmlfor="">Service Category *</label>
+                        <label htmlFor="">Service Category *</label>
                             <select className="form-control ng-pristine ng-valid ng-touched" 
                             defaultValue={item.SERVICE_CATEGORY}
                             onChange={(e)=>{dynamic[indx]['SERVICE_CATEGORY']=e.target.value}}>
@@ -403,7 +436,7 @@ class Form extends Component {
                 </div>
                 <div className="col-2">
                     <div className="form-group">
-                        <label htmlfor="">Product Name *</label>
+                        <label htmlFor="">Product Name *</label>
                         <input type="text" className="form-control mb-4" id="" defaultValue={item.PRODUCT_NAME} onChange={(e)=>{dynamic[indx]['PRODUCT_NAME']=e.target.value}} placeholder="" />
                        
                         
@@ -411,7 +444,7 @@ class Form extends Component {
                 </div>
                 <div className="col-2">
                     <div className="form-group">
-                        <label htmlfor="" >Per Service Supplier Name *</label>
+                        <label htmlFor="" >Per Service Supplier Name *</label>
                        
                                     <Select
                                         mode="multiple"
@@ -434,7 +467,7 @@ class Form extends Component {
                 </div>
                 <div className="col-2">
                     <div className="form-group">
-                        <label htmlfor="">Components Wise Selling  *</label>
+                        <label htmlFor="">Components Wise Selling  *</label>
                         
                         <input type="text" className="form-control mb-4" defaultValue={item.COMPONENTS_WISE_SELLING_COST} onChange={(e)=>{dynamic[indx]['COMPONENTS_WISE_SELLING_COST']=e.target.value;this.setSellingCost(indx,dynamic,formData)}} id="" placeholder="" />
                         
@@ -442,7 +475,7 @@ class Form extends Component {
                 </div>
                 <div className="col-3">
                     <div className="form-group">
-                        <label htmlfor="">Service Country *</label>
+                        <label htmlFor="">Service Country *</label>
                         
                         {<div className="input-group mb-3">
                             <select className="form-control ng-pristine ng-valid ng-touched" onChange={(e)=>{dynamic[indx].SERVICE_COUNTRY=e.target.value;}} defaultValue="">
@@ -483,37 +516,37 @@ class Form extends Component {
             <div className="row">
                 <div className="col-10">
                 <div className="form-group row">
-                        <label htmlfor="" className="ml-auto col-auto col-form-label">Selling Cost</label>
+                        <label htmlFor="" className="ml-auto col-auto col-form-label">Selling Cost</label>
                         <div className="col-2">
                             <input type="number" min="0" defaultValue={formData.SELLINGCOST} onChange={(e)=>{formData.SELLINGCOST=e.target.value;}} className="form-control" />
                         </div>
                     </div>
                     <div className="form-group row">
-                        <label htmlfor="" className="ml-auto col-auto col-form-label">Over All Discounts</label>
+                        <label htmlFor="" className="ml-auto col-auto col-form-label">Over All Discounts</label>
                         <div className="col-2">
                             <input type="number" min="0" defaultValue={formData.OVER_ALL_DISCOUNT} onChange={(e)=>{formData.OVER_ALL_DISCOUNT=e.target.value;}} className="form-control" />
                         </div>
                     </div>
                     <div className="form-group row">
-                        <label htmlfor="" className="ml-auto col-auto col-form-label">Over All Profit</label>
+                        <label htmlFor="" className="ml-auto col-auto col-form-label">Over All Profit</label>
                         <div className="col-2">
                             <input type="number" min="0"  defaultValue={formData.OVER_ALL_LOSS===0?formData.OVER_ALL_PROFIT:0} onChange={(e)=>{formData.OVER_ALL_PROFIT=e.target.value}}  className="form-control" />
                         </div>
                     </div>
                     <div className="form-group row">
-                        <label htmlfor="" className="ml-auto col-auto col-form-label" >Over All Loss</label>
+                        <label htmlFor="" className="ml-auto col-auto col-form-label" >Over All Loss</label>
                         <div className="col-2">
                             <input type="number" min="0" defaultValue={formData.OVER_ALL_PROFIT===0?formData.OVER_ALL_LOSS:0} onChange={(e)=>{formData.OVER_ALL_LOSS=e.target.value;}} className="form-control"  />
                         </div>
                     </div>
                     <div className="form-group row">
-                        <label htmlfor="" className="ml-auto col-auto col-form-label">Total In Amounts</label>
+                        <label htmlFor="" className="ml-auto col-auto col-form-label">Total In Amounts</label>
                         <div className="col-2">
                             <input type="text" defaultValue={formData.TOTAL_IN_AMOUNTS} onChange={(e)=>{formData.TOTAL_IN_AMOUNTS=e.target.value;}}  className="form-control" />
                         </div>
                     </div>
                     <div className="form-group row">
-                        <label htmlfor="" className="ml-auto col-auto col-form-label">Total Tax Calculation</label>
+                        <label htmlFor="" className="ml-auto col-auto col-form-label">Total Tax Calculation</label>
                         <div className="col-2">
                             <input type="text" defaultValue={formData.TOTAL_TAX_CALCULATION} onChange={(e)=>{formData.TOTAL_TAX_CALCULATION=e.target.value;}} className="form-control" />
                         </div>
@@ -524,7 +557,7 @@ class Form extends Component {
             <div className="row align-items-end">
                 <div className="col-6">
                     <div className="form-group mb-0">
-                        <label htmlfor="exampleFormControlTextarea1">Booking Note</label>
+                        <label htmlFor="exampleFormControlTextarea1">Booking Note</label>
                         <textarea className="form-control" defaultValue={formData.BOOKING_NOTES} onChange={(e)=>{formData.BOOKING_NOTES=e.target.value}} id="exampleFormControlTextarea1" rows="5"
                             style={{resize: 'none'}}></textarea>
                     </div>
@@ -536,7 +569,7 @@ class Form extends Component {
             </div>
         </div>
         {/* <!-- Modal --> */}
-        <div className="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog"
+        <div className="modal fade bd-example-modal-lg" id="exampleModalCenter" tabIndex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div className="modal-content">
@@ -548,13 +581,13 @@ class Form extends Component {
                                     <div className="row">
                                         <div className="col-6">
                                             <div className="form-group">
-                                                <label htmlfor="">Service City</label>
+                                                <label htmlFor="">Service City</label>
                                                 <input type="text" value={activeInitial.SERVICE_CITY} onChange={(e)=>{this.setModalValues('SERVICE_CITY',e.target.value);}} className="form-control" id="" placeholder="" />
                                             </div>
                                         </div>
                                         <div className="col-6">
                                             <div className="form-group">
-                                                <label htmlfor="">Tax Calculation</label>
+                                                <label htmlFor="">Tax Calculation</label>
                                                 <input type="text" value={activeInitial.TAX_CALCULATION} onChange={(e)=>{activeInitial.TAX_CALCULATION=e.target.value;this.setTotalTax(this.state.activeRowIndex,dynamic,formData,activeInitial)}} className="form-control" id="" placeholder="" />
                                             </div>
                                         </div>
@@ -563,7 +596,7 @@ class Form extends Component {
                                     <div className="row">
                                         <div className="col-6">
                                             <div className="form-group">
-                                                <label htmlfor="">Foreign Currency</label>
+                                                <label htmlFor="">Foreign Currency</label>
                                                 <select className="form-control ng-pristine ng-valid ng-touched" 
                                                     value={activeInitial.FOREIGN_CURRENCY} onChange={(e)=>{this.setState({activeInitial:Object.assign({},activeInitial,{FOREIGN_CURRENCY:e.target.value})})}}
                                                 >
@@ -579,7 +612,7 @@ class Form extends Component {
                                         </div>
                                         <div className="col-6">
                                             <div className="form-group">
-                                                <label htmlfor="">Components Wise Markup</label>
+                                                <label htmlFor="">Components Wise Markup</label>
                                                 <input type="number" min="0" className="form-control" value={activeInitial.COMPONENTS_WISE_MARKUP} onChange={(e)=>{this.setState({activeInitial:Object.assign({},activeInitial,{COMPONENTS_WISE_MARKUP:e.target.value})})}} id="" placeholder="" />
                                             </div>
                                         </div>
@@ -587,13 +620,13 @@ class Form extends Component {
                                     <div className="row">
                                         <div className="col-6">
                                             <div className="form-group">
-                                                <label htmlfor="">Component Wise Net Cost</label>
+                                                <label htmlFor="">Component Wise Net Cost</label>
                                                 <input type="number" value={activeInitial.COMPONENTS_WISE_NET_COST} onChange={(e)=>{activeInitial.COMPONENTS_WISE_NET_COST=e.target.value}} className="form-control" id="" placeholder="" />
                                             </div>
                                         </div>
                                         <div className="col-6">
                                             <div className="form-group">
-                                                <label htmlfor="">Components Wise Net Cost Currency</label>
+                                                <label htmlFor="">Components Wise Net Cost Currency</label>
                                                 <select 
                                                 className="form-control ng-pristine ng-valid ng-touched"
                                                 defaultValue={activeInitial.COMPONENTS_WISE_NET_COST_CURRENCY} onChange={(e)=>{activeInitial.COMPONENTS_WISE_NET_COST_CURRENCY=e.target.value}}
@@ -613,13 +646,13 @@ class Form extends Component {
                                     <div className="row">
                                         <div className="col-6">
                                             <div className="form-group mb-0">
-                                                <label htmlfor="">Booking Reference(RA File Handler)</label>
+                                                <label htmlFor="">Booking Reference(RA File Handler)</label>
                                                 <input type="text" defaultValue={activeInitial.RA_FILE_HANDLER} onChange={(e)=>{activeInitial.RA_FILE_HANDLER=e.target.value}} className="form-control" id="" placeholder="" />
                                             </div>
                                         </div>
                                         <div className="col-6">
                                             <div className="form-group mb-0">
-                                                <label htmlfor="">Payment Slabs</label>
+                                                <label htmlFor="">Payment Slabs</label>
                                                 <input type="text" defaultValue={activeInitial.PAYMENT_SLABS} onChange={(e)=>{activeInitial.PAYMENT_SLABS=e.target.value}} className="form-control" id="" placeholder=""/>
                                             </div>
                                         </div>
@@ -627,7 +660,7 @@ class Form extends Component {
                                     <div className="row">
                                         <div className="col-6">
                                             <div className="form-group mb-0">
-                                                <label htmlfor="">Supplier Payment Deadline</label>
+                                                <label htmlFor="">Supplier Payment Deadline</label>
                                                 <div className="input-group-mb6">
                                                 <DatePicker format="YYYY-MM-DD" 
                                                         defaultValue={moment(activeInitial.SUPPLIER_PAYMENT_DEADLINE)} onChange={(date,dateString)=>{activeInitial.SUPPLIER_PAYMENT_DEADLINE=dateString}}
@@ -639,7 +672,7 @@ class Form extends Component {
                                         </div>
                                         <div className="col-6">
                                             <div className="form-group mb-0">
-                                                <label htmlfor="">Component Wise Discount Comission</label>
+                                                <label htmlFor="">Component Wise Discount Comission</label>
                                                 <input type="text" defaultValue={activeInitial.COMPONENTS_WISE_DISCOUNT_COMISSION} onChange={(e)=>{activeInitial.COMPONENTS_WISE_DISCOUNT_COMISSION=e.target.value;this.setTotalDiscount(this.state.activeRowIndex,dynamic,formData,activeInitial)}} className="form-control" id="" placeholder=""/>
                                             </div>
                                         </div>
@@ -647,10 +680,10 @@ class Form extends Component {
                                     <div className="row">
                                         <div className="col-6">
                                             <div className="form-group">
-                                                <label htmlfor="">Component Wise Currency</label>
+                                                <label htmlFor="">Component Wise Currency</label>
                                                 <select 
                                                 className="form-control ng-pristine ng-valid ng-touched"
-                                                defaultValue={activeInitial.COMPONENTS_WISE_CURRENCY} onChange={(e)=>{activeInitial.COMPONENTS_WISE_CURRENCY=e.target.value}}
+                                                value={activeInitial.COMPONENTS_WISE_CURRENCY} onChange={(e)=>{this.setState({activeInitial:Object.assign({},activeInitial,{COMPONENTS_WISE_CURRENCY:e.target.value})})}}
                                                 >
                                                 <option value="">Select a currency</option>
                                                     {
@@ -664,7 +697,7 @@ class Form extends Component {
                                         </div>
                                         <div className="col-6">
                                             <div className="form-group">
-                                                <label htmlfor="">City</label>
+                                                <label htmlFor="">City</label>
                                                 <input type="text" className="form-control"
                                                     defaultValue={activeInitial.SERVICE_CITY} onChange={(e)=>{activeInitial.SERVICE_CITY=e.target.value}}
                                                  id="" placeholder="" />
@@ -674,7 +707,7 @@ class Form extends Component {
                                     <div className="row">
                                         <div className="col-6">
                                             <div className="form-group mb-0">
-                                                <label htmlfor="">Arrival Date</label>
+                                                <label htmlFor="">Arrival Date</label>
                                                 <div className="input-group-mb6">
                                                 <DatePicker format="YYYY-MM-DD" 
                                                         defaultValue={moment(activeInitial.ARRIVALDATE)} 
