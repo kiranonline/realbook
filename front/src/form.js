@@ -71,7 +71,7 @@ class Form extends Component {
     getActiveBooking(id){
         axios.get("http://localhost:5000/bookingmaster/local/"+id).then(res=>{
             if(res.data.success){
-                this.setState({formData:res.data.data,dynamic:res.data.data.dynamic,RA_REFERENCE:res.data.RA_REFERENCE})
+                this.setState({formData:res.data.data,dynamic:res.data.data.dynamic,RA_REFERENCE:res.data.RA_REFERENCE,totalCost:res.data.data.SELLINGCOST,totalDiscount:res.data.data.OVER_ALL_DISCOUNT,totalTax:res.data.data.TOTAL_TAX_CALCULATION})
             }
             
             // console.log(this.state)
@@ -210,7 +210,8 @@ class Form extends Component {
 
             return;
         }
-        else if(parseInt(formData.SELLINGCOST)!==this.state.totalCost){
+        else if(parseInt(formData.SELLINGCOST)!==parseInt(this.state.totalCost.toString())){
+            console.log(formData.SELLINGCOST,this.state.totalCost)
             notification['warning']({
                 message: 'Required field missing',
                 description: "Invalid selling cost",
@@ -218,7 +219,7 @@ class Form extends Component {
 
             return;
         }
-        else if(parseInt(formData.OVER_ALL_DISCOUNT)!==this.state.totalDiscount){
+        else if(parseInt(formData.OVER_ALL_DISCOUNT)!==parseInt(this.state.totalDiscount.toString())){
             notification['warning']({
                 message: 'Required field missing',
                 description: "Invalid overall discount",
@@ -226,7 +227,7 @@ class Form extends Component {
 
             return;
         }
-        else if(parseInt(formData.TOTAL_TAX_CALCULATION)!==this.state.totalTax){
+        else if(parseInt(formData.TOTAL_TAX_CALCULATION)!==parseInt(this.state.totalTax.toString())){
             notification['warning']({
                 message: 'Required field missing',
                 description: "Invalid tax calculation",
@@ -275,8 +276,8 @@ class Form extends Component {
                     return;
                 }
             
-                else if(item.COMPONENTS_WISE_CURRENCY===undefined || this.state.activeInitial.COMPONENTS_WISE_CURRENCY===undefined){
-                    console.log(item.COMPONENTS_WISE_CURRENCY,this.state.activeInitial.COMPONENTS_WISE_CURRENCY)
+                else if(item.COMPONENTS_WISE_CURRENCY===undefined || this.state.activeInitial.COMPONENTS_WISE_CURRENCY===undefined || item.COMPONENTS_WISE_CURRENCY.length===0 || this.state.activeInitial.COMPONENTS_WISE_CURRENCY.length===0){
+                    // console.log("item",item.COMPONENTS_WISE_CURRENCY,"state",this.state.activeInitial.COMPONENTS_WISE_CURRENCY)
                     notification['warning']({
                         message: 'Required field missing',
                         description: "Component wise currency can't be empty",
@@ -288,15 +289,30 @@ class Form extends Component {
                 else{
                     formData.dynamic=[...dynamic];
                     formData.dynamic.map((item,indx)=>{
-                        formData.dynamic[indx]['is_manual']=1;
+                        formData.dynamic[indx]['ismanual']=1;
                     })
                     formData.RA_REFERENCE=this.state.RA_REFERENCE;
+                    if(formData.msg!==undefined){
+                        delete formData.msg;
+                    }
+                    if(formData.success!==undefined){
+                        delete formData.success;
+                    }
+                    
             
                     axios.post("http://localhost:5000/bookingmaster/local/"+this.state.RA_REFERENCE,{data:formData}).then(res=>{
                         if(res.status===200){
                             if(res.data.success){
                                 // this.props.history.push("/local/booking/"+this.state.RA_REFERENCE);
-                                // window.location.href="/local/booking/n"+this.state.RA_REFERENCE
+                                notification['success']({
+                                    message: 'Booking form data is submitted',
+                                    description: "Data saved succesfully",
+                                  });
+                                  var self=this;
+                                  setTimeout(function(){
+                                    window.location.href="/local/booking/"+self.state.RA_REFERENCE
+
+                                  },1000)
                             }
                         }
                     })
@@ -683,7 +699,7 @@ class Form extends Component {
                                                 <label htmlFor="">Component Wise Currency</label>
                                                 <select 
                                                 className="form-control ng-pristine ng-valid ng-touched"
-                                                value={activeInitial.COMPONENTS_WISE_CURRENCY} onChange={(e)=>{this.setState({activeInitial:Object.assign({},activeInitial,{COMPONENTS_WISE_CURRENCY:e.target.value})})}}
+                                                value={activeInitial.COMPONENTS_WISE_CURRENCY} onChange={(e)=>{dynamic[this.state.activeRowIndex].COMPONENTS_WISE_CURRENCY=e.target.value;this.setState({activeInitial:Object.assign({},activeInitial,{COMPONENTS_WISE_CURRENCY:e.target.value})})}}
                                                 >
                                                 <option value="">Select a currency</option>
                                                     {
