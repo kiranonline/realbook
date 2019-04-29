@@ -65,13 +65,17 @@ class Form extends Component {
          // dynamic form_setup
         let {dynamic,dynamic_formData}=this.state;
         dynamic.push(Object.assign({},dynamic_formData));
+        
         this.setState({dynamic});
     }
 
     getActiveBooking(id){
         axios.get("http://localhost:5000/bookingmaster/local/"+id).then(res=>{
             if(res.data.success){
-                this.setState({formData:res.data.data,dynamic:res.data.data.dynamic,RA_REFERENCE:res.data.RA_REFERENCE,totalCost:res.data.data.SELLINGCOST,totalDiscount:res.data.data.OVER_ALL_DISCOUNT,totalTax:res.data.data.TOTAL_TAX_CALCULATION})
+               
+                this.setState({formData:res.data.data,dynamic:res.data.data.dynamic,RA_REFERENCE:res.data.RA_REFERENCE,totalCost:res.data.data.SELLINGCOST,totalDiscount:res.data.data.OVER_ALL_DISCOUNT,totalTax:res.data.data.TOTAL_TAX_CALCULATION,
+                activeInitial: res.data.data.dynamic[ res.data.data.dynamic.length-1]
+                })
             }
             
             // console.log(this.state)
@@ -276,8 +280,9 @@ class Form extends Component {
                     return;
                 }
             
-                else if(item.COMPONENTS_WISE_CURRENCY===undefined || this.state.activeInitial.COMPONENTS_WISE_CURRENCY===undefined || item.COMPONENTS_WISE_CURRENCY.length===0 || this.state.activeInitial.COMPONENTS_WISE_CURRENCY.length===0){
-                    // console.log("item",item.COMPONENTS_WISE_CURRENCY,"state",this.state.activeInitial.COMPONENTS_WISE_CURRENCY)
+                else if(item.COMPONENTS_WISE_CURRENCY===undefined || this.state.activeInitial.COMPONENTS_WISE_CURRENCY===undefined
+                     || item.COMPONENTS_WISE_CURRENCY.length===0){
+                    console.log("item",item.COMPONENTS_WISE_CURRENCY,"state",this.state.activeInitial.COMPONENTS_WISE_CURRENCY)
                     notification['warning']({
                         message: 'Required field missing',
                         description: "Component wise currency can't be empty",
@@ -574,7 +579,7 @@ class Form extends Component {
                 <div className="col-6">
                     <div className="form-group mb-0">
                         <label htmlFor="exampleFormControlTextarea1">Booking Note</label>
-                        <textarea className="form-control" defaultValue={formData.BOOKING_NOTES} onChange={(e)=>{formData.BOOKING_NOTES=e.target.value}} id="exampleFormControlTextarea1" rows="5"
+                        <textarea className="form-control" value={formData.BOOKING_NOTES} onChange={(e)=>{formData.BOOKING_NOTES=e.target.value}} id="exampleFormControlTextarea1" rows="5"
                             style={{resize: 'none'}}></textarea>
                     </div>
                 </div>
