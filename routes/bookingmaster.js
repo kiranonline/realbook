@@ -18,7 +18,7 @@ router.get('/fetch/form',(req,res,next)=>{
 })
 
 router.post('/fetch',(req,res,next)=>{
-    var id = req.query.id || 152395;
+    var id = req.query.id;
     var url = "http://beta.redappletravel.com/crons/realbook_cron.php?id="+id;
     request(url,(error,response,body)=>{
         //console.log(response);

@@ -14,11 +14,12 @@ let singleBookingPrepare = (booking)=>{
             let data_fetched = booking;
             console.log(data_fetched);
             renameKeys(keyMap, data_fetched,function(r){
+                console.log(r);
                 var tempdata = model1.bookingmaster.build(r);
                 console.log("I am done");
                 tempdata.save().then(()=>{
                     console.log("I am done");
-                    sequelize.query(`CALL Adansa.ra_voucher_post_rb_v1('${data_fetched.RA_REFERENCE}');`).then(()=>{
+                    sequelize.query(`CALL Adansa.ra_voucher_post_rb_v1('${r.RA_REFERENCE}');`).then(()=>{
                         return resolve();
                     }).catch((err2)=>{
                         console.log(`Error procedure: ${err2}`);
