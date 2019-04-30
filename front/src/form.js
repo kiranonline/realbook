@@ -362,7 +362,7 @@ class Form extends Component {
                 <div className="col-4">
                     <div className="form-group">
                         <label htmlFor="">Invoice Number</label>
-                        <input type="text" className="form-control" defaultValue={formData.INVOICE_NUMBER} onChange={(e)=>{formData.INVOICE_NUMBER=e.target.value;}} id="" placeholder="" />
+                        <input type="number" className="form-control" defaultValue={formData.INVOICE_NUMBER} onChange={(e)=>{formData.INVOICE_NUMBER=e.target.value;}} id="" placeholder="" />
                     </div>
                 </div>
             </div>
@@ -491,7 +491,7 @@ class Form extends Component {
                     <div className="form-group">
                         <label htmlFor="">Components Wise Selling  *</label>
                         
-                        <input type="text" className="form-control mb-4" defaultValue={item.COMPONENTS_WISE_SELLING_COST} onChange={(e)=>{dynamic[indx]['COMPONENTS_WISE_SELLING_COST']=e.target.value;this.setSellingCost(indx,dynamic,formData)}} id="" placeholder="" />
+                        <input type="number" className="form-control mb-4" defaultValue={item.COMPONENTS_WISE_SELLING_COST} onChange={(e)=>{dynamic[indx]['COMPONENTS_WISE_SELLING_COST']=e.target.value;this.setSellingCost(indx,dynamic,formData)}} id="" placeholder="" />
                         
                     </div>
                 </div>
@@ -564,13 +564,13 @@ class Form extends Component {
                     <div className="form-group row">
                         <label htmlFor="" className="ml-auto col-auto col-form-label">Total In Amounts</label>
                         <div className="col-2">
-                            <input type="text" defaultValue={formData.TOTAL_IN_AMOUNTS} onChange={(e)=>{formData.TOTAL_IN_AMOUNTS=e.target.value;}}  className="form-control" />
+                            <input type="number" defaultValue={formData.TOTAL_IN_AMOUNTS} onChange={(e)=>{formData.TOTAL_IN_AMOUNTS=e.target.value;}}  className="form-control" />
                         </div>
                     </div>
                     <div className="form-group row">
                         <label htmlFor="" className="ml-auto col-auto col-form-label">Total Tax Calculation</label>
                         <div className="col-2">
-                            <input type="text" defaultValue={formData.TOTAL_TAX_CALCULATION} onChange={(e)=>{formData.TOTAL_TAX_CALCULATION=e.target.value;}} className="form-control" />
+                            <input type="number" defaultValue={formData.TOTAL_TAX_CALCULATION} onChange={(e)=>{formData.TOTAL_TAX_CALCULATION=e.target.value;}} className="form-control" />
                         </div>
                     </div>
                 </div>
@@ -610,7 +610,7 @@ class Form extends Component {
                                         <div className="col-6">
                                             <div className="form-group">
                                                 <label htmlFor="">Tax Calculation</label>
-                                                <input type="text" value={activeInitial.TAX_CALCULATION} onChange={(e)=>{activeInitial.TAX_CALCULATION=e.target.value;this.setTotalTax(this.state.activeRowIndex,dynamic,formData,activeInitial)}} className="form-control" id="" placeholder="" />
+                                                <input type="number" value={activeInitial.TAX_CALCULATION} onChange={(e)=>{activeInitial.TAX_CALCULATION=e.target.value;this.setTotalTax(this.state.activeRowIndex,dynamic,formData,activeInitial)}} className="form-control" id="" placeholder="" />
                                             </div>
                                         </div>
                                     </div>
@@ -696,7 +696,7 @@ class Form extends Component {
                                         <div className="col-6">
                                             <div className="form-group mb-0">
                                                 <label htmlFor="">Component Wise Discount Comission</label>
-                                                <input type="text" defaultValue={activeInitial.COMPONENTS_WISE_DISCOUNT_COMISSION} onChange={(e)=>{activeInitial.COMPONENTS_WISE_DISCOUNT_COMISSION=e.target.value;this.setTotalDiscount(this.state.activeRowIndex,dynamic,formData,activeInitial)}} className="form-control" id="" placeholder=""/>
+                                                <input type="number" defaultValue={activeInitial.COMPONENTS_WISE_DISCOUNT_COMISSION} onChange={(e)=>{activeInitial.COMPONENTS_WISE_DISCOUNT_COMISSION=e.target.value;this.setTotalDiscount(this.state.activeRowIndex,dynamic,formData,activeInitial)}} className="form-control" id="" placeholder=""/>
                                             </div>
                                         </div>
                                     </div>
