@@ -316,7 +316,7 @@ class Form extends Component {
                                   });
                                   var self=this;
                                   setTimeout(function(){
-                                    window.location.href="/local/booking/"+self.state.RA_REFERENCE
+                                    // window.location.href="/local/booking/"+self.state.RA_REFERENCE
 
                                   },1000)
                             }
@@ -394,7 +394,7 @@ class Form extends Component {
                     <div className="form-group">
                         <label htmlFor="">Invoice Date</label>
                         <div className="input-group mb-3">
-                            <DatePicker style={{width:'30em'}} defaultValue={moment(formData.INVOICE_DATE)} format="YYYY-MM-DD" onChange={(date,dateString)=>{formData.INVOICE_DATE=dateString;}} placeholder="yyyy-mm-dd" />
+                            <DatePicker style={{width:'30em'}} value={formData.INVOICE_DATE?moment(formData.INVOICE_DATE, 'YYYY-MM-DD'):""} format="YYYY-MM-DD" onChange={(date,dateString)=>{this.setState({formData:Object.assign({},formData,{INVOICE_DATE:dateString})})}} placeholder="yyyy-mm-dd" />
                             {/* <div className="input-group-append">
                                 <span className="input-group-text" id="basic-addon2"><i className="ion ion-md-calendar"></i></span>
                             </div> */}
@@ -413,7 +413,7 @@ class Form extends Component {
                     <div className="form-group">
                         <label htmlFor="">Payment Deadline</label>
                         <div className="input-group mb-3">
-                            <DatePicker style={{width:'30em'}} defaultValue={moment(formData.PAYMENT_DEADLINE)}  onChange={(date,dateString)=>{formData.PAYMENT_DEADLINE=dateString}} />
+                            <DatePicker style={{width:'30em'}} value={formData.PAYMENT_DEADLINE?moment(formData.PAYMENT_DEADLINE, 'YYYY-MM-DD'):""}  onChange={(date,dateString)=>{this.setState({formData:Object.assign({},formData,{PAYMENT_DEADLINE:dateString})})}} />
                         </div>
                     </div>
                 </div>
@@ -685,7 +685,8 @@ class Form extends Component {
                                                 <label htmlFor="">Supplier Payment Deadline</label>
                                                 <div className="input-group-mb6">
                                                 <DatePicker format="YYYY-MM-DD" 
-                                                        defaultValue={moment(activeInitial.SUPPLIER_PAYMENT_DEADLINE)} onChange={(date,dateString)=>{activeInitial.SUPPLIER_PAYMENT_DEADLINE=dateString}}
+                                                        value={activeInitial.SUPPLIER_PAYMENT_DEADLINE?moment(activeInitial.SUPPLIER_PAYMENT_DEADLINE):null} 
+                                                        onChange={(date,dateString)=>{activeInitial.SUPPLIER_PAYMENT_DEADLINE=dateString;this.setState({activeInitial:Object.assign({},activeInitial,{SUPPLIER_PAYMENT_DEADLINE:dateString})})}}
                                                     style={{width:"25.5em"}}
                                                 />
 
@@ -732,8 +733,8 @@ class Form extends Component {
                                                 <label htmlFor="">Arrival Date</label>
                                                 <div className="input-group-mb6">
                                                 <DatePicker format="YYYY-MM-DD" 
-                                                        defaultValue={moment(activeInitial.ARRIVALDATE)} 
-                                                        onChange={(date,dateString)=>{activeInitial.ARRIVALDATE=dateString}}
+                                                        value={activeInitial.ARRIVALDATE?moment(activeInitial.ARRIVALDATE, 'YYYY-MM-DD'):""} 
+                                                        onChange={(date,dateString)=>{activeInitial.ARRIVALDATE=dateString;this.setState({activeInitial:Object.assign({},activeInitial,{ARRIVALDATE:dateString})})}}
                                                     style={{width:"25.5em"}}
                                                 />
 
