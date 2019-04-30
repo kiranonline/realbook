@@ -180,7 +180,7 @@ class Form extends Component {
               });
             return;
         }
-        else if(formData.RA_AGENT_CODE===undefined){
+        else if(formData.RA_AGENT_CODE===undefined || formData.RA_AGENT_CODE.length===0){
             notification['warning']({
                 message: 'Required field missing',
                 description: "RA AGENT CODE can't be empty!",
@@ -196,7 +196,7 @@ class Form extends Component {
 
             return;
         }*/
-        else if(formData.INVOICE_CURRENCY===undefined){
+        else if(formData.INVOICE_CURRENCY===undefined || formData.INVOICE_CURRENCY.length===0){
             notification['warning']({
                 message: 'Required field missing',
                 description: "Please select an Invoice Currency",
@@ -205,7 +205,8 @@ class Form extends Component {
 
             return;
         }
-        else if(formData.EXCHANGE_RATE===undefined){
+        else if(formData.EXCHANGE_RATE===undefined || parseInt(formData.EXCHANGE_RATE)<=0){
+            console.log(formData.EXCHANGE_RATE)
             notification['warning']({
                 message: 'Required field missing',
                 description: "Exchange rate can't be empty",
@@ -405,7 +406,7 @@ class Form extends Component {
                 <div className="col-4">
                     <div className="form-group">
                         <label htmlFor="">Exchange Rate *</label>
-                        <input type="text" className="form-control" defaultValue={formData.EXCHANGE_RATE} onChange={(e)=>{formData.EXCHANGE_RATE=e.target.value}} id="" placeholder="" />
+                        <input type="number" className="form-control" min="0" defaultValue={formData.EXCHANGE_RATE} onChange={(e)=>{formData.EXCHANGE_RATE=e.target.value}} id="" placeholder="" />
                     </div>
                 </div>
                 <div className="col-4">
