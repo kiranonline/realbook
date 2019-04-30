@@ -46,9 +46,9 @@ class Form extends Component {
         }
         else{
         
-            this.setState({activeRowIndex:indx,activeInitial:{SERVICE_CITY:"",TAX_CALCULATION:"",FOREIGN_CURRENCY:"",COMPONENTS_WISE_MARKUP:"",
-        COMPONENTS_WISE_DISCOUNT_COMISSION:"",COMPONENTS_WISE_NET_COST_CURRENCY:"",COMPONENTS_WISE_NET_COST:"",RA_FILE_HANDLER:"",PAYMENT_SLABS:"",
-    SUPPLIER_PAYMENT_DEADLINE:"",COMPONENTS_WISE_CURRENCY:"",ARRIVALDATE:""}})
+            this.setState({activeRowIndex:indx,activeInitial:{SERVICE_CITY:null,TAX_CALCULATION:null,FOREIGN_CURRENCY:null,COMPONENTS_WISE_MARKUP:null,
+        COMPONENTS_WISE_DISCOUNT_COMISSION:null,COMPONENTS_WISE_NET_COST_CURRENCY:null,COMPONENTS_WISE_NET_COST:null,RA_FILE_HANDLER:null,PAYMENT_SLABS:null,
+    SUPPLIER_PAYMENT_DEADLINE:null,COMPONENTS_WISE_CURRENCY:null,ARRIVALDATE:null}})
             console.log(this.state.activeInitial)
         }
         
@@ -205,7 +205,7 @@ class Form extends Component {
 
             return;
         }
-        else if(formData.EXCHANGE_RATE===undefined || parseInt(formData.EXCHANGE_RATE)<=0){
+        else if(formData.EXCHANGE_RATE===undefined || parseInt(formData.EXCHANGE_RATE)<0){
             console.log(formData.EXCHANGE_RATE)
             notification['warning']({
                 message: 'Required field missing',
@@ -552,7 +552,7 @@ class Form extends Component {
                     <div className="form-group row">
                         <label htmlFor="" className="ml-auto col-auto col-form-label">Over All Profit</label>
                         <div className="col-2">
-                            <input type="number" min="0"  defaultValue={formData.OVER_ALL_LOSS===0?formData.OVER_ALL_PROFIT:0} onChange={(e)=>{formData.OVER_ALL_PROFIT=e.target.value}}  className="form-control" />
+                            <input type="number" min="0"  value={formData.OVER_ALL_LOSS===0 || formData.OVER_ALL_LOSS===null?formData.OVER_ALL_PROFIT:0} onChange={(e)=>{this.setState({formData:Object.assign({},formData,{OVER_ALL_PROFIT:e.target.value})})}}  className="form-control" />
                         </div>
                     </div>
                     <div className="form-group row">
