@@ -50,7 +50,7 @@ class Form extends Component {
             this.setState({activeRowIndex:indx,activeInitial:{SERVICE_CITY:null,TAX_CALCULATION:null,FOREIGN_CURRENCY:null,COMPONENTS_WISE_MARKUP:null,
         COMPONENTS_WISE_DISCOUNT_COMISSION:null,COMPONENTS_WISE_NET_COST_CURRENCY:null,COMPONENTS_WISE_NET_COST:null,RA_FILE_HANDLER:null,PAYMENT_SLABS:null,
     SUPPLIER_PAYMENT_DEADLINE:null,COMPONENTS_WISE_CURRENCY:null,ARRIVALDATE:null}})
-            console.log(this.state.activeInitial)
+            // console.log(this.state.activeInitial)
         }
         
     }
@@ -117,11 +117,11 @@ class Form extends Component {
 
     setSupplierName(dynamic,value,indx){
         // value=value[0];
+        // console.log(value)
         if(value!==undefined){
                dynamic[indx]['PER_SERVICE_WISE_SUPPLIER_NAME']=value.split(",")[1]
-        dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']=value.split(",")[0]
+               dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']=value.split(",")[0]
 
-      
         }
         else{
             dynamic[indx]['PER_SERVICE_WISE_SUPPLIER_NAME']=undefined;
@@ -141,12 +141,12 @@ class Form extends Component {
 
     
     deleteRow(dynamic,indx){
-        console.log(dynamic)
-        console.log('deleting>>>>> '+indx)
+        // console.log(dynamic)
+        // console.log('deleting>>>>> '+indx)
 
         dynamic.splice(indx,1);
-        console.log('deleted')
-        console.log(dynamic)
+        // console.log('deleted')
+        // console.log(dynamic)
         this.setState({dynamic});
     }
 
@@ -271,6 +271,7 @@ class Form extends Component {
                     return;
                 }
                 else if(item.PER_SERVICE_WISE_SUPPLIER_NAME.length===0){
+                    console.log(item.PER_SERVICE_WISE_SUPPLIER_NAME)
                     notification['warning']({
                         message: 'Required field missing',
                         description: "Please select a Supplier!",
@@ -487,24 +488,26 @@ class Form extends Component {
                 <div className="col-2">
                     <div className="form-group">
                         <label htmlFor="" >Per Service Supplier Name *</label>
-                        {item.PER_SERVICE_WISE_SUPPLIER_NAME.length>0?<AutoComplete
+                        {/* {item.PER_SERVICE_WISE_SUPPLIER_NAME.length>0? */}
+                        <AutoComplete
                         style={{ width: 200 }}
                         dataSource={this.state.suppliers}
                         value={item.PER_SERVICE_WISE_SUPPLIER_NAME}
-
+                        onChange={(value)=>{this.setSupplierName(dynamic,value,indx)}}
+                
                         // placeholder="try to type `b`"
                         filterOption={(inputValue, option) => option.props.children.split(",")[0].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 || option.props.children.split(",")[1].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
                         />
-                          :
+                          {/* :
                           <AutoComplete
                         style={{ width: 200 }}
                         dataSource={this.state.suppliers}
                         defaultValue={item.PER_SERVICE_WISE_SUPPLIER_NAME}
-
+                        onChange={(value)=>{this.setSupplierName(dynamic,value,indx)}}
                         // placeholder="try to type `b`"
                         filterOption={(inputValue, option) => option.props.children.split(",")[0].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 || option.props.children.split(",")[1].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
                         />                            
-                       }
+                       } */}
                     </div>
                 </div>
                 <div className="col-2">
