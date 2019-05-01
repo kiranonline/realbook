@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import 'antd/dist/antd.css';
 import './App.css';
-import { Select,DatePicker, message,notification } from 'antd';
+import { Select,DatePicker, message,notification, AutoComplete } from 'antd';
 import {withRouter} from 'react-router-dom';
 import moment from 'moment';
+import HttpService from './services/HttpService';
 
 const Option = Select.Option;
 
@@ -70,7 +71,8 @@ class Form extends Component {
     }
 
     getActiveBooking(id){
-        axios.get("http://localhost:5000/bookingmaster/local/"+id).then(res=>{
+        
+        HttpService.get('bookingmaster/local/'+id).then(res=>{
             if(res.data.success){
                
                 this.setState({formData:res.data.data,dynamic:res.data.data.dynamic,RA_REFERENCE:res.data.RA_REFERENCE,totalCost:res.data.data.SELLINGCOST,totalDiscount:res.data.data.OVER_ALL_DISCOUNT,totalTax:res.data.data.TOTAL_TAX_CALCULATION,
@@ -82,19 +84,22 @@ class Form extends Component {
         })
     }
 
-    getSupplier(){
-        axios.get('http://localhost:5000/api/supplier/getall').then(res=>{
+     getSupplier(){
+        
+        HttpService.get('api/supplier/getall').then(res=>{
             if(res.status===200){
-                // conso
-                // console.log(res.supplie)
-                this.setState({suppliers:res.data.supplier});
-                // console.log(this.state)
+                let data=[]
+                res.data.supplier.map(item=>{
+                    data.push(item.supplier_id+" , "+item.supplier_display_name)
+                })
+                this.setState({suppliers:data})
             }
         })
     }
 
     getCountries(){
-        axios.get('http://localhost:5000/api/service/country/getall').then(res=>{
+        
+        HttpService.get('api/service/country/getall').then(res=>{
             if(res.status===200){
                 this.setState({countries:res.data.suppliercountry})
             }
@@ -102,7 +107,8 @@ class Form extends Component {
     }
 
     getCurrency(){
-        axios.get("http://localhost:5000/api/currency/getall").then(res=>{
+        
+        HttpService.get('api/currency/getall').then(res=>{
             if(res.status===200){
                 this.setState({currencies:res.data.currency})
             }
@@ -126,15 +132,21 @@ class Form extends Component {
 
     cloneField(dynamic){
         let {dynamic_formData}=this.state;
+        // console.log('cloning>>>>>')
 
         dynamic.push(Object.assign({},dynamic_formData,{ismanual:1}))
 
         this.setState({dynamic});
     }
 
+    
     deleteRow(dynamic,indx){
-        dynamic.splice(indx,1);
+        console.log(dynamic)
+        console.log('deleting>>>>> '+indx)
 
+        dynamic.splice(indx,1);
+        console.log('deleted')
+        console.log(dynamic)
         this.setState({dynamic});
     }
 
@@ -142,7 +154,7 @@ class Form extends Component {
         // dynamic[indx]=Object.assign({},dynamic[indx],activeInitial);
         let cost=0;
         dynamic.map(item=>{
-            cost=cost+parseInt(item.COMPONENTS_WISE_SELLING_COST);
+            cost=cost+parseFloat(item.COMPONENTS_WISE_SELLING_COST);
         })
 
         this.setState({formData:Object.assign({},formData,{SELLINGCOST:cost}),totalCost:cost});
@@ -215,7 +227,7 @@ class Form extends Component {
 
             return;
         }
-        else if(parseInt(formData.SELLINGCOST)!==parseInt(this.state.totalCost.toString())){
+        else if(parseFloat(formData.SELLINGCOST)!==parseFloat(this.state.totalCost.toString())){
             console.log(formData.SELLINGCOST,this.state.totalCost)
             notification['warning']({
                 message: 'Required field missing',
@@ -223,6 +235,14 @@ class Form extends Component {
               });
 
             return;
+        }
+        else if(parseInt(formData.TOTAL_IN_AMOUNTS)<=0){
+            notification['warning']({
+                message: 'Required field missing',
+                description: "Invalid Total in amount",
+              });
+
+            return; 
         }
         else if(parseInt(formData.OVER_ALL_DISCOUNT)!==parseInt(this.state.totalDiscount.toString())){
             notification['warning']({
@@ -306,7 +326,7 @@ class Form extends Component {
                     }
                     
             
-                    axios.post("http://localhost:5000/bookingmaster/local/"+this.state.RA_REFERENCE,{data:formData}).then(res=>{
+                    HttpService.post("bookingmaster/local/"+this.state.RA_REFERENCE,{data:formData}).then(res=>{
                         if(res.status===200){
                             if(res.data.success){
                                 // this.props.history.push("/local/booking/"+this.state.RA_REFERENCE);
@@ -316,7 +336,7 @@ class Form extends Component {
                                   });
                                   var self=this;
                                   setTimeout(function(){
-                                    // window.location.href="/local/booking/"+self.state.RA_REFERENCE
+                                    window.location.href="/local/booking/"+self.state.RA_REFERENCE
 
                                   },1000)
                             }
@@ -335,7 +355,7 @@ class Form extends Component {
 
   render() {
       const {formData,dynamic,activeInitial}=this.state;
-    //   console.log(activeInitial)
+      console.log(this.state.suppliers)
     return [
         <header>
         <div className="container-fluid">
@@ -445,8 +465,8 @@ class Form extends Component {
                     <div className="form-group">
                         <label htmlFor="">Service Category *</label>
                             <select className="form-control ng-pristine ng-valid ng-touched" 
-                            defaultValue={item.SERVICE_CATEGORY}
-                            onChange={(e)=>{dynamic[indx]['SERVICE_CATEGORY']=e.target.value}}>
+                            value={item.SERVICE_CATEGORY}
+                            onChange={(e)=>{dynamic[indx]['SERVICE_CATEGORY']=e.target.value;this.setState({dynamic})}}>
                                 <option value="">{this.props.match.params.ra_reference?item.SERVICE_CATEGORY:"Select a category"}</option>
                                 <option value="Tour">Tour</option>
                                 <option value="Hotel">Hotel</option>
@@ -459,7 +479,7 @@ class Form extends Component {
                 <div className="col-2">
                     <div className="form-group">
                         <label htmlFor="">Product Name *</label>
-                        <input type="text" className="form-control mb-4" id="" defaultValue={item.PRODUCT_NAME} onChange={(e)=>{dynamic[indx]['PRODUCT_NAME']=e.target.value}} placeholder="" />
+                        <input type="text" className="form-control mb-4" id="" value={item.PRODUCT_NAME} onChange={(e)=>{dynamic[indx]['PRODUCT_NAME']=e.target.value;this.setState({dynamic})}} placeholder="" />
                        
                         
                     </div>
@@ -467,31 +487,31 @@ class Form extends Component {
                 <div className="col-2">
                     <div className="form-group">
                         <label htmlFor="" >Per Service Supplier Name *</label>
-                       
-                                    <Select
-                                        mode="multiple"
-                                        style={indx===0?{ width: '15em',marginBottom:'2px' }:{width: '15em',marginTop:'16px',marginBottom:'2px'}}
-                                        onChange={(value)=>{this.setSupplierName(dynamic,value[value.length-1],indx)}}
-                                        value={item.PER_SERVICE_SUPPLIER_CODE!==""?[item.PER_SERVICE_SUPPLIER_CODE+item.PER_SERVICE_WISE_SUPPLIER_NAME]:[]}
-                                        >
-                                        {this.state.suppliers!==undefined?this.state.suppliers.map((item,indx)=>{
-                                            {/* if(indx<10){ */}
-                                                return <Option value={item.supplier_id+","+item.supplier_display_name}>{item.supplier_display_name}</Option>
-                                            {/* } */}
-                                            }):null}
-                                    
-                                        </Select>
-                            
-                        
-                        
-                       
+                        {item.PER_SERVICE_WISE_SUPPLIER_NAME.length>0?<AutoComplete
+                        style={{ width: 200 }}
+                        dataSource={this.state.suppliers}
+                        value={item.PER_SERVICE_WISE_SUPPLIER_NAME}
+
+                        // placeholder="try to type `b`"
+                        filterOption={(inputValue, option) => option.props.children.split(",")[0].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 || option.props.children.split(",")[1].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+                        />
+                          :
+                          <AutoComplete
+                        style={{ width: 200 }}
+                        dataSource={this.state.suppliers}
+                        defaultValue={item.PER_SERVICE_WISE_SUPPLIER_NAME}
+
+                        // placeholder="try to type `b`"
+                        filterOption={(inputValue, option) => option.props.children.split(",")[0].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 || option.props.children.split(",")[1].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+                        />                            
+                       }
                     </div>
                 </div>
                 <div className="col-2">
                     <div className="form-group">
                         <label htmlFor="">Components Wise Selling  *</label>
                         
-                        <input type="number" className="form-control mb-4" defaultValue={item.COMPONENTS_WISE_SELLING_COST} onChange={(e)=>{dynamic[indx]['COMPONENTS_WISE_SELLING_COST']=e.target.value;this.setSellingCost(indx,dynamic,formData)}} id="" placeholder="" />
+                        <input type="number" className="form-control mb-4" value={item.COMPONENTS_WISE_SELLING_COST} onChange={(e)=>{dynamic[indx]['COMPONENTS_WISE_SELLING_COST']=e.target.value;this.setSellingCost(indx,dynamic,formData)}} id="" placeholder="" />
                         
                     </div>
                 </div>
@@ -500,7 +520,7 @@ class Form extends Component {
                         <label htmlFor="">Service Country *</label>
                         
                         {<div className="input-group mb-3">
-                            <select className="form-control ng-pristine ng-valid ng-touched" onChange={(e)=>{dynamic[indx].SERVICE_COUNTRY=e.target.value;}} defaultValue="">
+                            <select className="form-control ng-pristine ng-valid ng-touched" onChange={(e)=>{dynamic[indx].SERVICE_COUNTRY=e.target.value;this.setState({dynamic})}} value={item.SERVICE_COUNTRY}>
                                 <option value="">{this.props.match.params.ra_reference?item.SERVICE_COUNTRY:"Select Country..."}</option>
                                 {this.state.countries!==undefined?this.state.countries.map((contryName)=>{
                                     return <option value={contryName}>{contryName}</option>
@@ -544,9 +564,21 @@ class Form extends Component {
                         </div>
                     </div>
                     <div className="form-group row">
+                        <label htmlFor="" className="ml-auto col-auto col-form-label">Total In Amounts</label>
+                        <div className="col-2">
+                            <input type="number" defaultValue={formData.TOTAL_IN_AMOUNTS} onChange={(e)=>{formData.TOTAL_IN_AMOUNTS=e.target.value;}}  className="form-control" />
+                        </div>
+                    </div>
+                    <div className="form-group row">
                         <label htmlFor="" className="ml-auto col-auto col-form-label">Over All Discounts</label>
                         <div className="col-2">
                             <input type="number" min="0" defaultValue={formData.OVER_ALL_DISCOUNT} onChange={(e)=>{formData.OVER_ALL_DISCOUNT=e.target.value;}} className="form-control" />
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <label htmlFor="" className="ml-auto col-auto col-form-label">Total Tax Calculation</label>
+                        <div className="col-2">
+                            <input type="number" defaultValue={formData.TOTAL_TAX_CALCULATION} onChange={(e)=>{formData.TOTAL_TAX_CALCULATION=e.target.value;}} className="form-control" />
                         </div>
                     </div>
                     <div className="form-group row">
@@ -561,18 +593,8 @@ class Form extends Component {
                             <input type="number" min="0" defaultValue={formData.OVER_ALL_PROFIT===0?formData.OVER_ALL_LOSS:0} onChange={(e)=>{formData.OVER_ALL_LOSS=e.target.value;}} className="form-control"  />
                         </div>
                     </div>
-                    <div className="form-group row">
-                        <label htmlFor="" className="ml-auto col-auto col-form-label">Total In Amounts</label>
-                        <div className="col-2">
-                            <input type="number" defaultValue={formData.TOTAL_IN_AMOUNTS} onChange={(e)=>{formData.TOTAL_IN_AMOUNTS=e.target.value;}}  className="form-control" />
-                        </div>
-                    </div>
-                    <div className="form-group row">
-                        <label htmlFor="" className="ml-auto col-auto col-form-label">Total Tax Calculation</label>
-                        <div className="col-2">
-                            <input type="number" defaultValue={formData.TOTAL_TAX_CALCULATION} onChange={(e)=>{formData.TOTAL_TAX_CALCULATION=e.target.value;}} className="form-control" />
-                        </div>
-                    </div>
+                    
+                    
                 </div>
             </div>
             <div style={{width: '100%', height: '150px'}}></div>
@@ -590,6 +612,7 @@ class Form extends Component {
                 </div>
             </div>
         </div>
+
         {/* <!-- Modal --> */}
         <div className="modal fade bd-example-modal-lg" id="exampleModalCenter" tabIndex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
