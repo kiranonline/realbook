@@ -23,7 +23,7 @@ class Form extends Component {
             currencies:[],
             RA_REFERENCE:"",
             activeRowIndex:-1,
-            formData:{},
+            formData:{OVER_ALL_DISCOUNT:0,TOTAL_TAX_CALCULATION:0},
             dynamic:[],
             totalTax:0,
             totalDiscount:0,
@@ -89,8 +89,11 @@ class Form extends Component {
         HttpService.get('api/supplier/getall').then(res=>{
             if(res.status===200){
                 let data=[]
-                res.data.supplier.map(item=>{
-                    data.push(item.supplier_id+" , "+item.supplier_display_name)
+                res.data.supplier.map((item,indx)=>{
+                    // if(indx<20){
+                        data.push(item.supplier_display_name+" , "+item.supplier_id)
+
+                    // }
                 })
                 this.setState({suppliers:data})
             }
@@ -116,17 +119,18 @@ class Form extends Component {
     }
 
     setSupplierName(dynamic,value,indx){
-        // value=value[0];
-        // console.log(value)
+
         if(value!==undefined){
-               dynamic[indx]['PER_SERVICE_WISE_SUPPLIER_NAME']=value.split(",")[1]
-               dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']=value.split(",")[0]
+               dynamic[indx]['PER_SERVICE_WISE_SUPPLIER_NAME']=value.split(",")[0]
+               dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']=value.split(",")[1]
 
         }
         else{
             dynamic[indx]['PER_SERVICE_WISE_SUPPLIER_NAME']=undefined;
             dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']="";
         }
+
+        console.log(dynamic[indx])
        this.setState({dynamic});
     }
 
@@ -249,7 +253,7 @@ class Form extends Component {
                 message: 'Required field missing',
                 description: "Invalid overall discount",
               });
-
+              
             return;
         }
         else if(parseInt(formData.TOTAL_TAX_CALCULATION)!==parseInt(this.state.totalTax.toString())){
@@ -262,6 +266,8 @@ class Form extends Component {
         }
         else{
             dynamic.map(item=>{
+                console.log(item)
+
                 if(item.SERVICE_COUNTRY.length===0){
                     notification['warning']({
                         message: 'Required field missing',
@@ -298,12 +304,11 @@ class Form extends Component {
                         description: "Component wise selling cost can't be empty",
                       });
         
-        
                     return;
                 }
             
-                else if(item.COMPONENTS_WISE_CURRENCY===undefined || this.state.activeInitial.COMPONENTS_WISE_CURRENCY===undefined
-                     || item.COMPONENTS_WISE_CURRENCY.length===0){
+                else if(item.COMPONENTS_WISE_CURRENCY===undefined || item.COMPONENTS_WISE_CURRENCY===null || this.state.activeInitial.COMPONENTS_WISE_CURRENCY===undefined
+                     || item.COMPONENTS_WISE_CURRENCY===0){
                     console.log("item",item.COMPONENTS_WISE_CURRENCY,"state",this.state.activeInitial.COMPONENTS_WISE_CURRENCY)
                     notification['warning']({
                         message: 'Required field missing',
@@ -356,7 +361,7 @@ class Form extends Component {
 
   render() {
       const {formData,dynamic,activeInitial}=this.state;
-      console.log(this.state.suppliers)
+    //   console.log(this.state.suppliers)
     return [
         <header>
         <div className="container-fluid">
@@ -383,7 +388,7 @@ class Form extends Component {
                 <div className="col-4">
                     <div className="form-group">
                         <label htmlFor="">Invoice Number</label>
-                        <input type="number" className="form-control" defaultValue={formData.INVOICE_NUMBER} onChange={(e)=>{formData.INVOICE_NUMBER=e.target.value;}} id="" placeholder="" />
+                        <input type="text" className="form-control" defaultValue={formData.INVOICE_NUMBER} onChange={(e)=>{formData.INVOICE_NUMBER=e.target.value;}} id="" placeholder="" />
                     </div>
                 </div>
             </div>
@@ -488,27 +493,35 @@ class Form extends Component {
                 <div className="col-2">
                     <div className="form-group">
                         <label htmlFor="" >Per Service Supplier Name *</label>
-                        {/* {item.PER_SERVICE_WISE_SUPPLIER_NAME.length>0? */}
+                        {   item.PER_SERVICE_WISE_SUPPLIER_NAME!==undefined?
+                            item.PER_SERVICE_WISE_SUPPLIER_NAME.length>0?
                         <AutoComplete
-                        style={{ width: 200 }}
+                        style={{ width: 200,left:'-0.5em' }}
                         dataSource={this.state.suppliers}
                         value={item.PER_SERVICE_WISE_SUPPLIER_NAME}
-                        onChange={(value)=>{this.setSupplierName(dynamic,value,indx)}}
-                
-                        // placeholder="try to type `b`"
+                        onSelect={(value)=>{this.setSupplierName(dynamic,value,indx)}}
+                        onChange={()=>{item.PER_SERVICE_WISE_SUPPLIER_NAME!==undefined?item.PER_SERVICE_WISE_SUPPLIER_NAME.length>0?this.setSupplierName(dynamic,"",indx):console.log(""):console.log("")}}
+
                         filterOption={(inputValue, option) => option.props.children.split(",")[0].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 || option.props.children.split(",")[1].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
-                        />
-                          {/* :
-                          <AutoComplete
-                        style={{ width: 200 }}
+                        />:
+                        <AutoComplete
+                        style={{ width: 200,left:'-0.5em' }}
                         dataSource={this.state.suppliers}
                         defaultValue={item.PER_SERVICE_WISE_SUPPLIER_NAME}
-                        onChange={(value)=>{this.setSupplierName(dynamic,value,indx)}}
-                        // placeholder="try to type `b`"
+                        onSelect={(value)=>{this.setSupplierName(dynamic,value,indx)}}
+ 
                         filterOption={(inputValue, option) => option.props.children.split(",")[0].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 || option.props.children.split(",")[1].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
-                        />                            
-                       } */}
-                    </div>
+                        />:
+                        <AutoComplete
+                        style={{ width: 200,left:'-0.5em' }}
+                        dataSource={this.state.suppliers}
+                        defaultValue={item.PER_SERVICE_WISE_SUPPLIER_NAME}
+                        onSelect={(value)=>{this.setSupplierName(dynamic,value,indx)}}
+                        
+                        filterOption={(inputValue, option) => option.props.children.split(",")[0].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 || option.props.children.split(",")[1].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+                        />
+                        }
+                                            </div>
                 </div>
                 <div className="col-2">
                     <div className="form-group">
