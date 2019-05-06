@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 const Sequelize = require('sequelize');
 var sequelize = require('../services/conn');
+const Op = Sequelize.Op;
+var suppliermaster = require("../modals/suppliermaster").suppliermaster;
 
 
 
@@ -34,6 +36,39 @@ router.get('/supplier/getall',(req,res,next)=>{
             supplier : data[0]
         });
     }).catch((ero)=>{
+        res.status(500);
+    })
+})
+
+
+
+
+
+router.get('/supplier/search',(req,res,next)=>{
+    let q = req.query.search || "";
+    suppliermaster.findAll({
+        attributes : ['supplier_id','supplier_display_name'],
+        where : {
+            [Op.or] : [
+                {
+                    supplier_id : {
+                        [Op.like] : `%${q}%`
+                    }
+                },
+                {
+                    supplier_display_name : {
+                        [Op.like] : `%${q}%`
+                    }
+                }
+            ]
+        }
+    }).then((data)=>{
+        console.log(data);
+        res.json({
+            supplier : data
+        });
+    }).catch((err)=>{
+        console.log(err)
         res.status(500);
     })
 })
