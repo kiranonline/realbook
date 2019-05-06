@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import 'antd/dist/antd.css';
 import './App.css';
-import { Select,DatePicker, message,notification, AutoComplete } from 'antd';
+import { Select,DatePicker, message,notification, AutoComplete, Modal, Input, InputNumber } from 'antd';
 import {withRouter} from 'react-router-dom';
 import moment from 'moment';
 import HttpService from './services/HttpService';
@@ -17,6 +17,7 @@ class Form extends Component {
         super(props);
         this.state={
             name:"",
+            modalVisible:false,
             suppliers:[],
             activeInitial:{},
             countries:[],
@@ -41,21 +42,28 @@ class Form extends Component {
     }
 
     openModal(indx){
-        // console.log(this.state.activeInitial)
+        // console.log(this.props.match.params.ra_reference)
         if(this.props.match.params.ra_reference!==undefined){
             this.setState({activeRowIndex:indx,activeInitial:this.state.dynamic[indx]})
         }
         else{
-        
-            this.setState({activeRowIndex:indx,activeInitial:{SERVICE_CITY:null,TAX_CALCULATION:null,FOREIGN_CURRENCY:null,COMPONENTS_WISE_MARKUP:null,
-        COMPONENTS_WISE_DISCOUNT_COMISSION:null,COMPONENTS_WISE_NET_COST_CURRENCY:null,COMPONENTS_WISE_NET_COST:null,RA_FILE_HANDLER:null,PAYMENT_SLABS:null,
-    SUPPLIER_PAYMENT_DEADLINE:null,COMPONENTS_WISE_CURRENCY:null,ARRIVALDATE:null}})
-            // console.log(this.state.activeInitial)
+            if(this.state.dynamic[indx]!==undefined){
+            this.setState({activeRowIndex:indx,activeInitial:this.state.dynamic[indx]})
+                
+            }
+            else{
+                let activeObj={SERVICE_CITY:null,TAX_CALCULATION:null,FOREIGN_CURRENCY:null,COMPONENTS_WISE_MARKUP:null,
+                    COMPONENTS_WISE_DISCOUNT_COMISSION:null,COMPONENTS_WISE_NET_COST_CURRENCY:null,COMPONENTS_WISE_NET_COST:null,RA_FILE_HANDLER:null,PAYMENT_SLABS:null,
+                SUPPLIER_PAYMENT_DEADLINE:null,COMPONENTS_WISE_CURRENCY:null,ARRIVALDATE:null};
+                this.setState({activeRowIndex:indx,activeInitial:activeObj})
+                console.log(activeObj)
+            }
+
         }
-        
+        this.setState({modalVisible:true})
     }
     componentWillMount(){
-        this.getSupplier()
+        // this.getSupplier()
         this.getCountries()
         this.getCurrency()
         document.title="BOOKING FORM | REAL BOOKS"
@@ -84,21 +92,21 @@ class Form extends Component {
         })
     }
 
-     getSupplier(){
+    //  getSupplier(){
         
-        HttpService.get('api/supplier/getall').then(res=>{
-            if(res.status===200){
-                let data=[]
-                res.data.supplier.map((item,indx)=>{
-                    // if(indx<20){
-                        data.push(item.supplier_display_name+" , "+item.supplier_id)
+    //     HttpService.get('api/supplier/getall').then(res=>{
+    //         if(res.status===200){
+    //             let data=[]
+    //             res.data.supplier.map((item,indx)=>{
+    //                 // if(indx<20){
+    //                     data.push(item.supplier_display_name+" , "+item.supplier_id)
 
-                    // }
-                })
-                this.setState({suppliers:data})
-            }
-        })
-    }
+    //                 // }
+    //             })
+    //             this.setState({suppliers:data})
+    //         }
+    //     })
+    // }
 
     getCountries(){
         
@@ -119,7 +127,8 @@ class Form extends Component {
     }
 
     setSupplierName(dynamic,value,indx){
-
+        // value=value.target.value;
+        console.log(value)
         if(value!==undefined){
                dynamic[indx]['PER_SERVICE_WISE_SUPPLIER_NAME']=value.split(",")[0]
                dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']=value.split(",")[1]
@@ -264,6 +273,14 @@ class Form extends Component {
 
             return;
         }
+        else if(parseInt(formData.TOTAL_IN_AMOUNTS)===0 || formData.TOTAL_IN_AMOUNTS===undefined || formData.TOTAL_IN_AMOUNTS===null){
+            notification['warning']({
+                message: 'Required field missing',
+                description: "Total In Amount can't be empty",
+              });
+
+            return;
+        }
         else{
             dynamic.map(item=>{
                 console.log(item)
@@ -307,8 +324,7 @@ class Form extends Component {
                     return;
                 }
             
-                else if(item.COMPONENTS_WISE_CURRENCY===undefined || item.COMPONENTS_WISE_CURRENCY===null || this.state.activeInitial.COMPONENTS_WISE_CURRENCY===undefined
-                     || item.COMPONENTS_WISE_CURRENCY===0){
+                else if(item.COMPONENTS_WISE_CURRENCY===undefined || item.COMPONENTS_WISE_CURRENCY===null ||  item.COMPONENTS_WISE_CURRENCY===0){
                     console.log("item",item.COMPONENTS_WISE_CURRENCY,"state",this.state.activeInitial.COMPONENTS_WISE_CURRENCY)
                     notification['warning']({
                         message: 'Required field missing',
@@ -359,9 +375,50 @@ class Form extends Component {
         this.setState({activeInitial:Object.assign({},this.state.activeInitial,{[name]:value})});
     }
 
+
+    saveRow(activeRowData){
+        let {dynamic}=this.state;
+
+        dynamic[this.state.activeRowIndex]=Object.assign({},dynamic[this.state.activeRowIndex],activeRowData);
+        this.setState({dynamic,activeInitial:{},activeRowIndex:-1,modalVisible:false});
+    }
+
+    searchSupplier(value,indx,dynamic){
+        // console.log(value)
+        if(value.length>=3){
+            HttpService.get("api/supplier/search?search="+value).then(res=>{
+                if(res.status===200){
+                    let data=[]
+                res.data.supplier.map((item,indx)=>{
+                    // if(indx<20){
+                        data.push(item.supplier_display_name+" , "+item.supplier_id)
+
+                    // }
+                })
+                if(value!==undefined){
+                    dynamic[indx]['PER_SERVICE_WISE_SUPPLIER_NAME']=value.split(",")[0]
+                    dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']=value.split(",")[1]
+     
+             }
+             else{
+                 dynamic[indx]['PER_SERVICE_WISE_SUPPLIER_NAME']=undefined;
+                 dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']="";
+             }
+                this.setState({suppliers:data,dynamic})
+                }
+            })
+        }
+        else{
+            dynamic[indx]['PER_SERVICE_WISE_SUPPLIER_NAME']=undefined;
+            dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']="";
+            this.setState({dynamic})
+
+        }
+    }
+
   render() {
       const {formData,dynamic,activeInitial}=this.state;
-    //   console.log(this.state.suppliers)
+    console.log(activeInitial)
     return [
         <header>
         <div className="container-fluid">
@@ -500,7 +557,7 @@ class Form extends Component {
                         dataSource={this.state.suppliers}
                         value={item.PER_SERVICE_WISE_SUPPLIER_NAME}
                         onSelect={(value)=>{this.setSupplierName(dynamic,value,indx)}}
-                        onChange={()=>{item.PER_SERVICE_WISE_SUPPLIER_NAME!==undefined?item.PER_SERVICE_WISE_SUPPLIER_NAME.length>0?this.setSupplierName(dynamic,"",indx):console.log(""):console.log("")}}
+                                                onChange={(value)=>this.searchSupplier(value,indx,dynamic)}
 
                         filterOption={(inputValue, option) => option.props.children.split(",")[0].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 || option.props.children.split(",")[1].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
                         />:
@@ -510,15 +567,15 @@ class Form extends Component {
                         defaultValue={item.PER_SERVICE_WISE_SUPPLIER_NAME}
                         onSelect={(value)=>{this.setSupplierName(dynamic,value,indx)}}
  
-                        filterOption={(inputValue, option) => option.props.children.split(",")[0].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 || option.props.children.split(",")[1].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+                        onChange={(value)=>this.searchSupplier(value,indx,dynamic)}
                         />:
                         <AutoComplete
                         style={{ width: 200,left:'-0.5em' }}
                         dataSource={this.state.suppliers}
                         defaultValue={item.PER_SERVICE_WISE_SUPPLIER_NAME}
                         onSelect={(value)=>{this.setSupplierName(dynamic,value,indx)}}
-                        
-                        filterOption={(inputValue, option) => option.props.children.split(",")[0].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 || option.props.children.split(",")[1].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+                        onChange={(value)=>this.searchSupplier(value,indx,dynamic)}
+                       
                         />
                         }
                                             </div>
@@ -630,8 +687,12 @@ class Form extends Component {
         </div>
 
         {/* <!-- Modal --> */}
-        <div className="modal fade bd-example-modal-lg" id="exampleModalCenter" tabIndex="-1" role="dialog"
-            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  
+            <Modal
+             visible={this.state.modalVisible} 
+             width={900} footer={[]}
+              onCancel={()=>this.setState({modalVisible:false,activeRowIndex:-1,activeInitial:{}})}
+              >
             <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div className="modal-content">
                     
@@ -643,13 +704,13 @@ class Form extends Component {
                                         <div className="col-6">
                                             <div className="form-group">
                                                 <label htmlFor="">Service City</label>
-                                                <input type="text" value={activeInitial.SERVICE_CITY} onChange={(e)=>{this.setModalValues('SERVICE_CITY',e.target.value);}} className="form-control" id="" placeholder="" />
+                                                <Input type="text" value={this.state.activeInitial.SERVICE_CITY} onChange={(e)=>{this.setModalValues('SERVICE_CITY',e.target.value);}} className="form-control" placeholder="" />
                                             </div>
                                         </div>
                                         <div className="col-6">
                                             <div className="form-group">
                                                 <label htmlFor="">Tax Calculation</label>
-                                                <input type="number" value={activeInitial.TAX_CALCULATION} onChange={(e)=>{activeInitial.TAX_CALCULATION=e.target.value;this.setTotalTax(this.state.activeRowIndex,dynamic,formData,activeInitial)}} className="form-control" id="" placeholder="" />
+                                                <Input type="number" value={activeInitial.TAX_CALCULATION} onChange={(e)=>{activeInitial.TAX_CALCULATION=e.target.value;this.setTotalTax(this.state.activeRowIndex,dynamic,formData,activeInitial)}} className="form-control" placeholder="" />
                                             </div>
                                         </div>
                                     </div>
@@ -658,23 +719,23 @@ class Form extends Component {
                                         <div className="col-6">
                                             <div className="form-group">
                                                 <label htmlFor="">Foreign Currency</label>
-                                                <select className="form-control ng-pristine ng-valid ng-touched" 
-                                                    value={activeInitial.FOREIGN_CURRENCY} onChange={(e)=>{this.setState({activeInitial:Object.assign({},activeInitial,{FOREIGN_CURRENCY:e.target.value})})}}
+                                                <Select className="form-control ng-pristine ng-valid ng-touched" 
+                                                    value={activeInitial.FOREIGN_CURRENCY} onChange={(e)=>{this.setState({activeInitial:Object.assign({},activeInitial,{FOREIGN_CURRENCY:e})})}}
                                                 >
-                                                    <option value="">Select a currency</option>
+                                                    {/* <Option value="">Select a currency</Option> */}
                                                     {
                                                         this.state.currencies.map(item=>{
-                                                            return <option value={item}>{item}</option>
+                                                            return <Option value={item}>{item}</Option>
                                                         })
                                                     }
 
-                                                </select>
+                                                </Select>
                                             </div>
                                         </div>
                                         <div className="col-6">
                                             <div className="form-group">
                                                 <label htmlFor="">Components Wise Markup</label>
-                                                <input type="number" min="0" className="form-control" value={activeInitial.COMPONENTS_WISE_MARKUP} onChange={(e)=>{this.setState({activeInitial:Object.assign({},activeInitial,{COMPONENTS_WISE_MARKUP:e.target.value})})}} id="" placeholder="" />
+                                                <Input type="number" min="0" className="form-control" value={activeInitial.COMPONENTS_WISE_MARKUP} onChange={(e)=>{this.setState({activeInitial:Object.assign({},activeInitial,{COMPONENTS_WISE_MARKUP:e.target.value})})}} id="" placeholder="" />
                                             </div>
                                         </div>
                                     </div>
@@ -682,23 +743,23 @@ class Form extends Component {
                                         <div className="col-6">
                                             <div className="form-group">
                                                 <label htmlFor="">Component Wise Net Cost</label>
-                                                <input type="number" value={activeInitial.COMPONENTS_WISE_NET_COST} onChange={(e)=>{activeInitial.COMPONENTS_WISE_NET_COST=e.target.value}} className="form-control" id="" placeholder="" />
+                                                <Input type="number" value={activeInitial.COMPONENTS_WISE_NET_COST} onChange={(e)=>{activeInitial.COMPONENTS_WISE_NET_COST=e.target.value;this.setState({activeInitial:Object.assign({},this.state.activeInitial,activeInitial)})}} className="form-control" id="" placeholder="" />
                                             </div>
                                         </div>
-                                        <div className="col-6">
+                                        <div classsName="col-6">
                                             <div className="form-group">
                                                 <label htmlFor="">Components Wise Net Cost Currency</label>
-                                                <select 
+                                                <Select 
                                                 className="form-control ng-pristine ng-valid ng-touched"
-                                                defaultValue={activeInitial.COMPONENTS_WISE_NET_COST_CURRENCY} onChange={(e)=>{activeInitial.COMPONENTS_WISE_NET_COST_CURRENCY=e.target.value}}
-                                                >   <option value="">Select a currency</option>
+                                                value={activeInitial.COMPONENTS_WISE_NET_COST_CURRENCY} onChange={(e)=>{activeInitial.COMPONENTS_WISE_NET_COST_CURRENCY=e}}
+                                                >   
                                                     {
                                                         this.state.currencies.map(item=>{
-                                                            return <option value={item}>{item}</option>
+                                                            return <Option value={item}>{item}</Option>
                                                         })
                                                     }
 
-                                                </select>
+                                                </Select>
                                                 
                                             </div>
                                         </div>
@@ -708,13 +769,13 @@ class Form extends Component {
                                         <div className="col-6">
                                             <div className="form-group mb-0">
                                                 <label htmlFor="">Booking Reference(RA File Handler)</label>
-                                                <input type="text" defaultValue={activeInitial.RA_FILE_HANDLER} onChange={(e)=>{activeInitial.RA_FILE_HANDLER=e.target.value}} className="form-control" id="" placeholder="" />
+                                                <Input type="text" value={activeInitial.RA_FILE_HANDLER} onChange={(e)=>{activeInitial.RA_FILE_HANDLER=e.target.value}} className="form-control" id="" placeholder="" />
                                             </div>
                                         </div>
                                         <div className="col-6">
                                             <div className="form-group mb-0">
                                                 <label htmlFor="">Payment Slabs</label>
-                                                <input type="text" defaultValue={activeInitial.PAYMENT_SLABS} onChange={(e)=>{activeInitial.PAYMENT_SLABS=e.target.value}} className="form-control" id="" placeholder=""/>
+                                                <Input type="text" value={activeInitial.PAYMENT_SLABS} onChange={(e)=>{activeInitial.PAYMENT_SLABS=e.target.value}} className="form-control" id="" placeholder=""/>
                                             </div>
                                         </div>
                                     </div>
@@ -735,7 +796,7 @@ class Form extends Component {
                                         <div className="col-6">
                                             <div className="form-group mb-0">
                                                 <label htmlFor="">Component Wise Discount Comission</label>
-                                                <input type="number" defaultValue={activeInitial.COMPONENTS_WISE_DISCOUNT_COMISSION} onChange={(e)=>{activeInitial.COMPONENTS_WISE_DISCOUNT_COMISSION=e.target.value;this.setTotalDiscount(this.state.activeRowIndex,dynamic,formData,activeInitial)}} className="form-control" id="" placeholder=""/>
+                                                <Input type="number" value={activeInitial.COMPONENTS_WISE_DISCOUNT_COMISSION} onChange={(e)=>{activeInitial.COMPONENTS_WISE_DISCOUNT_COMISSION=e.target.value;this.setTotalDiscount(this.state.activeRowIndex,dynamic,formData,activeInitial)}} className="form-control" id="" placeholder=""/>
                                             </div>
                                         </div>
                                     </div>
@@ -743,25 +804,25 @@ class Form extends Component {
                                         <div className="col-6">
                                             <div className="form-group">
                                                 <label htmlFor="">Component Wise Currency</label>
-                                                <select 
+                                                <Select 
                                                 className="form-control ng-pristine ng-valid ng-touched"
-                                                value={activeInitial.COMPONENTS_WISE_CURRENCY} onChange={(e)=>{dynamic[this.state.activeRowIndex].COMPONENTS_WISE_CURRENCY=e.target.value;this.setState({activeInitial:Object.assign({},activeInitial,{COMPONENTS_WISE_CURRENCY:e.target.value})})}}
+                                                value={activeInitial.COMPONENTS_WISE_CURRENCY} onChange={(e)=>{dynamic[this.state.activeRowIndex].COMPONENTS_WISE_CURRENCY=e;this.setState({activeInitial:Object.assign({},activeInitial,{COMPONENTS_WISE_CURRENCY:e})})}}
                                                 >
-                                                <option value="">Select a currency</option>
+                                                {/* <Option value="">Select a currency</Option> */}
                                                     {
                                                         this.state.currencies.map(item=>{
-                                                            return <option value={item}>{item}</option>
+                                                            return <Option value={item}>{item}</Option>
                                                         })
                                                     }
 
-                                                </select>
+                                                </Select>
                                             </div>
                                         </div>
                                         <div className="col-6">
                                             <div className="form-group">
                                                 <label htmlFor="">City</label>
-                                                <input type="text" className="form-control"
-                                                    defaultValue={activeInitial.SERVICE_CITY} onChange={(e)=>{activeInitial.SERVICE_CITY=e.target.value}}
+                                                <Input type="text" className="form-control"
+                                                    value={activeInitial.SERVICE_CITY} onChange={(e)=>{activeInitial.SERVICE_CITY=e.target.value}}
                                                  id="" placeholder="" />
                                             </div>
                                         </div>
@@ -788,12 +849,13 @@ class Form extends Component {
                         </div>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-primary" onClick={()=>{this.submitData(formData,dynamic)}}>Save changes</button>
+                        <button type="button" className="btn btn-primary" onClick={()=>{this.saveRow(activeInitial)}}>Save</button>
                     </div>
                 </div>
             </div>
-        </div>
-        {/* </div> */}
+
+            </Modal>
+
         </main>
     ]
   }
