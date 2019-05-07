@@ -346,7 +346,7 @@ class Form extends Component {
                     if(formData.success!==undefined){
                         delete formData.success;
                     }
-                    
+                    // console.log(formData)
             
                     HttpService.post("bookingmaster/local/"+this.state.RA_REFERENCE,{data:formData}).then(res=>{
                         if(res.status===200){
@@ -518,6 +518,23 @@ class Form extends Component {
                     <div className="form-group">
                         <label htmlFor="">Lead Passanger</label>
                         <input type="text" className="form-control" defaultValue={formData.LEAD_PASSENGER} onChange={(e)=>{formData.LEAD_PASSENGER=e.target.value}} id="" placeholder="" />
+                    </div>
+                </div>
+                <div className="col-4">
+                    <div className="form-group">
+                        <label htmlFor="">Checkin Date</label>
+                        <div className="input-group mb-3">
+                            <DatePicker style={{width:'30em'}} value={formData.CHECK_IN_DATE?moment(formData.CHECK_IN_DATE, 'YYYY-MM-DD'):""} format="YYYY-MM-DD" onChange={(date,dateString)=>{this.setState({formData:Object.assign({},formData,{CHECK_IN_DATE:dateString})})}} placeholder="yyyy-mm-dd" />
+                        </div>
+                    </div>
+                </div>
+                <div className="col-4">
+                    <div className="form-group">
+                        <label htmlFor="">Checkout Date</label>
+                        <div className="input-group mb-3">
+                            <DatePicker style={{width:'30em'}} value={formData.CHECK_OUT_DATE?moment(formData.CHECK_OUT_DATE, 'YYYY-MM-DD'):""} format="YYYY-MM-DD" onChange={(date,dateString)=>{this.setState({formData:Object.assign({},formData,{CHECK_OUT_DATE:dateString})})}} placeholder="yyyy-mm-dd" />
+                           
+                        </div>
                     </div>
                 </div>
 
