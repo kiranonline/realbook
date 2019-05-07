@@ -176,7 +176,9 @@ router.get('/local/:RA_REFERENCE',(req,res,next)=>{
                     data_const.OVER_ALL_DISCOUNT=d.OVER_ALL_DISCOUNT,
                     data_const.OVER_ALL_PROFIT=d.OVER_ALL_PROFIT,
                     data_const.OVER_ALL_LOSS=d.OVER_ALL_LOSS,
-                    data_const.LEAD_PASSENGER=d.LEAD_PASSENGER
+                    data_const.LEAD_PASSENGER=d.LEAD_PASSENGER,
+                    data_const.CHECK_IN_DATE=d.CHECK_IN_DATE,
+                    data_const.CHECK_OUT_DATE=d.CHECK_OUT_DATE
                 }
                 delete d['FIRSTNAME'];
                 delete d['INVOICE_CURRENCY'];
@@ -196,6 +198,8 @@ router.get('/local/:RA_REFERENCE',(req,res,next)=>{
                 delete d['OVER_ALL_PROFIT'];
                 delete d['OVER_ALL_LOSS'];
                 delete d['LEAD_PASSENGER'];
+                delete d['CHECK_OUT_DATE'];
+                delete d['CHECK_IN_DATE'];
                 data_dynamic.push(d);
                 if(data_dynamic.length==data.length){
                     data_const.dynamic=data_dynamic;
