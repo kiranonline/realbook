@@ -751,7 +751,7 @@ class Form extends Component {
                                                 <label htmlFor="">Components Wise Net Cost Currency</label>
                                                 <Select 
                                                 className="form-control ng-pristine ng-valid ng-touched"
-                                                value={activeInitial.COMPONENTS_WISE_NET_COST_CURRENCY} onChange={(e)=>{activeInitial.COMPONENTS_WISE_NET_COST_CURRENCY=e}}
+                                                value={activeInitial.COMPONENTS_WISE_NET_COST_CURRENCY} onChange={(e)=>{activeInitial.COMPONENTS_WISE_NET_COST_CURRENCY=e;this.setState({activeInitial})}}
                                                 >   
                                                     {
                                                         this.state.currencies.map(item=>{
