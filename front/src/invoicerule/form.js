@@ -1,6 +1,24 @@
 import React, { Component } from 'react'
+import {withRouter} from 'react-router-dom';
 
-export default class InvoiceRuleform extends Component {
+class InvoiceRuleform extends Component {
+    constructor(props){
+        super(props);
+        this.state={
+            dynamicId:""
+        }
+    }
+
+
+    componentWillMount(){
+        if(this.props.match.params.id){
+            this.setState({dynamicId:this.props.match.params.id})
+        }
+
+
+    }
+
+
   render() {
     return (
       <div>
@@ -9,3 +27,6 @@ export default class InvoiceRuleform extends Component {
     )
   }
 }
+
+
+export default withRouter(InvoiceRuleform);

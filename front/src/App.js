@@ -11,6 +11,7 @@ export default class App extends Component {
         <Route exact path="/local/booking" component={Form} />
         <Route exact path="/local/booking/:ra_reference" component={Form} />
         <Route exact path="/invoicerule/form" component={InvoiceRuleform} />
+        <Route exact path="/invoicerule/form/:id" component={InvoiceRuleform} />
       </Router>
     )
   }
