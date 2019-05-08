@@ -81,6 +81,8 @@
                                 <th scope="col">PARTY NAME</th>
                                 <th scope="col">CURRENCY</th>
                                 <th scope="col" class="text-right">PARTY AMOUNT</th>
+                                <th scope="col" class="text-right">INVOICE CURRENCY</th>
+                                <th scope="col" class="text-right">INVOICE AMOUNT</th>
                                 <th scope="col">COMPANY NAME</th>
                                 <!--<th scope="col">SEG ID</th>-->
                                 <th scope="col">SYNCHRONIZATION</th>
@@ -112,8 +114,10 @@
                                     <td>{{this.currencySymbol}}</td>
                                     <td>{{this.gstin}}</td>-->
                                     <td onclick="fetchVdetail('{{this.vid}}')">{{this.partyName}}</td>
-                                    <td onclick="fetchVdetail('{{this.vid}}')">{{this.currency}}</td>
-                                    <td onclick="fetchVdetail('{{this.vid}}')" class="text-right">{{greater this.partyCr this.partyDr}}</td>
+                                    <td onclick="fetchVdetail('{{this.vid}}')">{{this.currencySymbol}}</td>
+                                    <td onclick="fetchVdetail('{{this.vid}}')" class="text-right">{{greater this.CR_NOR this.DR_NOR}}</td>
+                                     <td onclick="fetchVdetail('{{this.vid}}')">{{this.currency}}</td>
+                                     <td onclick="fetchVdetail('{{this.vid}}')" class="text-right">{{greater this.partyCr this.partyDr}}</td>
                                     <td onclick="fetchVdetail('{{this.vid}}')">{{this.name}}</td>
                                     <!--<td>{{this.segid}}</td>-->
                                     <td class="text-center">
