@@ -1,7 +1,7 @@
 import axios from 'axios';
 const envoirnment = process.env.NODE_ENV;
 // const defaultVersion = 'v1';
-const api_url = envoirnment==='development'?'http://localhost:5000':'https://redappletravel.realbooks.in';
+const api_url = envoirnment==='development'?'http://localhost:5000':'';
 
 class Httpservice{
   
