@@ -51,8 +51,20 @@ const vdetail = sequelize.define('vdetail', {
     segid:{
         type:Sequelize.INTEGER
     },
+    fxrate:{
+        type:Sequelize.DECIMAL(10, 2)
+    },
+    fxamt:{
+        type:Sequelize.DECIMAL(10, 2)
+    },
     narration:{
         type:Sequelize.STRING
+    },
+    fx_dr:{
+        type:Sequelize.DECIMAL(10, 2)
+    },
+    fx_cr:{
+        type:Sequelize.DECIMAL(10, 2)
     },
     createdAt: Sequelize.DATE,
     updatedAt: Sequelize.DATE,

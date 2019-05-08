@@ -33,7 +33,7 @@ router.get("/data",(req,res,next)=>{
         }
     }).then((comp_res)=>{
         if(fromdate != null && todate!=null && comp!=null){
-            sequelize.query("SELECT voucher.*,voucher.id AS vid,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) WHERE voucher.cid="+comp+" AND (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+") AND voucher.status=1").then((result1)=>{
+            sequelize.query("SELECT voucher.*,voucher.id AS vid,company_master.name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr,ledgermaster.ledger_name AS partyName ,if(voucher.isFx=1,currency.symbol,voucher.currencySymbol) as currency FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) left join `currency` ON (vdetail.currency_id=currency.id and vdetail.vid=voucher.id)  WHERE voucher.cid="+comp+" AND (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+") AND voucher.status=1").then((result1)=>{
                 console.log(result1);
                 res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
             })
@@ -51,7 +51,7 @@ router.get("/data",(req,res,next)=>{
             }).catch((qerror)=>{
                 next(createError(550,qerror));
             })*/
-            sequelize.query("SELECT voucher.*,voucher.id AS vid,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) WHERE (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+") AND voucher.status=1").then((result1)=>{
+            sequelize.query("SELECT voucher.*,voucher.id AS vid,company_master.name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr,ledgermaster.ledger_name AS partyName ,if(voucher.isFx=1,currency.symbol,voucher.currencySymbol) as currency FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) left join `currency` ON (vdetail.currency_id=currency.id and vdetail.vid=voucher.id)  WHERE (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+") AND voucher.status=1").then((result1)=>{
                 console.log(result1);
                 res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
             })
@@ -67,7 +67,7 @@ router.get("/data",(req,res,next)=>{
             }).catch((qerror)=>{
                 next(createError(550,qerror));
             })*/
-            sequelize.query("SELECT voucher.*,voucher.id AS vid,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) WHERE voucher.status=1 AND voucher.cid="+comp ).then((result1)=>{
+            sequelize.query("SELECT voucher.*,voucher.id AS vid,company_master.name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr,ledgermaster.ledger_name AS partyName ,if(voucher.isFx=1,currency.symbol,voucher.currencySymbol) as currency FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) left join `currency` ON (vdetail.currency_id=currency.id and vdetail.vid=voucher.id) WHERE voucher.status=1 AND voucher.cid="+comp ).then((result1)=>{
                 console.log(result1);
                 res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
             })
@@ -79,7 +79,7 @@ router.get("/data",(req,res,next)=>{
             }).catch((qerror)=>{
                 next(createError(550,qerror));
             })*/
-            sequelize.query("SELECT voucher.*,voucher.id AS vid,company_master.name,vdetail.cr AS partyCr,vdetail.dr AS partyDr,ledgermaster.ledger_name AS partyName FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) WHERE voucher.status=1" ).then((result1)=>{
+            sequelize.query("SELECT voucher.*,voucher.id AS vid,company_master.name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr,ledgermaster.ledger_name AS partyName ,if(voucher.isFx=1,currency.symbol,voucher.currencySymbol) as currency FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) left join `currency` ON (vdetail.currency_id=currency.id and vdetail.vid=voucher.id) WHERE voucher.status=1").then((result1)=>{
                 console.log(result1[0].length);
                 res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
             })
@@ -99,7 +99,7 @@ router.post('/',(req,res,next)=>{
     voucher.findAll({
         attributes: ['transactionDate','transactionNumber','transactionType','transactionDescription',
             'txnCode','voucherAlias','apiRef','docLink','fxRate','isFx','isInv','refFileName','isSEZ',
-            'isAbatement','gstin','realbookID','module','cid','segid'
+            'isAbatement','gstin','realbookID','module','cid','segid','currencySymbol'
         ],
         where:{
             id:id
@@ -128,7 +128,7 @@ router.post('/',(req,res,next)=>{
             });
             vdetail.findAll({
                 attributes: ['vid','cr','dr','accessibleAmount','bankInstrumentNo','bankInstrumentDate','bankInstrumentType',
-                    'bankName','date','ledger','currency_id',['narration','ledgerType']
+                    'bankName','date','ledger','currency_id',['narration','ledgerType'],'fx_dr','fx_cr'
                 ],
                 where:{
                     vid:id,
@@ -141,10 +141,35 @@ router.post('/',(req,res,next)=>{
                         var element =ii.dataValues;
                         var cur =  element.currency_id;
                         delete element['currency_id'];
-                        ser1.currency(cur).then((da)=>{
-                            console.log(da[0].symbol);
-                            f.currencySymbol = da[0].symbol;
-                        });
+                        if(f.isFx==1){
+                            ser1.currency(cur).then((da)=>{
+                                console.log(da[0].symbol);
+                                f.currencySymbol = da[0].symbol;
+                            });
+                            if(element.fx_cr != 0){
+                                element.amountType='cr';
+                                element.amount=element.fx_cr;
+                            }
+                            else{
+                                element.amountType='dr';
+                                element.amount=element.fx_dr;
+                            }
+                        }
+                        else{
+                            if(element.cr != 0){
+                                element.amountType='cr';
+                                element.amount=element.cr;
+                            }
+                            else{
+                                element.amountType='dr';
+                                element.amount=element.dr;
+                            }
+                            
+                        }
+                        delete element['dr'];
+                        delete element['cr'];
+                        delete element['fx_cr'];
+                        delete element['fx_dr'];
                         ser1.dd(element.date).then((d)=>{
                             element.date=d;
                         });
@@ -153,18 +178,7 @@ router.post('/',(req,res,next)=>{
                         delete element['ledger'];
                         delete element['vid'];
                         //console.log(element);
-                        if(element.cr != 0){
-                            element.amountType='cr';
-                            element.amount=element.cr;
-                            delete element['cr'];
-                            delete element['dr'];
-                        }
-                        else{
-                            element.amountType='dr';
-                            element.amount=element.dr;
-                            delete element['dr'];
-                            delete element['cr'];
-                        }
+                        
                         var p1 = ser1.led1(Lid);
                         //var p2 = ser1.vbill1(id,vid);
                         var p3 = ser1.vtax1(id,vid);
@@ -196,7 +210,7 @@ router.post('/',(req,res,next)=>{
                                 invv.isFx=f.isFx;
                                 invv.fxRate=f.fxRate;
                                 invv.currencySymbol= f.currencySymbol
-                                invv.transactionNumber=f.transactionNumber;
+                                invv.transactionNumber=f.transactionNumber || "";
                                 invv.transactionDate=f.transactionDate;
                                 invv.transactionType=f.transactionType;
                                 invv.transactionDescription=f.transactionDescription;
@@ -276,7 +290,7 @@ router.post('/',(req,res,next)=>{
             });
             vdetail.findAll({
                 attributes: ['vid','cr','dr','accessibleAmount','bankInstrumentNo','bankInstrumentDate','bankInstrumentType',
-                    'bankName','date','ledger','currency_id'
+                    'bankName','date','ledger','currency_id','fx_dr','fx_cr'
                 ],
                 where:{
                     vid:id,
@@ -289,31 +303,41 @@ router.post('/',(req,res,next)=>{
                         var element =ii.dataValues;
                         var cur =  element.currency_id;
                         delete element['currency_id'];
-                        
-                        ser1.currency(cur).then((da)=>{
-                            console.log(da[0].symbol);
-                            f.currencySymbol = da[0].symbol;
-                        });
-                        ser1.dd(element.date).then((d)=>{
-                            element.date=d;
-                        });
+                        if(f.isFx==1){
+                            ser1.currency(cur).then((da)=>{
+                                console.log(da[0].symbol);
+                                f.currencySymbol = da[0].symbol;
+                            });
+                            if(element.fx_cr != 0){
+                                element.amountType='cr';
+                                element.amount=element.fx_cr;
+                            }
+                            else{
+                                element.amountType='dr';
+                                element.amount=element.fx_dr;
+                            }
+                        }
+                        else{
+                            if(element.cr != 0){
+                                element.amountType='cr';
+                                element.amount=element.cr;
+                            }
+                            else{
+                                element.amountType='dr';
+                                element.amount=element.dr;
+                            }
+                            
+                        }
+                        delete element['dr'];
+                        delete element['cr'];
+                        delete element['fx_cr'];
+                        delete element['fx_dr'];
                         var vid = element.vid;
                         var Lid = element.ledger;
                         delete element['ledger'];
                         delete element['vid'];
                         //console.log(element);
-                        if(element.cr != 0){
-                            element.amountType='cr';
-                            element.amount=element.cr;
-                            delete element['cr'];
-                            delete element['dr'];
-                        }
-                        else{
-                            element.amountType='dr';
-                            element.amount=element.dr;
-                            delete element['dr'];
-                            delete element['cr'];
-                        }
+                       
                         var p1 = ser1.led1(Lid);
                         var p2 = ser1.vbill1(id,vid);
                         var p3 = ser1.vtax1(id,vid);
@@ -338,6 +362,7 @@ router.post('/',(req,res,next)=>{
                                     action="update";
                                 }
                                 f.ledgerDetails=ledgerDetails;
+                                f.transactionNumber=f.transactionNumber || "";
                                 console.log(JSON.stringify(f));
                                 var pp=ser1.push1(f,action,type_cid,type_segid);
                                 pp.then((backed)=>{
@@ -373,7 +398,7 @@ router.post('/',(req,res,next)=>{
             });
             vdetail.findAll({
                 attributes: ['vid','cr','dr','accessibleAmount','bankInstrumentNo','bankInstrumentDate','bankInstrumentType',
-                    'bankName','date','ledger','currency_id',['narration','ledgerType']
+                    'bankName','date','ledger','currency_id',['narration','ledgerType'],'fx_dr','fx_cr'
                 ],
                 where:{
                     vid:id
@@ -384,10 +409,36 @@ router.post('/',(req,res,next)=>{
                         var element =ii.dataValues;
                         var cur =  element.currency_id;
                         delete element['currency_id'];
-                        ser1.currency(cur).then((da)=>{
-                            console.log(da[0].symbol);
-                            f.currencySymbol = da[0].symbol;
-                        });
+                        if(f.isFx==1){
+                            ser1.currency(cur).then((da)=>{
+                                console.log(da[0].symbol);
+                                f.currencySymbol = da[0].symbol;
+                            });
+                            if(element.fx_cr != 0){
+                                element.amountType='cr';
+                                element.amount=element.fx_cr;
+                            }
+                            else{
+                                element.amountType='dr';
+                                element.amount=element.fx_dr;
+                            }
+                        }
+                        else{
+                            if(element.cr != 0){
+                                element.amountType='cr';
+                                element.amount=element.cr;
+                            }
+                            else{
+                                element.amountType='dr';
+                                element.amount=element.dr;
+                            }
+                            
+                        }
+                        delete element['dr'];
+                        delete element['cr'];
+                        delete element['fx_cr'];
+                        delete element['fx_dr'];
+                        
                         ser1.dd(element.date).then((d)=>{
                             element.date=d;
                         });
@@ -395,19 +446,7 @@ router.post('/',(req,res,next)=>{
                         var Lid = element.ledger;
                         delete element['ledger'];
                         delete element['vid'];
-                        //console.log(element);
-                        if(element.cr != 0){
-                            element.amountType='cr';
-                            element.amount=element.cr;
-                            delete element['cr'];
-                            delete element['dr'];
-                        }
-                        else{
-                            element.amountType='dr';
-                            element.amount=element.dr;
-                            delete element['dr'];
-                            delete element['cr'];
-                        }
+                        
                         var p1 = ser1.led1(Lid);
                         var p2 = ser1.vbill1(id,vid);
                         var p3 = ser1.vtax1(id,vid);
@@ -439,7 +478,7 @@ router.post('/',(req,res,next)=>{
                                 invv.isFx=f.isFx;
                                 invv.fxRate=f.fxRate;
                                 invv.currencySymbol= f.currencySymbol
-                                invv.transactionNumber=f.transactionNumber;
+                                invv.transactionNumber=f.transactionNumber || "";
                                 invv.transactionDate=f.transactionDate;
                                 invv.transactionType=f.transactionType;
                                 invv.transactionDescription=f.transactionDescription;
@@ -528,9 +567,9 @@ router.post('/getvdetails',(req,res,next)=>{
             id:vid
         }
     });
-    var p2 = sequelize.query("SELECT vdetail.*,ledgermaster.id AS ledgerid,ledgermaster.ledger_name FROM vdetail INNER JOIN `ledgermaster` ON vdetail.ledger=ledgermaster.id WHERE vdetail.vid="+vid);
+    var p2 = sequelize.query("SELECT vdetail.*,ledgermaster.id AS ledgerid,ledgermaster.ledger_name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr FROM vdetail INNER JOIN `voucher` ON (voucher.id=vdetail.vid) INNER JOIN `ledgermaster` ON vdetail.ledger=ledgermaster.id WHERE vdetail.vid="+vid);
     Promise.all([p1,p2]).then((result1)=>{
-        console.log(result1)
+        console.log(result1[1][0])
         res.json(result1);
     })
     

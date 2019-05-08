@@ -112,7 +112,7 @@
                                     <td>{{this.currencySymbol}}</td>
                                     <td>{{this.gstin}}</td>-->
                                     <td onclick="fetchVdetail('{{this.vid}}')">{{this.partyName}}</td>
-                                    <td onclick="fetchVdetail('{{this.vid}}')">{{this.currencySymbol}}</td>
+                                    <td onclick="fetchVdetail('{{this.vid}}')">{{this.currency}}</td>
                                     <td onclick="fetchVdetail('{{this.vid}}')" class="text-right">{{greater this.partyCr this.partyDr}}</td>
                                     <td onclick="fetchVdetail('{{this.vid}}')">{{this.name}}</td>
                                     <!--<td>{{this.segid}}</td>-->
@@ -281,7 +281,7 @@
                             $("#vdbody").html("");
                             data[1][0].forEach((ii,index)=>{
                                 index1=index+1;
-                                $("#vdbody").append('<tr><td>'+ii.ledger_name+'</td><td class="text-right">'+ii.dr+'</td><td class="text-right">'+ii.cr+'</td>')
+                                $("#vdbody").append('<tr><td>'+ii.ledger_name+'</td><td class="text-right">'+ii.partyDr+'</td><td class="text-right">'+ii.partyCr+'</td>')
                             });
                             $(".desc").html(data[0][0].transactionDescription)
                             $("#vdetailsFetched").modal("show");
