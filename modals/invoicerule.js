@@ -9,21 +9,23 @@ const invoicerule = sequelize.define('invoicerule', {
         allowNull: false,
         autoIncrement:true
     },
-    company_name:{
+    company_id:{
+        type:Sequelize.INTEGER,
+        allowNull : true
+    },
+    party_id:{
         type:Sequelize.STRING,
         allowNull : true
     },
-    party_name:{
-        type:Sequelize.STRING,
-        allowNull : true
-    },
-    sbu:{
-        type:Sequelize.STRING,
+    sbu_id:{
+        type:Sequelize.INTEGER,
         allowNull : true
     },
     invoice_date:{
-        type:Sequelize.DATEONLY,
-        allowNull : true
+        type:Sequelize.STRING,
+        validate:{
+            isIn: [['check_in_date','check_out_date','invoice_date','manual']]
+        }
     },
     createdAt: Sequelize.DATE,
     updatedAt: Sequelize.DATE,

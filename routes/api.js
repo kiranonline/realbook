@@ -91,4 +91,33 @@ router.get('/service/country/getall',(req,res,next)=>{
 })
 
 
+
+
+
+
+router.get('/sbu/getall',(req,res,next)=>{
+    sequelize.query(`SELECT id,sbu FROM sbu_master`).then((data)=>{
+        res.json({
+            sbu : data[0]
+        });
+    }).catch((ero)=>{
+        res.status(500);
+    })
+})
+
+
+router.get('/service/countrywithid/getall',(req,res,next)=>{
+    sequelize.query(`SELECT id,name FROM company_master WHERE is_supplier=1`).then((data)=>{
+        res.json({
+            suppliercountry : data[0]
+        });
+    }).catch((ero)=>{
+        res.status(500);
+    })
+})
+
+
+
+
+
 module.exports=router;
