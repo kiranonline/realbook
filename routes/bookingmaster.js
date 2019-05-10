@@ -259,10 +259,19 @@ router.post('/local/:RA_REFERENCE',(req,res,next)=>{
                 console.log("deleted");
                 model1.bookingmaster.bulkCreate(tosave).then(()=>{
                     console.log("created");
-                    res.json({
-                        success : true,
-                        msg : "data saved successfully."
+                    sequelize.query(`CALL Adansa.ra_voucher_post_rb_v1('${RA_REFERENCE}');`).then(()=>{
+                        res.json({
+                            success : true,
+                            msg : "data saved successfully."
+                        })
+                    }).catch((err2)=>{
+                        console.log(`Error procedure: ${err2}`);
+                        res.json({
+                            success : false,
+                            msg : err2
+                        })
                     })
+                    
                 }).catch((err)=>{
                     res.json({
                         success : false,

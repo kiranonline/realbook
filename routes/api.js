@@ -4,6 +4,7 @@ const Sequelize = require('sequelize');
 var sequelize = require('../services/conn');
 const Op = Sequelize.Op;
 var suppliermaster = require("../modals/suppliermaster").suppliermaster;
+var customermaster = require("../modals/customermaster").customermaster;
 
 
 
@@ -44,6 +45,8 @@ router.get('/supplier/getall',(req,res,next)=>{
 
 
 
+
+
 router.get('/supplier/search',(req,res,next)=>{
     let q = req.query.search || "";
     suppliermaster.findAll({
@@ -77,10 +80,44 @@ router.get('/supplier/search',(req,res,next)=>{
 
 
 
+
+router.get('/customer/search',(req,res,next)=>{
+    let q = req.query.search || "";
+    customermaster.findAll({
+        attributes : ['client_ref_no','customer_name'],
+        where : {
+            [Op.or] : [
+                {
+                    client_ref_no : {
+                        [Op.like] : `%${q}%`
+                    }
+                },
+                {
+                    customer_name : {
+                        [Op.like] : `%${q}%`
+                    }
+                }
+            ]
+        }
+    }).then((data)=>{
+        console.log(data);
+        res.json({
+            customer : data
+        });
+    }).catch((err)=>{
+        console.log(err)
+        res.status(500);
+    })
+})
+
+
+
+
+
 router.get('/service/country/getall',(req,res,next)=>{
-    sequelize.query(`SELECT name FROM company_master WHERE is_supplier=1`).then((data)=>{
+    sequelize.query(`SELECT country_alias FROM company_master WHERE is_supplier=1`).then((data)=>{
         var c = data[0].map((d,i)=>{
-            return d.name
+            return d.country_alias
         })
         res.json({
             suppliercountry : c
