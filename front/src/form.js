@@ -23,8 +23,9 @@ class Form extends Component {
             countries:[],
             currencies:[],
             RA_REFERENCE:"",
+            agents:[],
             activeRowIndex:-1,
-            formData:{OVER_ALL_DISCOUNT:0,TOTAL_TAX_CALCULATION:0},
+            formData:{OVER_ALL_DISCOUNT:0,TOTAL_TAX_CALCULATION:0,OVER_ALL_LOSS:0,OVER_ALL_PROFIT:0},
             dynamic:[],
             totalTax:0,
             totalDiscount:0,
@@ -37,6 +38,39 @@ class Form extends Component {
                 PER_SERVICE_SUPPLIER_CODE:"",
                 SERVICE_COUNTRY:""
             }
+
+        }
+    }
+
+    getAgentCode(formData,value){
+        // /api/customer/search?search=
+         if(value.length>=3){
+            HttpService.get("api/customer/search?search="+value).then(res=>{
+                if(res.status===200){
+                    console.log(res.data)
+                    let data=[]
+                res.data.customer.map((item,indx)=>{
+                    
+                        data.push(item.customer_name+","+item.client_ref_no)
+
+                })
+                if(value!==undefined){
+                    // dynamic[indx]['PER_SERVICE_WISE_SUPPLIER_NAME']=value.split(",")[0]
+                    formData['RA_AGENT_CODE']=value.split(",")[1]
+     
+             }
+             else{
+                 formData['RA_AGENT_CODE']=null;
+                //  dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']="";
+             }
+                this.setState({agents:data,formData})
+                }
+            })
+        }
+        else{
+            formData['RA_AGENT_CODE']=null;
+            // dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']="";
+            this.setState({formData})
 
         }
     }
@@ -128,10 +162,10 @@ class Form extends Component {
 
     setSupplierName(dynamic,value,indx){
         // value=value.target.value;
-        console.log(value)
+        // console.log(value)
         if(value!==undefined){
                dynamic[indx]['PER_SERVICE_WISE_SUPPLIER_NAME']=value.split(",")[0]
-               dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']=value.split(",")[1]
+               dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']=value.split(",")[1].trim()
 
         }
         else{
@@ -347,7 +381,8 @@ class Form extends Component {
                         delete formData.success;
                     }
                     // console.log(formData)
-            
+                    formData.RA_AGENT_CODE.trim();
+
                     HttpService.post("bookingmaster/local/"+this.state.RA_REFERENCE,{data:formData}).then(res=>{
                         if(res.status===200){
                             if(res.data.success){
@@ -391,7 +426,7 @@ class Form extends Component {
                     let data=[]
                 res.data.supplier.map((item,indx)=>{
                     // if(indx<20){
-                        data.push(item.supplier_display_name+" , "+item.supplier_id)
+                        data.push(item.supplier_display_name+","+item.supplier_id)
 
                     // }
                 })
@@ -438,8 +473,29 @@ class Form extends Component {
                 </div>
                 <div className="col-4">
                     <div className="form-group">
-                        <label htmlFor="">RA Agent Code *</label>
-                        <input type="text" className="form-control" defaultValue={formData.RA_AGENT_CODE} onChange={(e)=>{formData.RA_AGENT_CODE=e.target.value;}} id="" placeholder="" />
+                        <label htmlFor="">RA Agent Code *</label><br/>
+                        {   formData.RA_AGENT_CODE!==null?
+                        <AutoComplete
+                        style={{ width: 380,left:'-0.5em' }}
+                        dataSource={this.state.agents}
+                        value={this.state.formData.RA_AGENT_CODE}
+                        onSelect={(value)=>{this.setState({formData:Object.assign({},formData,{RA_AGENT_CODE:value.split(",")[1].trim()})})}}
+                        onChange={(value)=>this.getAgentCode(formData,value)}
+                        className="form-control"
+                        filterOption={(inputValue, option) => option.props.children.split(",")[0].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 || option.props.children.split(",")[1].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+                        />:
+                        <AutoComplete
+                        style={{ width: 380,left:'-0.5em' }}
+                        dataSource={this.state.agents}
+                        defaultValue={this.state.formData.RA_AGENT_CODE}
+                        onSelect={(value)=>{this.setState({formData:Object.assign({},formData,{RA_AGENT_CODE:value.split(",")[1].trim()})})}}
+                        onChange={(value)=>this.getAgentCode(formData,value)}
+                        className="form-control"
+                        filterOption={(inputValue, option) => option.props.children.split(",")[0].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 || option.props.children.split(",")[1].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+                        />
+                        
+                        }
+                        {/* <input type="text" className="form-control" defaultValue={formData.RA_AGENT_CODE} onChange={(e)=>{formData.RA_AGENT_CODE=e.target.value;this.getAgentCode(e.target.value)}} id="" placeholder="" /> */}
                     </div>
                 </div>
                 <div className="col-4">
