@@ -86,6 +86,7 @@
                                 <th scope="col">OPERATED ON</th>
                                 <th scope="col text-center"><i class="fas fa-sync-alt sz"></i></th>
                                 <th scope="col">EDIT</th>
+                                <th scope="col">ERROR</th>
                             </tr>
                         </thead>
                         <tbody class="table-fixed">
@@ -139,6 +140,14 @@
                                     {{else}}
                                         <td></td>
                                     {{/if}}
+
+                                    {{#if this.cnt_flg}}
+                                        <td class="text-center"><button id="errInfo" class=" btn btn-primary"><i class="fas fa-info-circle"></i></button></td>
+                                    {{else}}
+                                        <td></td>
+                                    {{/if}}
+
+                                    
 
                                 </tr>
                             {{/each}}
@@ -219,6 +228,41 @@
             </div>
         </div>
 
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="errorModal" role="dialog">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="rno1"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="inner-table-holder" id="inner-data">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-sm table-bordered" id="errorTable-inner">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Error Messages</th>
+                                       
+                                        {{!-- <th scope="col text-center"><i class="fas fa-sync-alt sz"></i></th> --}}
+                                    </tr>
+                                </thead>
+                                <tbody class="table-fixed">
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
         <a class="plus-sign" href="/local/booking/"><i class="fas fa-plus"></i></a>
 
 
@@ -243,16 +287,23 @@
                         console.log('rowCallback');
                     }
                 });
-
+                var table1 = $('#errorTable').DataTable({
+                    "order": [[1, 'asc']],
+                    rowCallback: function ( row, data, index ) {
+                        console.log('rowCallback');
+                    }
+                });
 
                 $('#myTable tbody').on('click', 'tr', function () {
                     //console.log('clicked');
                     var tr = $(this);
                     var rowid = tr.attr('id');
-                    console.log(rowid);
+                    {{!-- console.log(rowid); --}}
                     var row = table.row( tr );
                     var d = row.data();
-                    console.log(d[1]);
+                    if(rowid==='errInfo'){
+                        
+                    console.log("stuff",d[1]);
                     $.ajax({
                         type: "POST",
                         url: "/bookingmaster/"+d[1],
@@ -307,6 +358,74 @@
                                         { "data" : "FETCHED_ON" },
                                         { "data" : null,"defaultContent": "" },
                                         { "data" : null,"defaultContent": "" }
+                                        
+                                ],
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            swal("Error", "Error detching details", "error");
+                        }
+                    });
+                    }
+                    else{
+
+
+                      $.ajax({
+                        type: "GET",
+                        url: "/bookingmaster/error/"+d[1],
+                        {{!-- data: {
+                            id:'RED001'
+                        }, --}}
+                        crossDomain:true,
+                        success: function (data) {
+                            console.log("errors",data);
+                            $("#rno1").html("RA Reference : "+d[1])
+                            $("#errorModal").modal();                                
+                            $('#errorTable-inner').DataTable({
+                                destroy: true,
+                                data: data,
+                                columns:[
+                                        { "data" : "error_msg" }
+                                        
+                                ],
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(error)
+                            swal("Error", "Error detching details", "error");
+                        }
+                    });
+                    }
+                    
+                        
+                });
+
+
+                $('button#errInfo').click(function (e) {
+                    e.preventDefault();
+                    //console.log('clicked');
+                    var tr = $(this);
+                    var rowid = tr.attr('id');
+                    console.log(rowid);
+                    var row = table1.row( tr );
+                    var d = row.data();
+                    console.log(d[1]);
+                    $.ajax({
+                        type: "POST",
+                        url: "/bookingmaster/error/"+d[1],
+                        data: {
+                            id:d[1]
+                        },
+                        crossDomain:true,
+                        success: function (data) {
+                            console.log("errors",data);
+                            {{!-- $("#rno").html("RA Reference : "+d[1]) --}}
+                            $("#errorModal").modal();                                
+                            $('#errorTable-inner').DataTable({
+                                destroy: true,
+                                data: data,
+                                columns:[
+                                        { "data" : "error_msg" }
                                         
                                 ],
                             });

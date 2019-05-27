@@ -133,6 +133,17 @@ router.post("/:id",(req,res,next)=>{
 })
 
 
+router.get("/error/:id",(req,res,next)=>{
+    console.log('Alll')
+    var id = req.params.id;
+    sequelize.query(`SELECT error_msg FROM error_posting_tmp WHERE ra_reference="${id}"`).then((data)=>{
+        console.log(data[0]);
+        res.json(data[0]);
+    }).catch((err2)=>{
+        console.log(`Error procedure: ${err2}`);
+        res.send(err2);
+    })   
+})
 
 
 
