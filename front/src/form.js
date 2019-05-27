@@ -291,7 +291,7 @@ class Form extends Component {
 
             return; 
         }
-        else if(parseInt(formData.OVER_ALL_DISCOUNT)!==parseInt(this.state.totalDiscount.toString())){
+        else if(parseInt(formData.OVER_ALL_DISCOUNT)!==parseInt(this.state.totalDiscount!==null?this.state.totalDiscount.toString():0)){
             notification['warning']({
                 message: 'Required field missing',
                 description: "Invalid overall discount",
@@ -299,7 +299,8 @@ class Form extends Component {
               
             return;
         }
-        else if(parseInt(formData.TOTAL_TAX_CALCULATION)!==parseInt(this.state.totalTax.toString())){
+        else if(parseInt(formData.TOTAL_TAX_CALCULATION)!==parseInt(this.state.totalTax!==null?this.state.totalTax.toString():0)){
+            console.log(this.state.totalTax)
             notification['warning']({
                 message: 'Required field missing',
                 description: "Invalid tax calculation",
@@ -730,7 +731,7 @@ class Form extends Component {
                     <div className="form-group row">
                         <label htmlFor="" className="ml-auto col-auto col-form-label">Over All Profit</label>
                         <div className="col-2">
-                            <input type="number" min="0"  value={formData.OVER_ALL_LOSS===0 || formData.OVER_ALL_LOSS===null?formData.OVER_ALL_PROFIT:0} onChange={(e)=>{this.setState({formData:Object.assign({},formData,{OVER_ALL_PROFIT:e.target.value})})}}  className="form-control" />
+                            <input type="number" min="0"  value={parseInt(formData.OVER_ALL_LOSS)===0 || formData.OVER_ALL_LOSS===null?formData.OVER_ALL_PROFIT:console.log('yeah')} onChange={(e)=>{this.setState({formData:Object.assign({},formData,{OVER_ALL_PROFIT:e.target.value})})}}  className="form-control" />
                         </div>
                     </div>
                     <div className="form-group row">
