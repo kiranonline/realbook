@@ -142,7 +142,7 @@
                                     {{/if}}
 
                                     {{#if this.cnt_flg}}
-                                        <td class="text-center"><button id="errInfo" class=" btn btn-primary"><i class="fas fa-info-circle"></i></button></td>
+                                        <td class="text-center"><button name={{this.RA_REFERENCE}} id="errInfo" class=" btn btn-primary"><i name={{this.RA_REFERENCE}} class="fas fa-info-circle"></i></button></td>
                                     {{else}}
                                         <td></td>
                                     {{/if}}
@@ -301,9 +301,7 @@
                     {{!-- console.log(rowid); --}}
                     var row = table.row( tr );
                     var d = row.data();
-                    if(rowid==='errInfo'){
-                        
-                    console.log("stuff",d[1]);
+                   
                     $.ajax({
                         type: "POST",
                         url: "/bookingmaster/"+d[1],
@@ -366,23 +364,60 @@
                             swal("Error", "Error detching details", "error");
                         }
                     });
-                    }
-                    else{
-
-
-                      $.ajax({
+                    
+                
+                    
+                        
+                });
+            document.getElementById("errInfo").addEventListener("click", function(event){
+        event.stopPropagation();
+        var id=event.target.name;
+        if(id==undefined){
+        id=$(this).children()[0].attributes[0].nodeValue;       
+        }
+             $.ajax({
                         type: "GET",
-                        url: "/bookingmaster/error/"+d[1],
-                        {{!-- data: {
-                            id:'RED001'
-                        }, --}}
+                        url: "/bookingmaster/error/"+id,
+                        
                         crossDomain:true,
                         success: function (data) {
                             console.log("errors",data);
-                            $("#rno1").html("RA Reference : "+d[1])
+                            $("#rno1").html("RA Reference : "+id)
+                           
+                            $("#errorModal").modal();         
+                                              
+                            $('#errorTable-inner').DataTable({
+                                destroy: true,
+                                searching: false,
+                                data: data,
+                                columns:[
+                                  { "data" : "error_msg" }      
+                                ],
+                            });
+                            {{!-- var div = $('#myModal');
+                            div.style('display', 'none', 'important'); --}}
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(error)
+                            swal("Error", "Error detching details", "error");
+                        }
+                    }); 
+        });
+
+            {{!-- function OpenActiveError(e,id){
+                e.preventDefault();
+                $.ajax({
+                        type: "GET",
+                        url: "/bookingmaster/error/"+id,
+                        
+                        crossDomain:true,
+                        success: function (data) {
+                            console.log("errors",data);
+                            $("#rno1").html("RA Reference : "+id)
                             $("#errorModal").modal();                                
                             $('#errorTable-inner').DataTable({
                                 destroy: true,
+                                searching: false,
                                 data: data,
                                 columns:[
                                         { "data" : "error_msg" }
@@ -395,47 +430,7 @@
                             swal("Error", "Error detching details", "error");
                         }
                     });
-                    }
-                    
-                        
-                });
-
-
-                $('button#errInfo').click(function (e) {
-                    e.preventDefault();
-                    //console.log('clicked');
-                    var tr = $(this);
-                    var rowid = tr.attr('id');
-                    console.log(rowid);
-                    var row = table1.row( tr );
-                    var d = row.data();
-                    console.log(d[1]);
-                    $.ajax({
-                        type: "POST",
-                        url: "/bookingmaster/error/"+d[1],
-                        data: {
-                            id:d[1]
-                        },
-                        crossDomain:true,
-                        success: function (data) {
-                            console.log("errors",data);
-                            {{!-- $("#rno").html("RA Reference : "+d[1]) --}}
-                            $("#errorModal").modal();                                
-                            $('#errorTable-inner').DataTable({
-                                destroy: true,
-                                data: data,
-                                columns:[
-                                        { "data" : "error_msg" }
-                                        
-                                ],
-                            });
-                        },
-                        error: function (xhr, status, error) {
-                            swal("Error", "Error detching details", "error");
-                        }
-                    });
-                        
-                });
+            } --}}
 
 
             });
