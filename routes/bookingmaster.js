@@ -153,7 +153,8 @@ router.get('/local/:RA_REFERENCE',(req,res,next)=>{
     var p1 = model1.bookingmaster.findAll({
         where:{
             RA_REFERENCE : RA_REFERENCE,
-            ismanual : 1
+            ismanual : 1,
+            flag:0
         }            
         
     });
@@ -266,8 +267,18 @@ router.post('/local/:RA_REFERENCE',(req,res,next)=>{
                 }}).then(()=>{
                     
                     console.log("deleted");
-                    model1.bookingmaster.findAll().then(rows=>{
-                        tosave[0].id=rows.length+1;
+                    model1.bookingmaster.findAll({
+                        limit: 1,
+                        where: {
+                          //your where conditions, or without them if you need ANY entry
+                        },
+                        order: [ [ 'id', 'DESC' ]]
+                      }).then(rows=>{
+                          if(rows.length>0){
+                            tosave[0].id=parseInt(rows[0].id)+1;
+                              }
+                        
+                        
                         model1.bookingmaster.bulkCreate(tosave).then(()=>{
                             console.log("created");
                             // `CALL Adansa.ra_voucher_post_rb_v1('${RA_REFERENCE}');`

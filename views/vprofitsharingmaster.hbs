@@ -47,10 +47,10 @@
                                 <th scope="col">Seller co. Name</th>
                                 <th scope="col">supplier co. Name</th>
                                 <th scope="col">Sharing Master Rule</th>
-                                <th scope="col">Supplier Currency</th>
-                                <th scope="col">Seller Currency</th>
                                 <th scope="col" class="text-right">Posted supplier profit</th>
+                                <th scope="col">Supplier Currency</th>
                                 <th scope="col" class="text-right">Posted seller profit</th>
+                                <th scope="col">Seller Currency</th>
                                 <th scope="col">Manual</th>
                             </tr>
                         </thead>
@@ -62,10 +62,10 @@
                                     <td onclick="fetchdetail('{{this.id}}')">{{this.sellingName}}</td>
                                     <td onclick="fetchdetail('{{this.id}}')">{{this.supplyingName}}</td>
                                     <td onclick="fetchdetail('{{this.id}}')">{{this.rule}}</td>
-                                    <td onclick="fetchdetail('{{this.id}}')">{{this.seller_currency}}</td>
-                                    <td onclick="fetchdetail('{{this.id}}')">{{this.supplier_currency}}</td>
                                     <td onclick="fetchdetail('{{this.id}}')" class="text-right">{{this.posted_supplier_profit}}</td>
+                                    <td onclick="fetchdetail('{{this.id}}')">{{this.supplier_currency}}</td>
                                     <td onclick="fetchdetail('{{this.id}}')" class="text-right">{{this.posted_seller_profit}}</td>
+                                    <td onclick="fetchdetail('{{this.id}}')">{{this.seller_currency}}</td>
                                     <td class="text-center">
                                         <button type="button" onclick="editITEM('{{this.id}}')" class="btn btn-danger actn" data-toggle="modal" data-target="#del"><i class="fa fa-pencil-alt"></i></button>
                                     </td>
