@@ -145,10 +145,6 @@ router.get("/error/:id",(req,res,next)=>{
     })   
 })
 
-
-
-
-
 //fetch existing details
 // bookingmaster/local/{{id}}
 
@@ -250,7 +246,12 @@ router.get('/local/:RA_REFERENCE',(req,res,next)=>{
 router.post('/local/:RA_REFERENCE',(req,res,next)=>{
     var RA_REFERENCE = req.params.RA_REFERENCE;
     var data = req.body.data;
+    data.flag=0;
     data.ismanual=1;
+    if(data.id){
+        data.id=parseInt(data.id);
+        data.id++;
+    }
     var dynamic = data.dynamic;
     delete data['dynamic'];
     var tosave=[];
@@ -258,43 +259,42 @@ router.post('/local/:RA_REFERENCE',(req,res,next)=>{
         var m = { ...d, ...data}
         tosave.push(m);
         if(tosave.length==dynamic.length){
-            console.log(tosave)
-            
-            
-            
-            model1.bookingmaster.destroy({
-                where:{
+            // console.log(tosave)
+           
+                model1.bookingmaster.update({ flag:-1},{ where:{
                     RA_REFERENCE : RA_REFERENCE
-                }
-            }).then(()=>{
-                console.log("deleted");
-                model1.bookingmaster.bulkCreate(tosave).then(()=>{
-                    console.log("created");
-                    sequelize.query(`CALL Adansa.ra_voucher_post_rb_v1('${RA_REFERENCE}');`).then(()=>{
-                        res.json({
-                            success : true,
-                            msg : "data saved successfully."
-                        })
-                    }).catch((err2)=>{
-                        console.log(`Error procedure: ${err2}`);
-                        res.json({
-                            success : false,
-                            msg : err2
+                }}).then(()=>{
+                    
+                    console.log("deleted");
+                    model1.bookingmaster.findAll().then(rows=>{
+                        tosave[0].id=rows.length+1;
+                        model1.bookingmaster.bulkCreate(tosave).then(()=>{
+                            console.log("created");
+                            // `CALL Adansa.ra_voucher_post_rb_v1('${RA_REFERENCE}');`
+                            sequelize.query(`CALL Adansa.ra_voucher_post_rb_v1('${RA_REFERENCE}');`).then(()=>{
+                                res.json({
+                                    success : true,
+                                    msg : "data saved successfully."
+                                })
+                            }).catch((err2)=>{
+                                console.log(`Error procedure: ${err2}`);
+                                res.json({
+                                    success : false,
+                                    msg : err2
+                                })
+                            })
+                            
+                        }).catch((err)=>{
+                            res.json({
+                                success : false,
+                                msg : err
+                            })
                         })
                     })
                     
-                }).catch((err)=>{
-                    res.json({
-                        success : false,
-                        msg : err
-                    })
-                })
-            }).catch((err)=>{
-                res.json({
-                    success : false,
-                    msg : err
-                })
+                
             })
+            
         }
     })
 
