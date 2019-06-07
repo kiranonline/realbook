@@ -21,6 +21,8 @@ class Form extends Component {
             suppliers:[],
             activeInitial:{},
             countries:[],
+            isEdit:false,
+            hasErr:false,
             currencies:[],
             RA_REFERENCE:"",
             agents:[],
@@ -117,7 +119,7 @@ class Form extends Component {
         HttpService.get('bookingmaster/local/'+id).then(res=>{
             if(res.data.success){
                
-                this.setState({formData:res.data.data,dynamic:res.data.data.dynamic,RA_REFERENCE:res.data.RA_REFERENCE,totalCost:res.data.data.SELLINGCOST,totalDiscount:res.data.data.OVER_ALL_DISCOUNT,totalTax:res.data.data.TOTAL_TAX_CALCULATION,
+                this.setState({isEdit:true,formData:res.data.data,dynamic:res.data.data.dynamic,RA_REFERENCE:res.data.RA_REFERENCE,totalCost:res.data.data.SELLINGCOST,totalDiscount:res.data.data.OVER_ALL_DISCOUNT,totalTax:res.data.data.TOTAL_TAX_CALCULATION,
                 activeInitial: res.data.data.dynamic[ res.data.data.dynamic.length-1]
                 })
             }
@@ -264,6 +266,14 @@ class Form extends Component {
 
             return;
         }
+        else if(formData.INVOICE_DATE===undefined || formData.INVOICE_DATE===null){
+            notification['warning']({
+                message: 'Required field missing',
+                description: "Please select an Invoice Date",
+              });
+
+            return;
+        }
         else if(formData.EXCHANGE_RATE===undefined || parseInt(formData.EXCHANGE_RATE)<0){
             console.log(formData.EXCHANGE_RATE)
             notification['warning']({
@@ -274,6 +284,21 @@ class Form extends Component {
 
             return;
         }
+        else if(formData.CHECK_IN_DATE===undefined){
+            notification['warning']({
+                message: 'Required field missing',
+                description: "Please set a check in date",
+              });
+            return;
+        } 
+        else if(formData.CHECK_OUT_DATE===undefined){
+            notification['warning']({
+                message: 'Required field missing',
+                description: "Please set a check out date",
+              });
+            return;
+        } 
+        
         else if(parseFloat(formData.SELLINGCOST)!==parseFloat(this.state.totalCost.toString())){
             console.log(formData.SELLINGCOST,this.state.totalCost)
             notification['warning']({
@@ -283,7 +308,7 @@ class Form extends Component {
 
             return;
         }
-        else if(parseInt(formData.TOTAL_IN_AMOUNTS)<=0){
+        else if(parseInt(formData.TOTAL_IN_AMOUNTS)<formData.SELLINGCOST){
             notification['warning']({
                 message: 'Required field missing',
                 description: "Invalid Total in amount",
@@ -359,11 +384,11 @@ class Form extends Component {
                     return;
                 }
             
-                else if(item.COMPONENTS_WISE_CURRENCY===undefined || item.COMPONENTS_WISE_CURRENCY===null ||  item.COMPONENTS_WISE_CURRENCY===0){
-                    console.log("item",item.COMPONENTS_WISE_CURRENCY,"state",this.state.activeInitial.COMPONENTS_WISE_CURRENCY)
+                else if(item.COMPONENTS_WISE_NET_COST_CURRENCY===undefined || item.COMPONENTS_WISE_NET_COST_CURRENCY===null ||  item.COMPONENTS_WISE_NET_COST_CURRENCY===0){
+                    console.log("item",item.COMPONENTS_WISE_NET_COST_CURRENCY,"state",this.state.activeInitial.COMPONENTS_WISE_NET_COST_CURRENCY)
                     notification['warning']({
                         message: 'Required field missing',
-                        description: "Component wise currency can't be empty",
+                        description: "Component wise net cost currency can't be empty",
                       });
         
         
@@ -384,6 +409,9 @@ class Form extends Component {
                     // console.log(formData)
                     formData.RA_AGENT_CODE.trim();
 
+                   
+
+                   if(!this.state.hasErr){
                     HttpService.post("bookingmaster/local/"+this.state.RA_REFERENCE,{data:formData}).then(res=>{
                         if(res.status===200){
                             if(res.data.success){
@@ -400,11 +428,36 @@ class Form extends Component {
                             }
                         }
                     })
+                   }
                 }
 
             })
         }
         
+    }
+
+    setOutDate(formData,dateString){
+        if(formData.CHECK_IN_DATE){
+            if(dateString>=formData.CHECK_IN_DATE){
+                this.setState({formData:Object.assign({},formData,{CHECK_OUT_DATE:dateString}),hasErr:false})
+            }
+            else{
+                notification['error']({
+                    message: 'Invalid Date',
+                    description: "Invalid date selected!",
+                  });
+                this.setState({hasErr:true})
+            }
+            
+        }
+        else{
+            notification['warning']({
+                message: 'Required Field missing',
+                description: "Please enter check in date before proceeding",
+              });
+              this.setState({hasErr:true})
+        }
+
     }
 
     setModalValues(name,value){
@@ -532,7 +585,7 @@ class Form extends Component {
                 </div>
                 <div className="col-4">
                     <div className="form-group">
-                        <label htmlFor="">Invoice Date</label>
+                        <label htmlFor="">Invoice Date *</label>
                         <div className="input-group mb-3">
                             <DatePicker style={{width:'30em'}} value={formData.INVOICE_DATE?moment(formData.INVOICE_DATE, 'YYYY-MM-DD'):""} format="YYYY-MM-DD" onChange={(date,dateString)=>{this.setState({formData:Object.assign({},formData,{INVOICE_DATE:dateString})})}} placeholder="yyyy-mm-dd" />
                             {/* <div className="input-group-append">
@@ -560,7 +613,13 @@ class Form extends Component {
                 <div className="col-4">
                     <div className="form-group">
                         <label htmlFor="">Stand Alone</label>
-                        <input type="text" className="form-control" id="" defaultValue={formData.STAND_ALONE} onChange={(e)=>{formData.STAND_ALONE=e.target.value}} placeholder="" />
+                        <select className="form-control" value={formData.STAND_ALONE} onChange={(e)=>{formData.STAND_ALONE=e.target.value;this.setState({formData})}} >
+                            <option value="">Choose one</option>
+                            {[{val:'Y',name:'YES'},{val:'N',name:'NO'}].map(itm=>{
+                                return <option value={itm.val}>{itm.name}</option>
+                            })}
+                        </select>
+                       
                     </div>
                 </div>
             </div>
@@ -568,7 +627,13 @@ class Form extends Component {
                 <div className="col-4">
                     <div className="form-group">
                         <label htmlFor="">SBU</label>
-                        <input type="text" className="form-control" defaultValue={formData.SBU} onChange={(e)=>{formData.SBU=e.target.value}} id="" placeholder="" />
+                        <select  className="form-control" value={formData.SBU} onChange={(e)=>{formData.SBU=e.target.value;this.setState({formData})}}>
+                            <option value="">Choose one</option>
+                            {['FIT','GROUP'].map(itm=>{
+                                return <option val={itm}>{itm}</option>
+                            })}
+                        </select>
+
                     </div>
                 </div>
                 <div className="col-4">
@@ -579,7 +644,7 @@ class Form extends Component {
                 </div>
                 <div className="col-4">
                     <div className="form-group">
-                        <label htmlFor="">Checkin Date</label>
+                        <label htmlFor="">Checkin Date *</label>
                         <div className="input-group mb-3">
                             <DatePicker style={{width:'30em'}} value={formData.CHECK_IN_DATE?moment(formData.CHECK_IN_DATE, 'YYYY-MM-DD'):""} format="YYYY-MM-DD" onChange={(date,dateString)=>{this.setState({formData:Object.assign({},formData,{CHECK_IN_DATE:dateString})})}} placeholder="yyyy-mm-dd" />
                         </div>
@@ -587,9 +652,9 @@ class Form extends Component {
                 </div>
                 <div className="col-4">
                     <div className="form-group">
-                        <label htmlFor="">Checkout Date</label>
+                        <label htmlFor="">Checkout Date *</label>
                         <div className="input-group mb-3">
-                            <DatePicker style={{width:'30em'}} value={formData.CHECK_OUT_DATE?moment(formData.CHECK_OUT_DATE, 'YYYY-MM-DD'):""} format="YYYY-MM-DD" onChange={(date,dateString)=>{this.setState({formData:Object.assign({},formData,{CHECK_OUT_DATE:dateString})})}} placeholder="yyyy-mm-dd" />
+                            <DatePicker style={{width:'30em'}} value={formData.CHECK_OUT_DATE?moment(formData.CHECK_OUT_DATE, 'YYYY-MM-DD'):""} format="YYYY-MM-DD" onChange={(date,dateString)=>{this.setOutDate(formData,dateString)}} placeholder="yyyy-mm-dd" />
                            
                         </div>
                     </div>
@@ -790,13 +855,13 @@ class Form extends Component {
                                     </div>
                                     
                                     <div className="row">
-                                        <div className="col-6">
+                                        {/* <div className="col-6">
                                             <div className="form-group">
                                                 <label htmlFor="">Foreign Currency</label>
                                                 <Select className="form-control ng-pristine ng-valid ng-touched" 
                                                     value={activeInitial.FOREIGN_CURRENCY} onChange={(e)=>{this.setState({activeInitial:Object.assign({},activeInitial,{FOREIGN_CURRENCY:e})})}}
                                                 >
-                                                    {/* <Option value="">Select a currency</Option> */}
+                                                   
                                                     {
                                                         this.state.currencies.map(item=>{
                                                             return <Option value={item}>{item}</Option>
@@ -804,6 +869,14 @@ class Form extends Component {
                                                     }
 
                                                 </Select>
+                                            </div>
+                                        </div> */}
+                                        <div className="col-6">
+                                            <div className="form-group">
+                                                <label htmlFor="">City</label>
+                                                <Input type="text" className="form-control"
+                                                    value={activeInitial.SERVICE_CITY} onChange={(e)=>{activeInitial.SERVICE_CITY=e.target.value}}
+                                                 id="" placeholder="" />
                                             </div>
                                         </div>
                                         <div className="col-6">
@@ -822,7 +895,7 @@ class Form extends Component {
                                         </div>
                                         <div classsName="col-6">
                                             <div className="form-group">
-                                                <label htmlFor="">Components Wise Net Cost Currency</label>
+                                                <label htmlFor="">Components Wise Net Cost Currency *</label>
                                                 <Select 
                                                 className="form-control ng-pristine ng-valid ng-touched"
                                                 value={activeInitial.COMPONENTS_WISE_NET_COST_CURRENCY} onChange={(e)=>{activeInitial.COMPONENTS_WISE_NET_COST_CURRENCY=e;this.setState({activeInitial})}}
@@ -875,14 +948,13 @@ class Form extends Component {
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div className="col-6">
+                                        {/* <div className="col-6">
                                             <div className="form-group">
                                                 <label htmlFor="">Component Wise Currency</label>
                                                 <Select 
                                                 className="form-control ng-pristine ng-valid ng-touched"
                                                 value={activeInitial.COMPONENTS_WISE_CURRENCY} onChange={(e)=>{dynamic[this.state.activeRowIndex].COMPONENTS_WISE_CURRENCY=e;this.setState({activeInitial:Object.assign({},activeInitial,{COMPONENTS_WISE_CURRENCY:e})})}}
                                                 >
-                                                {/* <Option value="">Select a currency</Option> */}
                                                     {
                                                         this.state.currencies.map(item=>{
                                                             return <Option value={item}>{item}</Option>
@@ -891,17 +963,7 @@ class Form extends Component {
 
                                                 </Select>
                                             </div>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="form-group">
-                                                <label htmlFor="">City</label>
-                                                <Input type="text" className="form-control"
-                                                    value={activeInitial.SERVICE_CITY} onChange={(e)=>{activeInitial.SERVICE_CITY=e.target.value}}
-                                                 id="" placeholder="" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row">
+                                        </div> */}
                                         <div className="col-6">
                                             <div className="form-group mb-0">
                                                 <label htmlFor="">Arrival Date</label>
@@ -915,6 +977,22 @@ class Form extends Component {
                                                 </div>
                                             </div>
                                         </div>
+                                        
+                                    </div>
+                                    <div className="row">
+                                        {/* <div className="col-6">
+                                            <div className="form-group mb-0">
+                                                <label htmlFor="">Arrival Date</label>
+                                                <div className="input-group-mb6">
+                                                <DatePicker format="YYYY-MM-DD" 
+                                                        value={activeInitial.ARRIVALDATE?moment(activeInitial.ARRIVALDATE, 'YYYY-MM-DD'):""} 
+                                                        onChange={(date,dateString)=>{activeInitial.ARRIVALDATE=dateString;this.setState({activeInitial:Object.assign({},activeInitial,{ARRIVALDATE:dateString})})}}
+                                                    style={{width:"25.5em"}}
+                                                />
+
+                                                </div>
+                                            </div>
+                                        </div> */}
                                         
                                     </div>
                                 </div>
