@@ -324,6 +324,14 @@ class Form extends Component {
               
             return;
         }
+        else if(formData.SBU.length===0){
+            notification['warning']({
+                message: 'Required field missing',
+                description: "SBU can't be empty",
+              });
+
+            return;
+        }
         else if(parseInt(formData.TOTAL_TAX_CALCULATION)!==parseInt(this.state.totalTax!==null?this.state.totalTax.toString():0)){
             console.log(this.state.totalTax)
             notification['warning']({
@@ -383,16 +391,24 @@ class Form extends Component {
         
                     return;
                 }
-            
+                else if(item.COMPONENTS_WISE_NET_COST.length===0){
+                    notification['warning']({
+                        message: 'Required field missing',
+                        description: "Component wise net cost can't be empty",
+                      });
+        
+                    return;
+                }
+                
                 else if(item.COMPONENTS_WISE_NET_COST_CURRENCY===undefined || item.COMPONENTS_WISE_NET_COST_CURRENCY===null ||  item.COMPONENTS_WISE_NET_COST_CURRENCY===0){
                     console.log("item",item.COMPONENTS_WISE_NET_COST_CURRENCY,"state",this.state.activeInitial.COMPONENTS_WISE_NET_COST_CURRENCY)
                     notification['warning']({
                         message: 'Required field missing',
                         description: "Component wise net cost currency can't be empty",
                       });
-        
-        
-                    return;
+                        this.setState({hasErr:true})
+
+                    return false;
                 }
                 else{
                     formData.dynamic=[...dynamic];
@@ -460,6 +476,28 @@ class Form extends Component {
 
     }
 
+    setInDate(formData,dateString){
+        if(formData.CHECK_OUT_DATE){
+            if(dateString<=formData.CHECK_OUT_DATE){
+                this.setState({formData:Object.assign({},formData,{CHECK_IN_DATE:dateString}),hasErr:false})
+            }
+            else{
+                notification['error']({
+                    message: 'Invalid Date',
+                    description: "Invalid date selected!",
+                  });
+                this.setState({hasErr:true})
+            }
+            
+        }
+        else{
+            formData.CHECK_IN_DATE=dateString;
+            delete formData.CHECK_OUT_DATE;
+           this.setState({formData})
+        }
+
+    }
+
     setModalValues(name,value){
         this.setState({activeInitial:Object.assign({},this.state.activeInitial,{[name]:value})});
     }
@@ -469,6 +507,7 @@ class Form extends Component {
         let {dynamic}=this.state;
 
         dynamic[this.state.activeRowIndex]=Object.assign({},dynamic[this.state.activeRowIndex],activeRowData);
+        console.log( dynamic)
         this.setState({dynamic,activeInitial:{},activeRowIndex:-1,modalVisible:false});
     }
 
@@ -626,7 +665,7 @@ class Form extends Component {
             <div className="row mb-5">
                 <div className="col-4">
                     <div className="form-group">
-                        <label htmlFor="">SBU</label>
+                        <label htmlFor="">SBU *</label>
                         <select  className="form-control" value={formData.SBU} onChange={(e)=>{formData.SBU=e.target.value;this.setState({formData})}}>
                             <option value="">Choose one</option>
                             {['FIT','GROUP'].map(itm=>{
@@ -646,7 +685,7 @@ class Form extends Component {
                     <div className="form-group">
                         <label htmlFor="">Checkin Date *</label>
                         <div className="input-group mb-3">
-                            <DatePicker style={{width:'30em'}} value={formData.CHECK_IN_DATE?moment(formData.CHECK_IN_DATE, 'YYYY-MM-DD'):""} format="YYYY-MM-DD" onChange={(date,dateString)=>{this.setState({formData:Object.assign({},formData,{CHECK_IN_DATE:dateString})})}} placeholder="yyyy-mm-dd" />
+                            <DatePicker style={{width:'30em'}} value={formData.CHECK_IN_DATE?moment(formData.CHECK_IN_DATE, 'YYYY-MM-DD'):""} format="YYYY-MM-DD" onChange={(date,dateString)=>{this.setInDate(formData,dateString)}} placeholder="yyyy-mm-dd" />
                         </div>
                     </div>
                 </div>
@@ -778,7 +817,7 @@ class Form extends Component {
                     <div className="form-group row">
                         <label htmlFor="" className="ml-auto col-auto col-form-label">Total In Amounts</label>
                         <div className="col-2">
-                            <input type="number" defaultValue={formData.TOTAL_IN_AMOUNTS} onChange={(e)=>{formData.TOTAL_IN_AMOUNTS=e.target.value;}}  className="form-control" />
+                            <input type="number" defaultValue={formData.TOTAL_IN_AMOUNTS} onChange={(e)=>{formData.TOTAL_IN_AMOUNTS=e.target.value;formData.OVER_ALL_PROFIT=formData.TOTAL_IN_AMOUNTS-formData.SELLINGCOST;this.setState({formData})}}  className="form-control" />
                         </div>
                     </div>
                     <div className="form-group row">
@@ -889,7 +928,7 @@ class Form extends Component {
                                     <div className="row">
                                         <div className="col-6">
                                             <div className="form-group">
-                                                <label htmlFor="">Component Wise Net Cost</label>
+                                                <label htmlFor="">Component Wise Net Cost *</label>
                                                 <Input type="number" value={activeInitial.COMPONENTS_WISE_NET_COST} onChange={(e)=>{activeInitial.COMPONENTS_WISE_NET_COST=e.target.value;this.setState({activeInitial:Object.assign({},this.state.activeInitial,activeInitial)})}} className="form-control" id="" placeholder="" />
                                             </div>
                                         </div>
@@ -898,7 +937,7 @@ class Form extends Component {
                                                 <label htmlFor="">Components Wise Net Cost Currency *</label>
                                                 <Select 
                                                 className="form-control ng-pristine ng-valid ng-touched"
-                                                value={activeInitial.COMPONENTS_WISE_NET_COST_CURRENCY} onChange={(e)=>{activeInitial.COMPONENTS_WISE_NET_COST_CURRENCY=e;this.setState({activeInitial})}}
+                                                value={activeInitial.COMPONENTS_WISE_NET_COST_CURRENCY} onChange={(e)=>{activeInitial.COMPONENTS_WISE_NET_COST_CURRENCY=e;activeInitial.COMPONENTS_WISE_CURRENCY=e;this.setState({activeInitial:Object.assign({},this.state.activeInitial,activeInitial),hasErr:false})}}
                                                 >   
                                                     {
                                                         this.state.currencies.map(item=>{
@@ -916,7 +955,7 @@ class Form extends Component {
                                         <div className="col-6">
                                             <div className="form-group mb-0">
                                                 <label htmlFor="">Booking Reference(RA File Handler)</label>
-                                                <Input type="text" value={activeInitial.RA_FILE_HANDLER} onChange={(e)=>{activeInitial.RA_FILE_HANDLER=e.target.value}} className="form-control" id="" placeholder="" />
+                                                <Input type="text" value={activeInitial.RA_FILE_HANDLER} onChange={(e)=>{activeInitial.RA_FILE_HANDLER=e.target.value;this.setState({activeInitial})}} className="form-control" id="" placeholder="" />
                                             </div>
                                         </div>
                                         <div className="col-6">
