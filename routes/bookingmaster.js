@@ -228,6 +228,7 @@ router.post('/local/:RA_REFERENCE',(req,res,next)=>{
     var RA_REFERENCE = req.params.RA_REFERENCE;
     var data = req.body.data;
     data.flag=0;
+    data.version=0;
     data.ismanual=1;
     if(data.id){
         data.id=parseInt(data.id);
@@ -257,7 +258,7 @@ router.post('/local/:RA_REFERENCE',(req,res,next)=>{
                         },
                         order: [ [ 'id', 'DESC' ]]
                       }).then(rows=>{
-                          console.log("------>inputs---> "+i,m)
+                        //   console.log("------>inputs---> "+i,m)
                           if(rows.length>0){
                               tosave.map((itm,indx)=>{
                                     if(indx==0){
@@ -271,9 +272,9 @@ router.post('/local/:RA_REFERENCE',(req,res,next)=>{
 
                           }
                            
-                          console.log("inserting---------->",tosave)
+                        //   console.log("inserting---------->",tosave)
                         model1.bookingmaster.bulkCreate(tosave).then((resp)=>{
-                            console.log("created");
+                            // console.log("created");
                             // `CALL Adansa.ra_voucher_post_rb_v1('${RA_REFERENCE}');`
                             sequelize.query(`CALL Adansa.ra_voucher_post_rb_v1('${RA_REFERENCE}');`).then(()=>{
                                 res.json({
