@@ -154,7 +154,7 @@ router.get('/local/:RA_REFERENCE',(req,res,next)=>{
         where:{
             RA_REFERENCE : RA_REFERENCE,
             ismanual : 1,
-            flag:0
+            
         }            
         
     });
