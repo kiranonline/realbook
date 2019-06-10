@@ -65,17 +65,6 @@ router.post('/fetch',(req,res,next)=>{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 router.post('/push',(req,res,next)=>{
     var data_fetchedArray = req.body.json_master;
     var c=0;
@@ -95,14 +84,6 @@ router.post('/push',(req,res,next)=>{
 })
 
 
-
-
-
-
-
-
-
-
 //listing part
 
 router.get("/",(req,res,next)=>{
@@ -116,9 +97,6 @@ router.get("/",(req,res,next)=>{
     })
     
 });
-
-
-
 
 
 router.post("/:id",(req,res,next)=>{
@@ -154,12 +132,13 @@ router.get('/local/:RA_REFERENCE',(req,res,next)=>{
         where:{
             RA_REFERENCE : RA_REFERENCE,
             ismanual : 1,
-            
+            flag:{[Sequelize.Op.ne]:'-1'}
         }            
         
     });
 
     Promise.all([p1]).then((results)=>{
+        console.log(results)
         if(results[0].length!=0){
             var data = results[0];
             var data_const={};
@@ -229,6 +208,7 @@ router.get('/local/:RA_REFERENCE',(req,res,next)=>{
         
         
     }).catch((err)=>{
+        console.log("error",err)
         res.json({
             success : false,
             msg : err
@@ -254,11 +234,14 @@ router.post('/local/:RA_REFERENCE',(req,res,next)=>{
         data.id++;
     }
     var dynamic = data.dynamic;
+
     delete data['dynamic'];
     var tosave=[];
     dynamic.forEach((d,i)=>{
         var m = { ...d, ...data}
         tosave.push(m);
+       
+               
         if(tosave.length==dynamic.length){
             // console.log(tosave)
            
@@ -274,12 +257,22 @@ router.post('/local/:RA_REFERENCE',(req,res,next)=>{
                         },
                         order: [ [ 'id', 'DESC' ]]
                       }).then(rows=>{
+                          console.log("------>inputs---> "+i,m)
                           if(rows.length>0){
-                            tosave[0].id=parseInt(rows[0].id)+1;
-                              }
-                        
-                        
-                        model1.bookingmaster.bulkCreate(tosave).then(()=>{
+                              tosave.map((itm,indx)=>{
+                                    if(indx==0){
+                                        tosave[indx].id=parseInt(rows[0].id)+1;
+                                    }
+                                    else{
+                                        tosave[indx].id=tosave[indx-1].id+1;
+                                    }
+                              })
+                           
+
+                          }
+                           
+                          console.log("inserting---------->",tosave)
+                        model1.bookingmaster.bulkCreate(tosave).then((resp)=>{
                             console.log("created");
                             // `CALL Adansa.ra_voucher_post_rb_v1('${RA_REFERENCE}');`
                             sequelize.query(`CALL Adansa.ra_voucher_post_rb_v1('${RA_REFERENCE}');`).then(()=>{
@@ -307,6 +300,7 @@ router.post('/local/:RA_REFERENCE',(req,res,next)=>{
             })
             
         }
+    
     })
 
 });
