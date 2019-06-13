@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+        <link rel="stylesheet" href="/itemmaster/stylesheets/table.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+        <title>Booking master Table</title>
+    </head>
+    <style>
+        .table-wrapper{padding:15px;}
+        tr{cursor:pointer}
+        .sz{font-size: 20px}
+        .hdng{width: 100%;text-align: center;color:#4179ef }
+        .back-button{
+            position: fixed;
+            z-index: 100000;
+            top:10px;
+            left:10px;
+            background:#4179ef;
+            padding: 8px 11px;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 18px;
+        }
+        .back-button:hover{
+            color: #fff;
+        }
+    </style>
+    <body>
+        <a class="back-button" href="/"><i class="fas fa-home"></i></a>
+        <div class="table-wrapper">
+            <h4 class="hdng">Currency Master</h4>
+            <div class="table-responsive-sm">
+                    <table class="table table-hover table-sm table-striped table-bordered" id="myTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">NO.</th>
+                                <th scope="col">FROM CURRENCY</th>
+                                <th scope="col">FROM CURRENCY  SYMBOL</th>
+                                <th scope="col">TO CURRENCY</th>
+                                <th scope="col">TO CURRENCY SYMBOL</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">FX RATE</th>
+
+                            </tr>
+                        </thead>
+                        <tbody class="table-fixed">
+                            {{#each data}}
+                                <tr>
+                                    <td>{{index_modivied @index}}</td>
+                                    <td>{{this.from_currency}}</td>
+                                    <td>{{this.from_currency_symbol}}</td>
+                                    <td>{{this.to_currency}}</td>
+                                    <td>{{this.to_currency_symbol}}</td>
+                                    <td>{{this.dt}}</td>
+                                    <td>{{this.fx_rate}}</td>
+
+                                </tr>   
+                            {{/each}}
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+
+
+
+        
+
+            
+            
+            
+   
+
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="/itemmaster/javascripts/table.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#myTable').DataTable();
+            });
+
+
+
+
+
+        </script>
+    </body>
+</html>

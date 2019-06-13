@@ -19,10 +19,15 @@ router.get('/',(req,res,next)=>{
     })*/
     //var p2 = sequelize.query("SELECT vprofitsharing.*,bookingmaster.RA_REFERENCE,sharingmaster.rule,sellingcompany.name AS sellingName,supplyingcompany.name AS supplyingName FROM vprofitsharing INNER JOIN `sellingcompany` ON vprofitsharing.seller_co_id=sellingcompany.id INNER JOIN `supplyingcompany` ON vprofitsharing.supplier_co_id=supplyingcompany.id INNER JOIN `bookingmaster` ON vprofitsharing.transaction_id=bookingmaster.id INNER JOIN `sharingmaster` ON vprofitsharing.sharing_master_id=sharingmaster.id");
     //var p2 = sequelize.query("SELECT vprofitsharing.*,bookingmaster.RA_REFERENCE,sharingmaster.rule,company_master.name AS sellingName,company_master.name AS supplyingName FROM vprofitsharing INNER JOIN `company_master` ON (vprofitsharing.seller_co_id=company_master.id AND is_supplier='0') INNER JOIN `company_master` ON (vprofitsharing.supplier_co_id=company_master.id AND is_supplier='1') INNER JOIN `bookingmaster` ON vprofitsharing.transaction_id=bookingmaster.id INNER JOIN `sharingmaster` ON vprofitsharing.sharing_master_id=sharingmaster.id");
-    var p2 = sequelize.query("SELECT vprofitsharing.*,bookingmaster.RA_REFERENCE,sharingmaster.rule,company_master.name AS sellingName,company_master1.name AS supplyingName FROM vprofitsharing INNER JOIN `company_master`ON (vprofitsharing.seller_co_id=company_master.rlb_cid AND company_master.is_supplier=0) INNER JOIN `company_master` as company_master1 ON (vprofitsharing.supplier_co_id=company_master1.rlb_cid AND company_master1.is_supplier=1) INNER JOIN `bookingmaster` ON vprofitsharing.transaction_id=bookingmaster.id INNER JOIN `sharingmaster` ON vprofitsharing.sharing_master_id=sharingmaster.id;");
-    Promise.all([p2]).then((result1)=>{
-        console.log(result1[0][0])
-        res.render('vprofitsharingmaster',{layout:false,data:result1[0][0]})
+    // var p2 = sequelize.query("SELECT vprofitsharing.*,bookingmaster.RA_REFERENCE,sharingmaster.rule,company_master.name AS sellingName,company_master1.name AS supplyingName FROM vprofitsharing INNER JOIN `company_master`ON (vprofitsharing.seller_co_id=company_master.rlb_cid AND company_master.is_supplier=0) INNER JOIN `company_master` as company_master1 ON (vprofitsharing.supplier_co_id=company_master1.rlb_cid AND company_master1.is_supplier=1) INNER JOIN `bookingmaster` ON vprofitsharing.transaction_id=bookingmaster.id INNER JOIN `sharingmaster` ON vprofitsharing.sharing_master_id=sharingmaster.id;");
+    // Promise.all([p2]).then((result1)=>{
+    //     console.log(result1[0][0])
+    //     res.render('vprofitsharingmaster',{layout:false,data:result1[0][0]})
+    // })
+
+    sequelize.query(`CALL Adansa.ra_vprofitsharing()`).then(result1=>{
+        console.log(result1)
+        res.render('vprofitsharingmaster',{layout:false,data:result1})
     })
 });
 
@@ -127,8 +132,9 @@ function categorise(d){
 
 router.post("/:id",(req,res,next)=>{
     var id = req.params.id;
+
     sequelize.query("SELECT vprofitsharing.*,bookingmaster.* FROM vprofitsharing INNER JOIN `bookingmaster` ON vprofitsharing.transaction_id=bookingmaster.id WHERE vprofitsharing.id="+id ).then((result1)=>{
-        console.log(result1[0]);
+        // console.log(result1[0]);
         res.send(result1[0]);
     })
 

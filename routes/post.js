@@ -26,65 +26,126 @@ router.get("/data",(req,res,next)=>{
     var todate= req.query.todate || null;
     var comp = req.query.company || null;
     console.log(fromdate,todate,comp);
-    company_master.findAll({
-        attributes: ['id', 'name'],
-        where: {
-            is_supplier:1
-        }
-    }).then((comp_res)=>{
-        if(fromdate != null && todate!=null && comp!=null){
-            sequelize.query("SELECT voucher.*,voucher.id AS vid,vdetail.cr AS CR_NOR, vdetail.dr AS DR_NOR,company_master.name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr,ledgermaster.ledger_name AS partyName ,if(voucher.isFx=1,currency.symbol,voucher.currencySymbol) as currency FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) left join `currency` ON (vdetail.currency_id=currency.id and vdetail.vid=voucher.id)  WHERE voucher.cid="+comp+" AND (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+") AND voucher.status=1").then((result1)=>{
-                console.log(result1);
-                res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
-            })
-        }
-        else if(fromdate != null && todate!=null && comp==null){
-            //only date filter
-            /*voucher.findAll({
-                where:{
-                    transactionDate:{
-                        [Op.between]: [fromdate,todate]
+
+    sequelize.query(`CALL adansa.ra_vdetails_list('',"summary")`).then((comp_res)=>{
+            if(fromdate != null && todate!=null && comp!=null){
+                sequelize.query("SELECT voucher.*,voucher.id AS vid,vdetail.cr AS CR_NOR, vdetail.dr AS DR_NOR,company_master.name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr,ledgermaster.ledger_name AS partyName ,if(voucher.isFx=1,currency.symbol,voucher.currencySymbol) as currency FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) left join `currency` ON (vdetail.currency_id=currency.id and vdetail.vid=voucher.id)  WHERE voucher.cid="+comp+" AND (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+") AND voucher.status=1").then((result1)=>{
+                    console.log(result1);
+                    res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
+                })
+            }
+            else if(fromdate != null && todate!=null && comp==null){
+                //only date filter
+                /*voucher.findAll({
+                    where:{
+                        transactionDate:{
+                            [Op.between]: [fromdate,todate]
+                        }
                     }
-                }
-            }).then((result1)=>{
-                res.render('post_table',{layout:false,data:result1,fromdate:fromdate,todate:todate,comp:comp});
-            }).catch((qerror)=>{
-                next(createError(550,qerror));
-            })*/
-            sequelize.query("SELECT voucher.*,voucher.id AS vid,vdetail.cr AS CR_NOR, vdetail.dr AS DR_NOR,company_master.name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr,ledgermaster.ledger_name AS partyName ,if(voucher.isFx=1,currency.symbol,voucher.currencySymbol) as currency FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) left join `currency` ON (vdetail.currency_id=currency.id and vdetail.vid=voucher.id)  WHERE (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+") AND voucher.status=1").then((result1)=>{
-                console.log(result1);
-                res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
-            })
-        }
-        else if(fromdate == null && todate==null && comp!=null){
-            //company filter
-            /*voucher.findAll({
-                where:{
-                    cid:comp
-                }
-            }).then((result1)=>{
-                res.render('post_table',{layout:false,data:result1,fromdate:fromdate,todate:todate,comp:comp});
-            }).catch((qerror)=>{
-                next(createError(550,qerror));
-            })*/
-            sequelize.query("SELECT voucher.*,voucher.id AS vid,vdetail.cr AS CR_NOR, vdetail.dr AS DR_NOR,company_master.name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr,ledgermaster.ledger_name AS partyName ,if(voucher.isFx=1,currency.symbol,voucher.currencySymbol) as currency FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) left join `currency` ON (vdetail.currency_id=currency.id and vdetail.vid=voucher.id) WHERE voucher.status=1 AND voucher.cid="+comp ).then((result1)=>{
-                console.log(result1);
-                res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
-            })
-        }
-        else{
-            //no filter
-            /*voucher.findAll().then((result1)=>{
-                res.render('post_table',{layout:false,data:result1,fromdate:fromdate,todate:todate,comp:comp});
-            }).catch((qerror)=>{
-                next(createError(550,qerror));
-            })*/
-            sequelize.query("SELECT voucher.*,voucher.id AS vid,vdetail.cr AS CR_NOR, vdetail.dr AS DR_NOR, company_master.name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr,ledgermaster.ledger_name AS partyName ,if(voucher.isFx=1,currency.symbol,voucher.currencySymbol) as currency FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) left join `currency` ON (vdetail.currency_id=currency.id and vdetail.vid=voucher.id) WHERE voucher.status=1").then((result1)=>{
-                console.log(result1[0].length);
-                res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
-            })
-        }
-    });
+                }).then((result1)=>{
+                    res.render('post_table',{layout:false,data:result1,fromdate:fromdate,todate:todate,comp:comp});
+                }).catch((qerror)=>{
+                    next(createError(550,qerror));
+                })*/
+                sequelize.query("SELECT voucher.*,voucher.id AS vid,vdetail.cr AS CR_NOR, vdetail.dr AS DR_NOR,company_master.name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr,ledgermaster.ledger_name AS partyName ,if(voucher.isFx=1,currency.symbol,voucher.currencySymbol) as currency FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) left join `currency` ON (vdetail.currency_id=currency.id and vdetail.vid=voucher.id)  WHERE (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+") AND voucher.status=1").then((result1)=>{
+                    console.log(result1);
+                    res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
+                })
+            }
+            else if(fromdate == null && todate==null && comp!=null){
+                //company filter
+                /*voucher.findAll({
+                    where:{
+                        cid:comp
+                    }
+                }).then((result1)=>{
+                    res.render('post_table',{layout:false,data:result1,fromdate:fromdate,todate:todate,comp:comp});
+                }).catch((qerror)=>{
+                    next(createError(550,qerror));
+                })*/
+                sequelize.query("SELECT voucher.*,voucher.id AS vid,vdetail.cr AS CR_NOR, vdetail.dr AS DR_NOR,company_master.name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr,ledgermaster.ledger_name AS partyName ,if(voucher.isFx=1,currency.symbol,voucher.currencySymbol) as currency FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) left join `currency` ON (vdetail.currency_id=currency.id and vdetail.vid=voucher.id) WHERE voucher.status=1 AND voucher.cid="+comp ).then((result1)=>{
+                    console.log(result1);
+                    res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
+                })
+            }
+            else{
+                //no filter
+                /*voucher.findAll().then((result1)=>{
+                    res.render('post_table',{layout:false,data:result1,fromdate:fromdate,todate:todate,comp:comp});
+                }).catch((qerror)=>{
+                    next(createError(550,qerror));
+                })*/
+                sequelize.query("SELECT voucher.*,voucher.id AS vid,vdetail.cr AS CR_NOR, vdetail.dr AS DR_NOR, company_master.name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr,ledgermaster.ledger_name AS partyName ,if(voucher.isFx=1,currency.symbol,voucher.currencySymbol) as currency FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) left join `currency` ON (vdetail.currency_id=currency.id and vdetail.vid=voucher.id) WHERE voucher.status=1").then((result1)=>{
+                    console.log(result1[0].length);
+                    res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
+                })
+            }
+        });
+
+    // sequelize.query('CALL adansa.ra_vdetails_list('+id+',"details")').then(result1=>{
+    //     console.log(result1)
+    //     res.send(result1);
+    // })
+    
+    // company_master.findAll({
+    //     attributes: ['id', 'name'],
+    //     where: {
+    //         is_supplier:1
+    //     }
+    // }).then((comp_res)=>{
+    //     if(fromdate != null && todate!=null && comp!=null){
+    //         sequelize.query("SELECT voucher.*,voucher.id AS vid,vdetail.cr AS CR_NOR, vdetail.dr AS DR_NOR,company_master.name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr,ledgermaster.ledger_name AS partyName ,if(voucher.isFx=1,currency.symbol,voucher.currencySymbol) as currency FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) left join `currency` ON (vdetail.currency_id=currency.id and vdetail.vid=voucher.id)  WHERE voucher.cid="+comp+" AND (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+") AND voucher.status=1").then((result1)=>{
+    //             console.log(result1);
+    //             res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
+    //         })
+    //     }
+    //     else if(fromdate != null && todate!=null && comp==null){
+    //         //only date filter
+    //         /*voucher.findAll({
+    //             where:{
+    //                 transactionDate:{
+    //                     [Op.between]: [fromdate,todate]
+    //                 }
+    //             }
+    //         }).then((result1)=>{
+    //             res.render('post_table',{layout:false,data:result1,fromdate:fromdate,todate:todate,comp:comp});
+    //         }).catch((qerror)=>{
+    //             next(createError(550,qerror));
+    //         })*/
+    //         sequelize.query("SELECT voucher.*,voucher.id AS vid,vdetail.cr AS CR_NOR, vdetail.dr AS DR_NOR,company_master.name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr,ledgermaster.ledger_name AS partyName ,if(voucher.isFx=1,currency.symbol,voucher.currencySymbol) as currency FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) left join `currency` ON (vdetail.currency_id=currency.id and vdetail.vid=voucher.id)  WHERE (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+") AND voucher.status=1").then((result1)=>{
+    //             console.log(result1);
+    //             res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
+    //         })
+    //     }
+    //     else if(fromdate == null && todate==null && comp!=null){
+    //         //company filter
+    //         /*voucher.findAll({
+    //             where:{
+    //                 cid:comp
+    //             }
+    //         }).then((result1)=>{
+    //             res.render('post_table',{layout:false,data:result1,fromdate:fromdate,todate:todate,comp:comp});
+    //         }).catch((qerror)=>{
+    //             next(createError(550,qerror));
+    //         })*/
+    //         sequelize.query("SELECT voucher.*,voucher.id AS vid,vdetail.cr AS CR_NOR, vdetail.dr AS DR_NOR,company_master.name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr,ledgermaster.ledger_name AS partyName ,if(voucher.isFx=1,currency.symbol,voucher.currencySymbol) as currency FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) left join `currency` ON (vdetail.currency_id=currency.id and vdetail.vid=voucher.id) WHERE voucher.status=1 AND voucher.cid="+comp ).then((result1)=>{
+    //             console.log(result1);
+    //             res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
+    //         })
+    //     }
+    //     else{
+    //         //no filter
+    //         /*voucher.findAll().then((result1)=>{
+    //             res.render('post_table',{layout:false,data:result1,fromdate:fromdate,todate:todate,comp:comp});
+    //         }).catch((qerror)=>{
+    //             next(createError(550,qerror));
+    //         })*/
+    //         sequelize.query("SELECT voucher.*,voucher.id AS vid,vdetail.cr AS CR_NOR, vdetail.dr AS DR_NOR, company_master.name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr,ledgermaster.ledger_name AS partyName ,if(voucher.isFx=1,currency.symbol,voucher.currencySymbol) as currency FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) left join `currency` ON (vdetail.currency_id=currency.id and vdetail.vid=voucher.id) WHERE voucher.status=1").then((result1)=>{
+    //             console.log(result1[0].length);
+    //             res.render('post_table',{layout:false,data:result1[0],fromdate:fromdate,todate:todate,comp:comp,company:comp_res});
+    //         })
+    //     }
+    // });
        
     
 });
@@ -561,12 +622,8 @@ router.post('/',(req,res,next)=>{
 //get vdetails
 router.post('/getvdetails',(req,res,next)=>{
     var vid= req.body.id;
-    var p1 = voucher.findAll({
-        attributes: ['transactionDescription'],
-        where:{
-            id:vid
-        }
-    });
+    var p1 = sequelize.query('CALL adansa.ra_vdetails_list('+vid+',"details")');
+
     var p2 = sequelize.query("SELECT vdetail.*,ledgermaster.id AS ledgerid,ledgermaster.ledger_name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr FROM vdetail INNER JOIN `voucher` ON (voucher.id=vdetail.vid) INNER JOIN `ledgermaster` ON vdetail.ledger=ledgermaster.id WHERE vdetail.vid="+vid);
     Promise.all([p1,p2]).then((result1)=>{
         console.log(result1[1][0])

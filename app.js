@@ -96,6 +96,7 @@ app.use('/ledgermaster',ledgermaster);
 app.use('/bookingmaster',bookingmaster);
 app.use('/post',post);
 app.use('/vprofitsharing',vprofitsharing);
+app.use('/currencymaster',require('./routes/currencymaster'));
 app.use('/customermaster',customermaster);
 app.use('/suppliermaster',suppliermaster);
 app.use('/invoicerule',invoicerule);

@@ -58,13 +58,13 @@
                             {{#each data}}
                                 <tr>
                                     <td onclick="fetchdetail('{{this.id}}')">{{index_modivied @index}}</td>
-                                    <td onclick="fetchdetail('{{this.id}}')">{{this.RA_REFERENCE}}</td>
-                                    <td onclick="fetchdetail('{{this.id}}')">{{this.sellingName}}</td>
-                                    <td onclick="fetchdetail('{{this.id}}')">{{this.supplyingName}}</td>
-                                    <td onclick="fetchdetail('{{this.id}}')">{{this.rule}}</td>
-                                    <td onclick="fetchdetail('{{this.id}}')" class="text-right">{{this.posted_supplier_profit}}</td>
+                                    <td onclick="fetchdetail('{{this.id}}')">{{this.txn_number}}</td>
+                                    <td onclick="fetchdetail('{{this.id}}')">{{this.seller_co}}</td>
+                                    <td onclick="fetchdetail('{{this.id}}')">{{this.supplying_name}}</td>
+                                    <td onclick="fetchdetail('{{this.id}}')">{{this.sharing_master_rule}}</td>
+                                    <td onclick="fetchdetail('{{this.id}}')" class="text-right">{{this.supplier_co_profit}}</td>
                                     <td onclick="fetchdetail('{{this.id}}')">{{this.supplier_currency}}</td>
-                                    <td onclick="fetchdetail('{{this.id}}')" class="text-right">{{this.posted_seller_profit}}</td>
+                                    <td onclick="fetchdetail('{{this.id}}')" class="text-right">{{this.seller_co_profit}}</td>
                                     <td onclick="fetchdetail('{{this.id}}')">{{this.seller_currency}}</td>
                                     <td class="text-center">
                                         <button type="button" onclick="editITEM('{{this.id}}')" class="btn btn-danger actn" data-toggle="modal" data-target="#del"><i class="fa fa-pencil-alt"></i></button>
