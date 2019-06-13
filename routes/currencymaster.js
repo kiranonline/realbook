@@ -5,7 +5,7 @@ var createError = require('http-errors');
 
 
 router.get("/",(req,res,next)=>{
-    var p2 = sequelize.query('CALL adansa.ra_currency_master_list("")');
+    var p2 = sequelize.query('CALL Adansa.ra_currency_master_list("")');
     Promise.all([p2]).then((result1)=>{
         console.log(result1[0][0])
         res.render('currencymaster',{layout:false,data:result1[0]})

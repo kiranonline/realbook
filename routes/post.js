@@ -27,7 +27,7 @@ router.get("/data",(req,res,next)=>{
     var comp = req.query.company || null;
     console.log(fromdate,todate,comp);
 
-    sequelize.query(`CALL adansa.ra_vdetails_list('',"summary")`).then((comp_res)=>{
+    sequelize.query(`CALL Adansa.ra_vdetails_list('',"summary")`).then((comp_res)=>{
             if(fromdate != null && todate!=null && comp!=null){
                 sequelize.query("SELECT voucher.*,voucher.id AS vid,vdetail.cr AS CR_NOR, vdetail.dr AS DR_NOR,company_master.name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr,ledgermaster.ledger_name AS partyName ,if(voucher.isFx=1,currency.symbol,voucher.currencySymbol) as currency FROM voucher INNER JOIN `company_master` ON voucher.cid=company_master.rlb_cid INNER JOIN `vdetail` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.status=1) INNER JOIN `ledgermaster` ON (voucher.id = vdetail.vid AND vdetail.narration='r2@0' AND vdetail.ledger=ledgermaster.id) left join `currency` ON (vdetail.currency_id=currency.id and vdetail.vid=voucher.id)  WHERE voucher.cid="+comp+" AND (voucher.transactionDate BETWEEN "+fromdate+" AND "+todate+") AND voucher.status=1").then((result1)=>{
                     console.log(result1);
@@ -359,7 +359,7 @@ router.post('/',(req,res,next)=>{
                 }
             }).then((result2)=>{
                 var ledgerDetails=[];
-                console.log("iiiiiiiiiiiiiiiiiiiiiiiiiii");
+               
                 result2.forEach((ii,index)=>{
                         var element =ii.dataValues;
                         var cur =  element.currency_id;
@@ -622,7 +622,7 @@ router.post('/',(req,res,next)=>{
 //get vdetails
 router.post('/getvdetails',(req,res,next)=>{
     var vid= req.body.id;
-    var p1 = sequelize.query('CALL adansa.ra_vdetails_list('+vid+',"details")');
+    var p1 = sequelize.query('CALL Adansa.ra_vdetails_list('+vid+',"details")');
 
     var p2 = sequelize.query("SELECT vdetail.*,ledgermaster.id AS ledgerid,ledgermaster.ledger_name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr FROM vdetail INNER JOIN `voucher` ON (voucher.id=vdetail.vid) INNER JOIN `ledgermaster` ON vdetail.ledger=ledgermaster.id WHERE vdetail.vid="+vid);
     Promise.all([p1,p2]).then((result1)=>{
