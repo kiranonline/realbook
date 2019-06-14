@@ -622,12 +622,12 @@ router.post('/',(req,res,next)=>{
 //get vdetails
 router.post('/getvdetails',(req,res,next)=>{
     var vid= req.body.id;
+   
     var p1 = sequelize.query('CALL Adansa.ra_vdetails_list('+vid+',"details")');
 
-    var p2 = sequelize.query("SELECT vdetail.*,ledgermaster.id AS ledgerid,ledgermaster.ledger_name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr FROM vdetail INNER JOIN `voucher` ON (voucher.id=vdetail.vid) INNER JOIN `ledgermaster` ON vdetail.ledger=ledgermaster.id WHERE vdetail.vid="+vid);
-    Promise.all([p1,p2]).then((result1)=>{
-        console.log(result1[1][0])
-        res.json(result1);
+    // var p2 = sequelize.query("SELECT vdetail.*,ledgermaster.id AS ledgerid,ledgermaster.ledger_name,if(voucher.isFx=1,if(vdetail.cr!=0,vdetail.fxamt,0),vdetail.cr) AS partyCr,if(voucher.isFx=1,if(vdetail.dr!=0,vdetail.fxamt,0),vdetail.dr) AS partyDr FROM vdetail INNER JOIN `voucher` ON (voucher.id=vdetail.vid) INNER JOIN `ledgermaster` ON vdetail.ledger=ledgermaster.id WHERE vdetail.vid="+vid);
+    Promise.all([p1]).then((result1)=>{
+        res.json(result1[0]);
     })
     
 });

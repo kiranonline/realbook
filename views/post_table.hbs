@@ -281,13 +281,14 @@
                         },
                         crossDomain:true,
                         success: function (data) {
-                            console.log(data);
+                            {{!-- console.log(data); --}}
                             $("#vdbody").html("");
-                            data[1][0].forEach((ii,index)=>{
+                            data.forEach((ii,index)=>{
                                 index1=index+1;
-                                $("#vdbody").append('<tr><td>'+ii.ledger_name+'</td><td class="text-right">'+ii.partyDr+'</td><td class="text-right">'+ii.partyCr+'</td>')
+                                console.log(ii)
+                                $("#vdbody").append('<tr><td>'+ii.ledger_name+'</td><td class="text-right">'+ii.debit+'</td><td class="text-right">'+ii.credit+'</td>')
                             });
-                            $(".desc").html(data[0][0].transactionDescription)
+                            $(".desc").html(data[0].transactionDescription)
                             $("#vdetailsFetched").modal("show");
                         },
                         error: function (xhr, status, error) {

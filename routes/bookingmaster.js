@@ -226,7 +226,9 @@ router.get('/local/:RA_REFERENCE',(req,res,next)=>{
 
 router.post('/local/:RA_REFERENCE',(req,res,next)=>{
     var RA_REFERENCE = req.params.RA_REFERENCE;
-    var data = req.body.data;
+    sequelize.query('CALL adansa.ra_reference_exist_chk("'+RA_REFERENCE+'")').then(row=>{
+        if(row[0].is_exist==0 || req.body.data.isEdit==true){
+            var data = req.body.data;
     data.flag=0;
     data.version=0;
     data.ismanual=1;
@@ -303,6 +305,20 @@ router.post('/local/:RA_REFERENCE',(req,res,next)=>{
         }
     
     })
+        }
+        else{
+            res.send({
+                status:false,
+                msg:"RA_Reference already exist"
+            })
+        }
+    }).catch(err=>{
+        res.send({
+            status:false,
+            msg:err
+        })
+    })
+    
 
 });
 
