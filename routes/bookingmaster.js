@@ -226,7 +226,7 @@ router.get('/local/:RA_REFERENCE',(req,res,next)=>{
 
 router.post('/local/:RA_REFERENCE',(req,res,next)=>{
     var RA_REFERENCE = req.params.RA_REFERENCE;
-    sequelize.query('CALL adansa.ra_reference_exist_chk("'+RA_REFERENCE+'")').then(row=>{
+    sequelize.query('CALL Adansa.ra_reference_exist_chk("'+RA_REFERENCE+'")').then(row=>{
         if(row[0].is_exist==0 || req.body.data.isEdit==true){
             var data = req.body.data;
     data.flag=0;
