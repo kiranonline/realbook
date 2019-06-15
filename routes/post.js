@@ -82,7 +82,7 @@ router.get("/data",(req,res,next)=>{
             }
         });
 
-    // sequelize.query('CALL adansa.ra_vdetails_list('+id+',"details")').then(result1=>{
+    // sequelize.query('CALL Adansa.ra_vdetails_list('+id+',"details")').then(result1=>{
     //     console.log(result1)
     //     res.send(result1);
     // })

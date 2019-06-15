@@ -226,100 +226,108 @@ router.get('/local/:RA_REFERENCE',(req,res,next)=>{
 
 router.post('/local/:RA_REFERENCE',(req,res,next)=>{
     var RA_REFERENCE = req.params.RA_REFERENCE;
-    sequelize.query('CALL Adansa.ra_reference_exist_chk("'+RA_REFERENCE+'")').then(row=>{
-        if(row[0].is_exist==0 || req.body.data.isEdit==true){
-            var data = req.body.data;
-    data.flag=0;
-    data.version=0;
-    data.ismanual=1;
-    if(data.id){
-        data.id=parseInt(data.id);
-        data.id++;
-    }
-    var dynamic = data.dynamic;
-
-    delete data['dynamic'];
-    var tosave=[];
-    dynamic.forEach((d,i)=>{
-        var m = { ...d, ...data}
-        tosave.push(m);
-       
-               
-        if(tosave.length==dynamic.length){
-            // console.log(tosave)
-           
-                model1.bookingmaster.update({ flag:-1},{ where:{
-                    RA_REFERENCE : RA_REFERENCE
-                }}).then(()=>{
-                    
-                    console.log("deleted");
-                    model1.bookingmaster.findAll({
-                        limit: 1,
-                        where: {
-                          //your where conditions, or without them if you need ANY entry
-                        },
-                        order: [ [ 'id', 'DESC' ]]
-                      }).then(rows=>{
-                        //   console.log("------>inputs---> "+i,m)
-                          if(rows.length>0){
-                              tosave.map((itm,indx)=>{
-                                    if(indx==0){
-                                        tosave[indx].id=parseInt(rows[0].id)+1;
-                                    }
-                                    else{
-                                        tosave[indx].id=tosave[indx-1].id+1;
-                                    }
-                              })
-                           
-
-                          }
-                           
-                        //   console.log("inserting---------->",tosave)
-                        model1.bookingmaster.bulkCreate(tosave).then((resp)=>{
-                            // console.log("created");
-                            // `CALL Adansa.ra_voucher_post_rb_v1('${RA_REFERENCE}');`
-                            sequelize.query(`CALL Adansa.ra_voucher_post_rb_v1('${RA_REFERENCE}');`).then(()=>{
-                                res.json({
-                                    success : true,
-                                    msg : "data saved successfully."
-                                })
-                            }).catch((err2)=>{
-                                console.log(`Error procedure: ${err2}`);
-                                res.json({
-                                    success : false,
-                                    msg : err2
-                                })
-                            })
-                            
-                        }).catch((err)=>{
-                            res.json({
-                                success : false,
-                                msg : err
-                            })
-                        })
-                    })
-                    
-                
-            })
-            
-        }
-    
-    })
-        }
-        else{
-            res.send({
-                status:false,
-                msg:"RA_Reference already exist"
-            })
-        }
-    }).catch(err=>{
+    if(req.body.data.STAND_ALONE!="YES" && req.body.data.STAND_ALONE!="NO"){
         res.send({
             status:false,
-            msg:err
+            value:req.body.data.STAND_ALONE,
+            msg:"Please Select Stand Alone Value"
         })
-    })
+    }
+    else{
+        sequelize.query('CALL Adansa.ra_reference_exist_chk("'+RA_REFERENCE+'")').then(row=>{
+            if(row[0].is_exist==0 || req.body.data.isEdit==true){
+                var data = req.body.data;
+        data.flag=0;
+        data.version=0;
+        data.ismanual=1;
+        if(data.id){
+            data.id=parseInt(data.id);
+            data.id++;
+        }
+        var dynamic = data.dynamic;
     
-
+        delete data['dynamic'];
+        var tosave=[];
+        dynamic.forEach((d,i)=>{
+            var m = { ...d, ...data}
+            tosave.push(m);
+           
+                   
+            if(tosave.length==dynamic.length){
+                // console.log(tosave)
+               
+                    model1.bookingmaster.update({ flag:-1},{ where:{
+                        RA_REFERENCE : RA_REFERENCE
+                    }}).then(()=>{
+                        
+                        console.log("deleted");
+                        model1.bookingmaster.findAll({
+                            limit: 1,
+                            where: {
+                              //your where conditions, or without them if you need ANY entry
+                            },
+                            order: [ [ 'id', 'DESC' ]]
+                          }).then(rows=>{
+                            //   console.log("------>inputs---> "+i,m)
+                              if(rows.length>0){
+                                  tosave.map((itm,indx)=>{
+                                        if(indx==0){
+                                            tosave[indx].id=parseInt(rows[0].id)+1;
+                                        }
+                                        else{
+                                            tosave[indx].id=tosave[indx-1].id+1;
+                                        }
+                                  })
+                               
+    
+                              }
+                               
+                            //   console.log("inserting---------->",tosave)
+                            model1.bookingmaster.bulkCreate(tosave).then((resp)=>{
+                                // console.log("created");
+                                // `CALL Adansa.ra_voucher_post_rb_v1('${RA_REFERENCE}');`
+                                sequelize.query(`CALL Adansa.ra_voucher_post_rb_v1('${RA_REFERENCE}');`).then(()=>{
+                                    res.json({
+                                        success : true,
+                                        msg : "data saved successfully."
+                                    })
+                                }).catch((err2)=>{
+                                    console.log(`Error procedure: ${err2}`);
+                                    res.json({
+                                        success : false,
+                                        msg : err2
+                                    })
+                                })
+                                
+                            }).catch((err)=>{
+                                res.json({
+                                    success : false,
+                                    msg : err
+                                })
+                            })
+                        })
+                        
+                    
+                })
+                
+            }
+        
+        })
+            }
+            else{
+                res.send({
+                    status:false,
+                    msg:"RA_Reference already exist"
+                })
+            }
+        }).catch(err=>{
+            res.send({
+                status:false,
+                msg:err
+            })
+        })
+    }
+    
 });
 
 
