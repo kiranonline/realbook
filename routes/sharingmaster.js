@@ -4,6 +4,7 @@ var sequelize = require('../services/conn');
 var createError = require('http-errors');
 var modals = require('../modals/sharingmaster');
 var company_master = require("../modals/companymaster").company_master;
+var sharing_master= require("../modals/sharingmaster").sharingmaster;
 
 
 
@@ -252,62 +253,82 @@ router.post('/form',(req,res,next)=>{
           id:componentID
       }
     });
-    Promise.all([p1,p2,p3]).then((values)=>{
+
+    var p4 = sharing_master.findAll({
+      where:{
+        selling_id:sellingID,
+        supplying_id:supplyID,
+        component_id:componentID,
+        fromdate,
+        todate,
+      }
+    })
+
+
+    Promise.all([p1,p2,p3,p4]).then((values)=>{
       var sellingName = values[0][0].name;
       var supplyName = values[1][0].name;
       var componentName = values[2][0].name;
-      if(ID==null){
-        var tempdata = modals.sharingmaster.build({
-          selling_id : sellingID,
-          selling_name : sellingName,
-          supplying_id : supplyID,
-          supplying_name : supplyName,
-          component_id : componentID,
-          component_name : componentName,
-          fromdate : fromdate,
-          todate : todate,
-          minshare : minshare,
-          rule : rule,
-          value1 : value1,
-          value2: value2,
-          post_final_purchase_entry:post_final_purchase_entry
-        });
-        tempdata.save().then(()=>{
-          res.redirect('/sharingmaster/form?msg=true&msgText=Data saved');
-        }).catch((qerror)=>{
-          next(createError(550,qerror));
-        });
-        
+    
+      console.log(JSON.stringify(values[3]))
+      if(values[3].length==0){
+        if(ID==null){
+            var tempdata = modals.sharingmaster.build({
+              selling_id : sellingID,
+              selling_name : sellingName,
+              supplying_id : supplyID,
+              supplying_name : supplyName,
+              component_id : componentID,
+              component_name : componentName,
+              fromdate : fromdate,
+              todate : todate,
+              minshare : minshare,
+              rule : rule,
+              value1 : value1,
+              value2: value2,
+              post_final_purchase_entry:post_final_purchase_entry
+            });
+            tempdata.save().then(()=>{
+              res.redirect('/sharingmaster/form?msg=true&msgText=Data saved');
+            }).catch((qerror)=>{
+              next(createError(550,qerror));
+            });
+            
+          }
+          else{
+            modals.sharingmaster.findAll({
+              where:{
+                id:ID
+              }
+            }).then((result2)=>{
+              result2[0].update({
+                selling_id : sellingID,
+                selling_name : sellingName,
+                supplying_id : supplyID,
+                supplying_name : supplyName,
+                component_id : componentID,
+                component_name : componentName,
+                fromdate : fromdate,
+                todate : todate,
+                minshare : minshare,
+                rule : rule,
+                value1 : value1,
+                value2:value2,
+                post_final_purchase_entry:post_final_purchase_entry
+              }).then(()=>{
+                res.redirect('/sharingmaster/form?msg=true&msgText=Data updated');
+              }).catch((qerror3)=>{
+                next(createError(550,qerror3));
+              });
+            }).catch((qerror2)=>{
+              next(createError(550,qerror2));
+            });
+          }
       }
       else{
-        modals.sharingmaster.findAll({
-          where:{
-            id:ID
-          }
-        }).then((result2)=>{
-          result2[0].update({
-            selling_id : sellingID,
-            selling_name : sellingName,
-            supplying_id : supplyID,
-            supplying_name : supplyName,
-            component_id : componentID,
-            component_name : componentName,
-            fromdate : fromdate,
-            todate : todate,
-            minshare : minshare,
-            rule : rule,
-            value1 : value1,
-            value2:value2,
-            post_final_purchase_entry:post_final_purchase_entry
-          }).then(()=>{
-            res.redirect('/sharingmaster/form?msg=true&msgText=Data updated');
-          }).catch((qerror3)=>{
-            next(createError(550,qerror3));
-          });
-        }).catch((qerror2)=>{
-          next(createError(550,qerror2));
-        });
+        res.redirect('/sharingmaster/form?err=true&errText=Document already exist!');
       }
+      
     }).catch((err)=>{
       next(createError(550,err));
     });
