@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var moment =require('moment');
 var sequelize = require('../services/conn');
 var createError = require('http-errors');
 var modals = require('../modals/sharingmaster');
@@ -35,15 +36,6 @@ router.post('/new/sellingcompany',(req,res,next)=>{
 });
 
 */
-
-
-
-
-
-
-
-
-
 
 /* GET supplying company. 
 router.get('/new/supplyingcompany', (req, res, next) =>{
@@ -88,15 +80,7 @@ router.post('/new/supplyingcompany',(req,res,next)=>{
         next(createError(550,qerror1));
     })
 });
-
-
-
 */
-
-  
-
-
-
 
 /* GET component */
 router.get('/new/component', (req, res, next) =>{
@@ -271,7 +255,7 @@ router.post('/form',(req,res,next)=>{
       var componentName = values[2][0].name;
     
       console.log(JSON.stringify(values[3]))
-      if(values[3].length==0){
+      if(values[3].length==0 || moment(fromdate).format('YYYY-MM-DD')<values[3].formdate && moment(todate).format('YYYY-MM-DD')>values[3].todate){
         if(ID==null){
             var tempdata = modals.sharingmaster.build({
               selling_id : sellingID,
@@ -326,6 +310,7 @@ router.post('/form',(req,res,next)=>{
           }
       }
       else{
+        console.log(values[3][0])
         res.redirect('/sharingmaster/form?err=true&errText=Document already exist!');
       }
       

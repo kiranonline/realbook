@@ -45,52 +45,77 @@ router.post('/form',(req,res,next)=>{
     var party_id = req.body.party_id;
     var sbu_id = req.body.sbu_id;
     var invoice_date = req.body.invoice_date;
-    if(id){
-        invoicerule.update({
-            company_id : company_id,
-            party_id : party_id,
-            sbu_id : sbu_id,
-            invoice_date : invoice_date
-        },{
-            where:{
-                id:id
-            }
-        }).then((self)=>{
-            if(self[0]==0){
-                res.status(500).send({
-                    success:false,
-                    msg : 'Invalid Id'
-                });
-            }
-            else{
-                res.send({
-                    id : id
+
+    
+            if(id){
+                invoicerule.update({
+                    company_id : company_id,
+                    party_id : party_id,
+                    sbu_id : sbu_id,
+                    invoice_date : invoice_date
+                },{
+                    where:{
+                        id:id
+                    }
+                }).then((self)=>{
+                    
+                    if(self[0]==0){
+                        res.status(500).send({
+                            success:false,
+                            msg : 'Invalid Id'
+                        });
+                    }
+                    else{
+                        res.send({
+                            id : id
+                        })
+                    }
+                }).catch((errordb)=>{
+                    res.status(500).send({
+                        success:false,
+                        msg : 'Unable to save'
+                    });
                 })
             }
-        }).catch((errordb)=>{
-            res.status(500).send({
-                success:false,
-                msg : 'Unable to save'
-            });
+            else{
+                invoicerule.findOne({
+                    where:{
+                        company_id,
+                        party_id,
+                        sbu_id
+                    }
+                }).then(row=>{
+                    if(row==null){
+                var temp = invoicerule.build({
+                    company_id : company_id,
+                    party_id : party_id,
+                    sbu_id : sbu_id,
+                    invoice_date : invoice_date
+                });
+                temp.save().then((d)=>{
+                    res.send(d)
+                }).catch(err=>{
+                    res.status(500).send({
+                        success:false,
+                        msg : 'Unable to save'
+                    });
+                })
+        
+            }
+            else{
+                
+                    res.status(500).send({
+                        success:false,
+                        row,
+                        msg:'Document already exist!'
+                    })
+                
+            }
         })
-    }
-    else{
-        var temp = invoicerule.build({
-            company_id : company_id,
-            party_id : party_id,
-            sbu_id : sbu_id,
-            invoice_date : invoice_date
-        });
-        temp.save().then((d)=>{
-            res.send(d)
-        }).catch(err=>{
-            res.status(500).send({
-                success:false,
-                msg : 'Unable to save'
-            });
-        })
+        }
+       
 
-    }
+    
     
 })
 
