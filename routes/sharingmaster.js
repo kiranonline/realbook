@@ -238,24 +238,15 @@ router.post('/form',(req,res,next)=>{
       }
     });
 
-    var p4 = sharing_master.findAll({
-      where:{
-        selling_id:sellingID,
-        supplying_id:supplyID,
-        component_id:componentID,
-        fromdate,
-        todate,
-      }
-    })
+    var p4 = sequelize.query(`CALL Adansa.ra_sharing_master_validation(${sellingID},${supplyID},${componentID},'${fromdate}','${todate}')`)
 
 
     Promise.all([p1,p2,p3,p4]).then((values)=>{
       var sellingName = values[0][0].name;
       var supplyName = values[1][0].name;
       var componentName = values[2][0].name;
-    
-      console.log(JSON.stringify(values[3]))
-      if(values[3].length==0 || moment(fromdate).format('YYYY-MM-DD')<values[3].formdate && moment(todate).format('YYYY-MM-DD')>values[3].todate){
+
+      if(values[3][0].is_exist==0 || values[3][0].is_exist==undefined){
         if(ID==null){
             var tempdata = modals.sharingmaster.build({
               selling_id : sellingID,
