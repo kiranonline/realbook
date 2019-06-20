@@ -301,8 +301,8 @@ router.post('/form',(req,res,next)=>{
           }
       }
       else{
-        console.log(values[3][0])
-        res.redirect('/sharingmaster/form?err=true&errText=Document already exist!');
+        // console.log(values[3][0])
+        res.redirect('/sharingmaster/form?err=true&errText=Sharing Master Component already exist!');
       }
       
     }).catch((err)=>{

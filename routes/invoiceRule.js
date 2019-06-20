@@ -107,7 +107,7 @@ router.post('/form',(req,res,next)=>{
                     res.status(500).send({
                         success:false,
                         row,
-                        msg:'Document already exist!'
+                        msg:'Invoice Rule Combination already exist!'
                     })
                 
             }
