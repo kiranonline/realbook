@@ -35,7 +35,7 @@ router.get('/',(req,res,next)=>{
 router.get('/edit/:id',(req,res,next)=>{
     var id = req.params.id;
     var msg= req.query.msg || null;
-    console.log(msg);
+    // console.log(msg);
     if(msg){
         vprofitsharing.findById(id).then((data)=>{
             res.render('vprofitsharing_form',{
