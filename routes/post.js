@@ -174,7 +174,7 @@ router.post('/',(req,res,next)=>{
         delete f['cid'];
         delete f['segid'];
         console.log(type_cid,type_segid);
-        if(type_module=='so' || type_module=='po'){
+        if(type_module=='so' || type_module=='po' || type_module=='sale' || type_module=='purchase'){
             //inv
             /*
             f.gstParty={
