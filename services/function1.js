@@ -213,11 +213,11 @@ function push1(data,action,cid,segid){
 function prepareItem(vid){
     return new Promise((resolve,reject)=>{
         var ans=[];
-        var p1= sequelize.query("SELECT vitem.amount AS itemAmount ,itemmaster.item_name AS itemName ,unit_master.unit_name AS unitName ,itemmaster.item_code AS itemCode ,vitem.qty AS quantity, vitem.disc_amt AS discountAmount ,ledgermaster.ledger_name AS ledgerName,ledgermaster.ledger_nature AS LedgerNature , vitem.disc_rate AS discountRate ,vitem.godownname AS godownName FROM vitem INNER JOIN `itemmaster` ON vitem.item_id=itemmaster.id INNER JOIN `unit_master` ON vitem.unit_id=unit_master.unit_id INNER JOIN `ledgermaster` on vitem.lid=ledgermaster.id WHERE vitem.status=1 AND  vitem.vid="+vid);
+        var p1= sequelize.query("SELECT if(voucher.isFx=1,vitem.fxamt,vitem.amount) AS itemAmount ,itemmaster.item_name AS itemName ,unit_master.unit_name AS unitName,itemmaster.item_code AS itemCode,vitem.qty AS quantity,vitem.disc_amt AS discountAmount ,ledgermaster.ledger_name AS ledgerName,ledgermaster.ledger_nature AS LedgerNature ,vitem.disc_rate AS discountRate ,vitem.godownname AS godownName  FROM vitem INNER JOIN `voucher` ON vitem.vid=voucher.id INNER JOIN `itemmaster` ON vitem.item_id=itemmaster.id INNER JOIN `unit_master` ON vitem.unit_id=unit_master.unit_id INNER JOIN `ledgermaster` on vitem.lid=ledgermaster.id WHERE vitem.status=1 AND  vitem.vid="+vid);
         Promise.all([p1]).then((results)=>{
             var tmpr= results[0][1];
             tmpr.forEach((curvalue,i)=>{
-                console.log("sorry");
+                // console.log("sorry");
                 var v= {};
                 v.itemAmount=curvalue.itemAmount;
                 v.itemName=curvalue.itemName;

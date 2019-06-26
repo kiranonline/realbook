@@ -403,11 +403,18 @@ router.post('/',(req,res,next)=>{
                         var p2 = ser1.vbill1(id,vid);
                         var p3 = ser1.vtax1(id,vid);
                         var p4 = ser1.vcc1(id,vid);
-                        Promise.all([p1,p2,p3,p4]).then((values)=>{
+                        var p5 = sequelize.query('SELECT `amount`,`fxamnt` from `vitem` WHERE `vid`='+id);
+                        Promise.all([p1,p2,p3,p4,p5]).then((values)=>{
                             element.ledger=values[0];
                             element.bill=values[1];
                             element.taxLedger=values[2];
                             element.costCenter=values[3];
+                            if(result1[0].isFx==1){
+                                element.invoice_amnt=result1[4][0].fxamnt;
+                            }
+                            else{
+                                element.invoice_amnt=result1[4][0].amount;
+                            }
                             ledgerDetails.push(element);
                             if(ledgerDetails.length==result2.length){
                                 var action;
