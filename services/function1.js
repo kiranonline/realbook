@@ -216,6 +216,8 @@ function prepareItem(vid){
         var p1= sequelize.query("SELECT if(voucher.isFx=1,vitem.fxamt,vitem.amount) AS itemAmount ,itemmaster.item_name AS itemName ,unit_master.unit_name AS unitName,itemmaster.item_code AS itemCode,vitem.qty AS quantity,vitem.disc_amt AS discountAmount ,ledgermaster.ledger_name AS ledgerName,ledgermaster.ledger_nature AS LedgerNature ,vitem.disc_rate AS discountRate ,vitem.godownname AS godownName  FROM vitem INNER JOIN `voucher` ON vitem.vid=voucher.id INNER JOIN `itemmaster` ON vitem.item_id=itemmaster.id INNER JOIN `unit_master` ON vitem.unit_id=unit_master.unit_id INNER JOIN `ledgermaster` on vitem.lid=ledgermaster.id WHERE vitem.status=1 AND  vitem.vid="+vid);
         Promise.all([p1]).then((results)=>{
             var tmpr= results[0][1];
+            console.log("###################################hitting0 --->"+typeof results[0][1]);
+
             tmpr.forEach((curvalue,i)=>{
                 // console.log("sorry");
                 var v= {};
@@ -249,8 +251,13 @@ function prepareItem(vid){
                 if(ans.length==tmpr.length){
                     return resolve(ans);
                 }
+    console.log("###################################hitting --->"+ans);
+
             })
         }).catch((errors)=>{
+            // console.log(errors)
+    console.log("###################################hitting --->"+errors);
+
             return reject(errors);
         })
     })
@@ -288,10 +295,11 @@ function push2(data,action,cid,segid){
         },
         (err, res, body)=> {
             if(err){
+                console.log("SSSSSSSSSSSSSSSSSSSSSSSS",err)
                 return reject(err);
             }
             else{
-                console.log(body);
+                console.log("Bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",body);
                 if(body.type=='error'){
                     return reject(body);
                 }

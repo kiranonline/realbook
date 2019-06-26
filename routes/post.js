@@ -156,6 +156,7 @@ router.get("/data",(req,res,next)=>{
 
 
 router.post('/',(req,res,next)=>{
+    // console.log("TRUNK-------------->",req.body)
     var id = req.body.id;
     voucher.findAll({
         attributes: ['transactionDate','transactionNumber','transactionType','transactionDescription',
@@ -166,6 +167,7 @@ router.post('/',(req,res,next)=>{
             id:id
         }
     }).then((result1)=>{
+        // console.log(result1)
         let f= result1[0].dataValues;
         var type_module=f.module;
         var type_cid=f.cid;
@@ -173,7 +175,6 @@ router.post('/',(req,res,next)=>{
         delete f['module'];
         delete f['cid'];
         delete f['segid'];
-        console.log(type_cid,type_segid);
         if(type_module=='so' || type_module=='po' || type_module=='sale' || type_module=='purchase'){
             //inv
             /*
@@ -183,6 +184,8 @@ router.post('/',(req,res,next)=>{
                 partyDetails:null
             };
             */
+        // console.log("#########MODULES----------->",type_module);
+
            f.gstParty=null;
             ser1.dd(f.transactionDate).then((ff)=>{
                 f.transactionDate=ff;
@@ -275,7 +278,7 @@ router.post('/',(req,res,next)=>{
                                 invv.transactionDate=f.transactionDate;
                                 invv.transactionType=f.transactionType;
                                 invv.transactionDescription=f.transactionDescription;
-                                /*change*/f.transactionNumber=id;
+                                // /*change*/f.transactionNumber=id;
                                 invv.accountsTransaction=f;
                                 /*
                                 invv.gatePass= { 
@@ -320,17 +323,20 @@ router.post('/',(req,res,next)=>{
                                             console.log(self);
                                             res.send([backed,f]);
                                         }).catch((errordb)=>{
+                                            console.log(errordb)
                                             res.status(500).send(errordb);
                                         })
                                     }).catch((errr)=>{
+                                        console.log(errr)
                                         res.status(500).send(errr);
                                     });
                                 }).catch((errrr)=>{
+                                    console.log(errrr)
                                     res.status(500).send("Error");
                                 })
                                
                             }
-                        })
+                        }).catch(err=>console.log("Errorrrsssssssssssss===============================>"+err));
                            
                 });
                 
