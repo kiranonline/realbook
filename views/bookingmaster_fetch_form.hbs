@@ -65,7 +65,7 @@
                             swal("Success", "Data fetched successfully","success");
                         },
                         error: function (xhr, status, error) {
-                            console.log(xhr);
+                            console.log(xhr,error);
                             swal("Error", "Error fetching data","error");
                         }
                     });

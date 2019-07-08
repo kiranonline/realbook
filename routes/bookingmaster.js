@@ -19,18 +19,19 @@ router.get('/fetch/form',(req,res,next)=>{
 
 router.post('/fetch',(req,res,next)=>{
     var id = req.query.id;
-    var url = "http://beta.redappletravel.com/crons/realbook_cron.php?id="+id;
+    var url = "https://www.redappletravel.com/crons/realbook_cron.php?id="+id;
     request(url,(error,response,body)=>{
         //console.log(response);
         if(error){
             next(createError(500,error));
         }
         else{
+            console.log("dsdsdddddddddddddddddddddddddddddddddddd",response.body)
             if(response.body=="\n"){
                 next(createError(500,"Invalid Id"));
             }else{
                 var data_fetched=JSON.parse(response.body).json_master[0];
-                console.log(data_fetched.hasOwnProperty("Booking"));
+                // console.log(data_fetched.hasOwnProperty("Booking"));
                 if(data_fetched.hasOwnProperty("Booking")){
                     helpers.packagePrepare(data_fetched).then(()=>{
                         res.json({
