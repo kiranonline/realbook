@@ -129,7 +129,7 @@ router.get('/data/form/*',(req,res,next)=>{
 
 
 router.get('/data/table',(req,res,next)=>{
-    sequelize.query(`SELECT invoicerule.*,company_master.name AS company_name,suppliermaster.supplier_display_name,sbu_master.sbu FROM invoicerule INNER JOIN company_master ON (company_master.id=invoicerule.company_id) INNER JOIN suppliermaster ON (suppliermaster.supplier_id=invoicerule.party_id) INNER JOIN sbu_master ON (sbu_master.id=invoicerule.sbu_id)`).then((data)=>{
+    sequelize.query(`SELECT invoicerule.*,company_master.name AS company_name,suppliermaster.supplier_display_name,sbu_master.sbu FROM invoicerule INNER JOIN company_master ON (company_master.id=invoicerule.company_id) INNER JOIN sbu_master ON (sbu_master.id=invoicerule.sbu_id)`).then((data)=>{
         console.log(data)
         res.render('invoicerule_table',{
             layout:false,
