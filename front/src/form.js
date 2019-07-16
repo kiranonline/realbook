@@ -164,10 +164,17 @@ class Form extends Component {
 
     setSupplierName(dynamic,value,indx){
         // value=value.target.value;
-        // console.log(value)
+        console.log(value.split("~"))
         if(value!==undefined){
-               dynamic[indx]['PER_SERVICE_WISE_SUPPLIER_NAME']=value.split(",")[0]
-               dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']=value.split(",")[1].trim()
+            if(value.split("~").length===2){
+                dynamic[indx]['PER_SERVICE_WISE_SUPPLIER_NAME']=value.split("~")[0]
+               dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']=value.split("~")[1].trim()
+            }
+            else{
+                dynamic[indx]['PER_SERVICE_WISE_SUPPLIER_NAME']=value.split("~")[0]+value.split("~")[value.split("~").length-2]
+                dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']=value.split("~")[value.split("~").length].trim()
+            }
+               
 
         }
         else{
@@ -196,17 +203,26 @@ class Form extends Component {
         dynamic.splice(indx,1);
         // console.log('deleted')
         // console.log(dynamic)
-        this.setState({dynamic});
-    }
-
-    setSellingCost(indx,dynamic,formData){
-        // dynamic[indx]=Object.assign({},dynamic[indx],activeInitial);
         let cost=0;
         dynamic.map(item=>{
             cost=cost+parseFloat(item.COMPONENTS_WISE_SELLING_COST);
         })
 
-        this.setState({formData:Object.assign({},formData,{SELLINGCOST:cost}),totalCost:cost});
+        this.setState({dynamic,totalCost:cost,formData:Object.assign({},this.state.formData,{SELLINGCOST:cost})});
+    }
+
+    setSellingCost(indx,dynamic,formData){
+        // let {formData}=this.state;
+     
+            let cost=0;
+            console.log(formData);
+            dynamic.map(item=>{
+                console.log(formData.EXCHANGE_RATE);
+                cost=cost+parseFloat(parseInt(item.COMPONENTS_WISE_SELLING_COST));
+            })
+            // console.log("Cost",cost)
+            this.setState({formData:Object.assign({},formData,{SELLINGCOST:cost}),totalCost:cost});
+       
 
     }
 
@@ -229,17 +245,18 @@ class Form extends Component {
         })
 
         this.setState({formData:Object.assign({},formData,{TOTAL_TAX_CALCULATION:tax}),totalTax:tax});
-
 }
 
-    submitData(formData,dynamic){
+    submitData=(formData,dynamic)=>new Promise(resolve=>{
+      
+        
         if(this.state.RA_REFERENCE.length===0){
 
             notification['warning']({
                 message: 'Required field missing',
                 description: "RA Reference can't be empty.",
               });
-            return;
+            resolve(false);
         }
         else if(formData.RA_AGENT_CODE===undefined || formData.RA_AGENT_CODE.length===0){
             notification['warning']({
@@ -247,24 +264,38 @@ class Form extends Component {
                 description: "RA AGENT CODE can't be empty!",
               });
 
-            return;
+            resolve(false);
         }
-        /*else if(formData.OVER_ALL_PROFIT===undefined){
+        else if(formData.STAND_ALONE===null){
             notification['warning']({
                 message: 'Required field missing',
-                description: "Over All Profit can't be null!",
+                description: "Please select a STAND ALONE state",
               });
 
-            return;
-        }*/
+            resolve(false);
+        }
+        else if(dynamic!==undefined && formData.STAND_ALONE==="NO"){
+            if(dynamic.length===1){
+                // if(){
+                    notification['warning']({
+                        message: 'Multiple field missing',
+                        description: "Please add another row.",
+                      });
+        
+                    resolve(false);
+                    // }
+            }
+            else{
+                resolve(true);
+            }
+        }
         else if(formData.INVOICE_CURRENCY===undefined || formData.INVOICE_CURRENCY.length===0){
             notification['warning']({
                 message: 'Required field missing',
                 description: "Please select an Invoice Currency",
               });
 
-
-            return;
+            resolve(false);
         }
         else if(formData.INVOICE_DATE===undefined || formData.INVOICE_DATE===null){
             notification['warning']({
@@ -272,7 +303,7 @@ class Form extends Component {
                 description: "Please select an Invoice Date",
               });
 
-            return;
+            resolve(false);
         }
         else if(formData.EXCHANGE_RATE===undefined || parseInt(formData.EXCHANGE_RATE)<0){
             console.log(formData.EXCHANGE_RATE)
@@ -281,22 +312,21 @@ class Form extends Component {
                 description: "Exchange rate can't be empty",
               });
 
-
-            return;
+            resolve(false);
         }
         else if(formData.CHECK_IN_DATE===undefined){
             notification['warning']({
                 message: 'Required field missing',
                 description: "Please set a check in date",
               });
-            return;
+            resolve(false);
         } 
         else if(formData.CHECK_OUT_DATE===undefined){
             notification['warning']({
                 message: 'Required field missing',
                 description: "Please set a check out date",
               });
-            return;
+            resolve(false);
         } 
         
         else if(parseFloat(formData.SELLINGCOST)!==parseFloat(this.state.totalCost.toString())){
@@ -306,7 +336,7 @@ class Form extends Component {
                 description: "Invalid selling cost",
               });
 
-            return;
+            resolve(false);
         }
         else if(parseInt(formData.TOTAL_IN_AMOUNTS)<formData.SELLINGCOST){
             notification['warning']({
@@ -314,7 +344,7 @@ class Form extends Component {
                 description: "Invalid Total in amount",
               });
 
-            return; 
+            resolve(false); 
         }
         else if(parseInt(formData.OVER_ALL_DISCOUNT)!==parseInt(this.state.totalDiscount!==null?this.state.totalDiscount.toString():0)){
             notification['warning']({
@@ -322,15 +352,16 @@ class Form extends Component {
                 description: "Invalid overall discount",
               });
               
-            return;
+            resolve(false);
         }
-        else if(formData.SBU.length===0){
+        
+        else if(formData.SBU===undefined){
             notification['warning']({
                 message: 'Required field missing',
                 description: "SBU can't be empty",
               });
 
-            return;
+            resolve(false);
         }
         else if(parseInt(formData.TOTAL_TAX_CALCULATION)!==parseInt(this.state.totalTax!==null?this.state.totalTax.toString():0)){
             console.log(this.state.totalTax)
@@ -339,7 +370,7 @@ class Form extends Component {
                 description: "Invalid tax calculation",
               });
 
-            return;
+            resolve(false);
         }
         else if(parseInt(formData.TOTAL_IN_AMOUNTS)===0 || formData.TOTAL_IN_AMOUNTS===undefined || formData.TOTAL_IN_AMOUNTS===null){
             notification['warning']({
@@ -347,11 +378,11 @@ class Form extends Component {
                 description: "Total In Amount can't be empty",
               });
 
-            return;
+            resolve(false);
         }
         else{
-            dynamic.map(item=>{
-                console.log(item)
+            dynamic.map((item,idx)=>{
+                // console.log(item)
 
                 if(item.SERVICE_COUNTRY.length===0){
                     notification['warning']({
@@ -359,7 +390,7 @@ class Form extends Component {
                         description: "Please select a service country!",
                       });
         
-                    return;
+                    resolve(false);
                 }
                 else if(item.PER_SERVICE_WISE_SUPPLIER_NAME.length===0){
                     console.log(item.PER_SERVICE_WISE_SUPPLIER_NAME)
@@ -368,11 +399,11 @@ class Form extends Component {
                         description: "Please select a Supplier!",
                       });
         
-                    return;
+                    resolve(false);
                 }
                 else if(item.SERVICE_CATEGORY.length===0){
                     message.warning("Please select a service category!",0.9);
-                    return;
+                    resolve(false);
                 }
                 else if(item.PRODUCT_NAME.length===0){
                     notification['warning']({
@@ -381,7 +412,7 @@ class Form extends Component {
                       });
         
         
-                    return;
+                    resolve(false);
                 }
                 else if(item.COMPONENTS_WISE_SELLING_COST.length===0){
                     notification['warning']({
@@ -389,15 +420,15 @@ class Form extends Component {
                         description: "Component wise selling cost can't be empty",
                       });
         
-                    return;
+                    resolve(false);
                 }
-                else if(item.COMPONENTS_WISE_NET_COST.length===0){
+                else if(item.COMPONENTS_WISE_NET_COST===undefined){
                     notification['warning']({
                         message: 'Required field missing',
                         description: "Component wise net cost can't be empty",
                       });
         
-                    return;
+                    resolve(false);
                 }
                 
                 else if(item.COMPONENTS_WISE_NET_COST_CURRENCY===undefined || item.COMPONENTS_WISE_NET_COST_CURRENCY===null ||  item.COMPONENTS_WISE_NET_COST_CURRENCY===0){
@@ -408,48 +439,75 @@ class Form extends Component {
                       });
                         this.setState({hasErr:true})
 
-                    return false;
+                    resolve(false);
                 }
                 else{
-                    formData.dynamic=[...dynamic];
-                    formData.dynamic.map((item,indx)=>{
-                        formData.dynamic[indx]['ismanual']=1;
-                    })
-                    formData.RA_REFERENCE=this.state.RA_REFERENCE;
-                    if(formData.msg!==undefined){
-                        delete formData.msg;
+                    if(!this.state.hasErr && idx===dynamic.length-1){
+                      resolve(true);
                     }
-                    if(formData.success!==undefined){
-                        delete formData.success;
-                    }
-                    // console.log(formData)
-                    formData.RA_AGENT_CODE.trim();
-
-                   
-
-                   if(!this.state.hasErr){
-                    HttpService.post("bookingmaster/local/"+this.state.RA_REFERENCE,{data:formData}).then(res=>{
-                        if(res.status===200){
-                            if(res.data.success){
-                                // this.props.history.push("/local/booking/"+this.state.RA_REFERENCE);
-                                notification['success']({
-                                    message: 'Booking form data is submitted',
-                                    description: "Data saved succesfully",
-                                  });
-                                  var self=this;
-                                  setTimeout(function(){
-                                    window.location.href="/local/booking/"+self.state.RA_REFERENCE
-
-                                  },1000)
-                            }
-                        }
-                    })
-                   }
                 }
 
             })
         }
         
+    })
+
+
+    SaveData(formData,dynamic){
+        this.submitData(formData,dynamic).then(valid=>{
+            console.log(valid)
+            if(valid===true ){
+            
+
+                formData.dynamic=[...dynamic];
+                formData.dynamic.map((item,indx)=>{
+                    formData.dynamic[indx]['ismanual']=1;
+                })
+                formData.RA_REFERENCE=this.state.RA_REFERENCE;
+                if(formData.msg!==undefined){
+                    delete formData.msg;
+                }
+                if(formData.success!==undefined){
+                    delete formData.success;
+                }
+    
+                formData.RA_AGENT_CODE.trim();
+                formData.isEdit=this.state.isEdit;
+                formData.TOTALCOST=formData.SELLINGCOST;
+    
+                message.loading("Saving data....",1.5)
+                HttpService.post("bookingmaster/local/"+this.state.RA_REFERENCE,{data:formData}).then(res=>{
+                    if(res.status===200){
+                        if(res.data.success){
+                          
+                            notification['success']({
+                                message: 'Booking form data is submitted',
+                                description: "Data saved succesfully",
+                              });
+    
+                              var self=this;
+                              setTimeout(function(){
+                                window.location.href="/local/booking/"+self.state.RA_REFERENCE
+    
+                              },1000)
+                        }
+                        else{
+                            notification['error']({
+                                message: 'BookingMaster Error',
+                                description:res.data.msg,
+                              });
+                        }
+                    }
+                })
+               
+            }
+        }).catch(err=>{
+            console.log(err)
+        })
+        
+        
+
+      
     }
 
     setOutDate(formData,dateString){
@@ -505,10 +563,27 @@ class Form extends Component {
 
     saveRow(activeRowData){
         let {dynamic}=this.state;
-
+        activeRowData.COMPONENTS_WISE_SELLING_COST=activeRowData.COMPONENTS_WISE_NET_COST*this.state.formData.EXCHANGE_RATE;
         dynamic[this.state.activeRowIndex]=Object.assign({},dynamic[this.state.activeRowIndex],activeRowData);
-        console.log( dynamic)
+        // console.log( dynamic)
         this.setState({dynamic,activeInitial:{},activeRowIndex:-1,modalVisible:false});
+        this.setSellingCost(activeRowData,dynamic,this.state.formData);
+    }
+
+    clearList(){
+        let {dynamic,formData}=this.state;
+        console.log(formData.STAND_ALONE)
+        if(formData.STAND_ALONE==="YES"){
+            if(dynamic.length>1){
+                dynamic.map((item,indx)=>{
+                    if(indx===0){
+                        dynamic.pop();
+                    }
+                    
+                })
+            }
+        }
+        
     }
 
     searchSupplier(value,indx,dynamic){
@@ -519,13 +594,13 @@ class Form extends Component {
                     let data=[]
                 res.data.supplier.map((item,indx)=>{
                     // if(indx<20){
-                        data.push(item.supplier_display_name+","+item.supplier_id)
+                        data.push(item.supplier_display_name+"~"+item.supplier_id)
 
                     // }
                 })
                 if(value!==undefined){
-                    dynamic[indx]['PER_SERVICE_WISE_SUPPLIER_NAME']=value.split(",")[0]
-                    dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']=value.split(",")[1]
+                    dynamic[indx]['PER_SERVICE_WISE_SUPPLIER_NAME']=value.split("~")[0]
+                    dynamic[indx]['PER_SERVICE_SUPPLIER_CODE']=value.split("~")[1]
      
              }
              else{
@@ -561,7 +636,7 @@ class Form extends Component {
                 <div className="col-4">
                     <div className="form-group">
                         <label htmlFor="">RA Reference *</label>
-                        <input type="text" className="form-control" defaultValue={this.state.RA_REFERENCE} onChange={(e)=>this.setState({RA_REFERENCE:e.target.value})} id="" placeholder="" />
+                        <input readOnly={this.state.isEdit} disabled={this.state.isEdit} type="text" className="form-control" defaultValue={this.state.RA_REFERENCE} onChange={(e)=>this.setState({RA_REFERENCE:e.target.value})} id="" placeholder="" />
                     </div>
                 </div>
                 <div className="col-4">
@@ -651,10 +726,10 @@ class Form extends Component {
                 </div>
                 <div className="col-4">
                     <div className="form-group">
-                        <label htmlFor="">Stand Alone</label>
-                        <select className="form-control" value={formData.STAND_ALONE} onChange={(e)=>{formData.STAND_ALONE=e.target.value;this.setState({formData})}} >
+                        <label htmlFor="">Stand Alone *</label>
+                        <select className="form-control" value={formData.STAND_ALONE} onChange={(e)=>{formData.STAND_ALONE=e.target.value;this.setState({formData});this.clearList()}} >
                             <option value="">Choose one</option>
-                            {[{val:'Y',name:'YES'},{val:'N',name:'NO'}].map(itm=>{
+                            {[{val:'YES',name:'YES'},{val:'NO',name:'NO'}].map(itm=>{
                                 return <option value={itm.val}>{itm.name}</option>
                             })}
                         </select>
@@ -737,7 +812,7 @@ class Form extends Component {
                         onSelect={(value)=>{this.setSupplierName(dynamic,value,indx)}}
                                                 onChange={(value)=>this.searchSupplier(value,indx,dynamic)}
 
-                        filterOption={(inputValue, option) => option.props.children.split(",")[0].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 || option.props.children.split(",")[1].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+                        filterOption={(inputValue, option) => option.props.children.split("~")[0].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 || option.props.children.split("~")[1].toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
                         />:
                         <AutoComplete
                         style={{ width: 200,left:'-0.5em' }}
@@ -760,9 +835,9 @@ class Form extends Component {
                 </div>
                 <div className="col-2">
                     <div className="form-group">
-                        <label htmlFor="">Components Wise Selling  *</label>
+                        <label htmlFor="">Components Wise Cost(Invoice currency) *</label>
                         
-                        <input type="number" className="form-control mb-4" value={item.COMPONENTS_WISE_SELLING_COST} onChange={(e)=>{dynamic[indx]['COMPONENTS_WISE_SELLING_COST']=e.target.value;this.setSellingCost(indx,dynamic,formData)}} id="" placeholder="" />
+                        <input type="number" className="form-control mb-4" value={item.COMPONENTS_WISE_SELLING_COST} onChange={(e)=>{dynamic[indx]['COMPONENTS_WISE_SELLING_COST']=e.target.value;}} id="" placeholder="" />
                         
                     </div>
                 </div>
@@ -784,9 +859,9 @@ class Form extends Component {
                 </div>
                 {indx===dynamic.length-1?<div className="col-auto align-self-center mt-4" >
                     <div className="form-action-group d-flex align-items-center justify-content-between mb-3">
-                        <button type="button" className="btn btn-light mr-2" onClick={()=>{this.openModal(indx)}} data-toggle="modal" data-target="#exampleModalCenter"><i
+                        <button style={{display:'block'}} type="button" className="btn btn-light mr-2" onClick={()=>{this.openModal(indx)}} data-toggle="modal" data-target="#exampleModalCenter"><i
                                 className="ion ion-ios-more text-dark"></i></button>
-                        <button type="button" className="btn btn-light mr-2" onClick={()=>{ this.setState({activeInitial:{}});this.cloneField(dynamic)}}><i
+                        <button type="button" style={formData.STAND_ALONE==="YES"?{display:'none'}:null} className="btn btn-light mr-2" onClick={()=>{ this.setState({activeInitial:{}});this.cloneField(dynamic)}}><i
                                 className="ion ion-md-add text-primary"></i></button>
                         {indx>0?<button type="button" className="btn btn-light" onClick={()=>{this.deleteRow(dynamic,indx)}}><i
                                 className="ion ion-ios-trash text-danger"></i></button>:null}
@@ -809,9 +884,9 @@ class Form extends Component {
             <div className="row">
                 <div className="col-10">
                 <div className="form-group row">
-                        <label htmlFor="" className="ml-auto col-auto col-form-label">Selling Cost</label>
+                        <label htmlFor="" className="ml-auto col-auto col-form-label">Total Cost</label>
                         <div className="col-2">
-                            <input type="number" min="0" defaultValue={formData.SELLINGCOST} onChange={(e)=>{formData.SELLINGCOST=e.target.value;}} className="form-control" />
+                            <input type="number" readOnly  min="0" defaultValue={formData.SELLINGCOST} onChange={(e)=>{formData.SELLINGCOST=e.target.value;formData.OVER_ALL_PROFIT=formData.TOTAL_IN_AMOUNTS-formData.SELLINGCOST;this.setState({formData})}} className="form-control" />
                         </div>
                     </div>
                     <div className="form-group row">
@@ -844,8 +919,6 @@ class Form extends Component {
                             <input type="number" min="0" defaultValue={formData.OVER_ALL_PROFIT===0?formData.OVER_ALL_LOSS:0} onChange={(e)=>{formData.OVER_ALL_LOSS=e.target.value;}} className="form-control"  />
                         </div>
                     </div>
-                    
-                    
                 </div>
             </div>
             <div style={{width: '100%', height: '150px'}}></div>
@@ -859,7 +932,7 @@ class Form extends Component {
                 </div>
                 
                 <div className="col-1 text-right">
-                    <button type="submit" className="btn btn-primary w-100"  onClick={()=>{this.submitData(formData,dynamic)}}>Save</button>
+                    <button type="submit" className="btn btn-primary w-100"  onClick={()=>{this.SaveData(formData,dynamic)}}>Save</button>
                 </div>
             </div>
         </div>

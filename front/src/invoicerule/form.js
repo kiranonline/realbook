@@ -17,8 +17,8 @@ class InvoiceRuleform extends Component {
             sbuList:[],
             defaultValues:{
               company_id:'',
-              party_id : '',
-              party_name:'',
+              party_id : null,
+              party_name:null,
               sbu_id : '',
               invoice_date :''
             },
@@ -247,7 +247,7 @@ class InvoiceRuleform extends Component {
 
 
     savedata = ()=>{
-      if(this.state.defaultValues.company_id==='' || this.state.defaultValues.party_id==='' || this.state.defaultValues.sbu_id==='' || this.state.defaultValues.invoice_date===''){
+      if(this.state.defaultValues.company_id==='' || this.state.defaultValues.sbu_id==='' || this.state.defaultValues.invoice_date===''){
         notification['warning']({
           message: 'Error',
           description: "All the fields are required",
